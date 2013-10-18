@@ -2,6 +2,7 @@ package wonging
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
 )
 
@@ -12,8 +13,10 @@ type Card struct {
 }
 type Deck struct {
 	cards []*Card
+	dealt []*Card
 }
 
+//Card methods
 func (c *Card) newCard(v string, n int8, s string) *Card {
 	c.value = v
 	c.numberValue = n
@@ -25,6 +28,7 @@ func (c *Card) printCard() {
 	fmt.Println(c.value + " of " + c.suit)
 }
 
+//Deck methods
 func (d *Deck) InitDeck() *Deck {
 	suits := [4]string{"Diamonds", "Spades", "Hearts", "Clubs"} // unsorted
 	for _, suit := range suits {
@@ -47,4 +51,13 @@ func (d *Deck) PrintDeck() {
 	for _, card := range d.cards {
 		card.printCard()
 	}
+}
+
+func (d *Deck) Deal() *Deck {
+	//randomly select a card from deck
+	randomIndex := 0 + rand.Intn(len(d.cards))
+	fmt.Println("Number of cards: " + strconv.Itoa(len(d.cards)))
+	d.cards[randomIndex].printCard()
+	d.cards = d.cards[:randomIndex+copy(d.cards[randomIndex:], d.cards[randomIndex+1:])]
+	return d
 }
