@@ -8,5 +8,10 @@ import (
 func main() {
 	fmt.Println("This is the client")
 
-	new(wonging.Deck).InitDeck()
+	deck := new(wonging.Deck).InitDeck()
+	deck = deck.Deal()
+	deck = deck.Deal()
+	deck = deck.Deal()
+	deck = deck.Deal()
+
 }
