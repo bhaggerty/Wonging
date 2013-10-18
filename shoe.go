@@ -58,6 +58,7 @@ func (d *Deck) Deal() *Deck {
 	randomIndex := 0 + rand.Intn(len(d.cards))
 	fmt.Println("Number of cards: " + strconv.Itoa(len(d.cards)))
 	d.cards[randomIndex].printCard()
+	d.dealt = append(d.dealt, d.cards[randomIndex])
 	d.cards = d.cards[:randomIndex+copy(d.cards[randomIndex:], d.cards[randomIndex+1:])]
 	return d
 }
