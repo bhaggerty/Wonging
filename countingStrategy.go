@@ -1,11 +1,7 @@
 package wonging
 
-import (
-	"github.com/josephyzhou/wonging"
-)
-
-const (
-	HiLo = map[string]int{
+var (
+	HiLo = map[string]int8{
 		"2":  1,
 		"3":  1,
 		"4":  1,
@@ -20,7 +16,7 @@ const (
 		"K":  -1,
 		"A":  -1,
 	}
-	HiOpt1 = map[string]int{
+	HiOpt1 = map[string]int8{
 		"2":  0,
 		"3":  1,
 		"4":  1,
@@ -35,7 +31,7 @@ const (
 		"K":  -1,
 		"A":  0,
 	}
-	HiOpt2 = map[string]int{
+	HiOpt2 = map[string]int8{
 		"2":  1,
 		"3":  1,
 		"4":  2,
@@ -50,7 +46,7 @@ const (
 		"K":  -2,
 		"A":  0,
 	}
-	KO = map[string]int{
+	KO = map[string]int8{
 		"2":  1,
 		"3":  1,
 		"4":  1,
@@ -65,7 +61,7 @@ const (
 		"K":  -1,
 		"A":  -1,
 	}
-	Omega2 = map[string]int{
+	Omega2 = map[string]int8{
 		"2":  1,
 		"3":  1,
 		"4":  2,
@@ -80,7 +76,7 @@ const (
 		"K":  -2,
 		"A":  0,
 	}
-	Red7 = map[string]int{
+	Red7 = map[string]float32{
 		"2":  1,
 		"3":  1,
 		"4":  1,
@@ -95,7 +91,7 @@ const (
 		"K":  -1,
 		"A":  -1,
 	}
-	ZenCount = map[string]int{
+	ZenCount = map[string]int8{
 		"2":  1,
 		"3":  1,
 		"4":  2,
@@ -113,7 +109,8 @@ const (
 )
 
 type Counter struct {
-	HiLo, HiOpt1, HiOpt2, KO, Omega2, Red7, ZenCount int8
+	HiLo, HiOpt1, HiOpt2, KO, Omega2, ZenCount int8
+	Red7                                       float32
 }
 
 func (c Counter) count(cardValue string) Counter {
