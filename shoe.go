@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
+	"time"
 )
 
 type Card struct {
@@ -77,11 +78,13 @@ func (d *Deck) Deal() *Deck {
 }
 
 func (d *Deck) Shuffle() *Deck {
+	rand.Seed(time.Now().Unix())
+
 	for i := 0; i < len(d.cards); i++ {
-		rand := rand.Intn(i + 1)
+		r := rand.Intn(len(d.cards))
 		temp := d.cards[i]
-		d.cards[i] = d.cards[rand]
-		d.cards[rand] = temp
+		d.cards[i] = d.cards[r]
+		d.cards[r] = temp
 	}
 	fmt.Println("\nAfter Shuffling:")
 	d.PrintDeck()
