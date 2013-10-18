@@ -112,12 +112,17 @@ const (
 	}
 )
 
-type count struct {
-	HiLo     int8
-	HiOpt1   int8
-	HiOpt2   int8
-	KO       int8
-	Omega2   int8
-	Red7     int8
-	ZenCount int8
+type Counter struct {
+	HiLo, HiOpt1, HiOpt2, KO, Omega2, Red7, ZenCount int8
+}
+
+func (c Counter) count(cardValue string) Counter {
+	c.HiLo += HiLo[cardValue]
+	c.HiOpt1 += HiOpt1[cardValue]
+	c.HiOpt2 += HiOpt2[cardValue]
+	c.KO += KO[cardValue]
+	c.Omega2 += Omega2[cardValue]
+	c.Red7 += Red7[cardValue]
+	c.ZenCount += ZenCount[cardValue]
+	return c
 }
