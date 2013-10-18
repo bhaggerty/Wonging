@@ -26,12 +26,17 @@ func (c *Card) printCard() {
 }
 
 func (d *Deck) InitDeck() *Deck {
-	suits := []string{"Diamonds", "Spades", "Hearts", "Clubs"} // unsorted
-	//take care of 2-10 first, their facevalues are the same as num value
+	suits := [4]string{"Diamonds", "Spades", "Hearts", "Clubs"} // unsorted
 	for _, suit := range suits {
+		//take care of 2-10 first, their facevalues are the same as num value
 		for i := 2; i <= 10; i++ {
 			d.cards = append(d.cards, new(Card).newCard(strconv.Itoa(i), int8(i), suit))
 		}
+		//JQKA
+		d.cards = append(d.cards, new(Card).newCard("J", 10, suit))
+		d.cards = append(d.cards, new(Card).newCard("Q", 10, suit))
+		d.cards = append(d.cards, new(Card).newCard("K", 10, suit))
+		d.cards = append(d.cards, new(Card).newCard("A", 1, suit))
 	}
 	d.PrintDeck()
 	return d
