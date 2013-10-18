@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
-	deck := new(wonging.Deck).initDeck()
 	fmt.Println("This is the client")
+
+	new(wonging.Deck).InitDeck()
 }
