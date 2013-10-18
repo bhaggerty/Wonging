@@ -1,5 +1,9 @@
 package wonging
 
+import (
+	"github.com/josephyzhou/wonging"
+)
+
 var HiLo = map[string]int{
 	"2":  1,
 	"3":  1,
