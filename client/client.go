@@ -11,7 +11,7 @@ func main() {
 	deck := new(wonging.Deck).InitDeck()
 	deck = deck.Deal()
 	deck = deck.Deal()
-	deck = deck.Deal()
-	deck = deck.Deal()
-
+	deck = deck.DealRandom()
+	deck = deck.DealRandom()
+	deck = deck.Shuffle()
 }
