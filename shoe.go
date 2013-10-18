@@ -21,6 +21,10 @@ func (c *Card) newCard(v string, n int8, s string) *Card {
 	return c
 }
 
+func (c *Card) printCard() {
+	fmt.Println(c.value + " of " + c.suit)
+}
+
 func (d *Deck) InitDeck() *Deck {
 	suits := []string{"Diamonds", "Spades", "Hearts", "Clubs"} // unsorted
 	//take care of 2-10 first, their facevalues are the same as num value
@@ -36,6 +40,6 @@ func (d *Deck) InitDeck() *Deck {
 func (d *Deck) PrintDeck() {
 	fmt.Println("There are " + strconv.Itoa(len(d.cards)) + " cards in the deck\n===============================\n")
 	for _, card := range d.cards {
-		fmt.Println(card.value + " of " + card.suit)
+		card.printCard()
 	}
 }
