@@ -6,7 +6,10 @@ type Hand struct {
 	cards []*Card
 }
 
-func (h *Hand) calculateValue() int8 {
+func (h *Hand) AddCard(c *Card) {
+	h.cards = append(h.cards, c)
+}
+func (h *Hand) CalculateValue() int8 {
 	var totalValue int8 = 0
 	totalAs := 0
 	if len(h.cards) == 0 {
@@ -31,7 +34,7 @@ func (h *Hand) calculateValue() int8 {
 	return totalValue
 }
 
-func (h *Hand) calculateCount() *Counter {
+func (h *Hand) CalculateCount() *Counter {
 	counter := new(Counter).initialize()
 	for _, card := range h.cards {
 		counter = counter.count(card.value)
@@ -44,7 +47,7 @@ func (h *Hand) calculateCount() *Counter {
 func (h *Hand) ifBusted(total ...int8) bool {
 	var myTotal int8
 	if len(total) == 0 {
-		myTotal = h.calculateValue()
+		myTotal = h.CalculateValue()
 	} else if len(total) == 1 {
 		myTotal = total[0]
 	}
@@ -65,7 +68,7 @@ func (h *Hand) determineOutcome(totals ...int8) string {
 	if len(totals) == 2 {
 		myTotal = totals[1]
 	} else if len(totals) == 1 {
-		myTotal = h.calculateValue()
+		myTotal = h.CalculateValue()
 	} else {
 		return "Pass in at least one, but not more than two totals for comparison"
 	}
