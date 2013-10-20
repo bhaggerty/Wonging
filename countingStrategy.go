@@ -113,7 +113,18 @@ type Counter struct {
 	Red7                                       float32
 }
 
-func (c Counter) count(cardValue string) Counter {
+func (c *Counter) initialize() *Counter {
+	c.HiLo = 0
+	c.HiOpt1 = 0
+	c.HiOpt2 = 0
+	c.KO = 0
+	c.Omega2 = 0
+	c.Red7 = 0
+	c.ZenCount = 0
+	return c
+}
+
+func (c *Counter) count(cardValue string) *Counter {
 	c.HiLo += HiLo[cardValue]
 	c.HiOpt1 += HiOpt1[cardValue]
 	c.HiOpt2 += HiOpt2[cardValue]
