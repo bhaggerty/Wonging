@@ -25,7 +25,7 @@ func (h *Hand) calculateValue() int8 {
 		if totalValue > 10 {
 			totalValue++
 		} else {
-			totalValue += 10
+			totalValue += 11
 		}
 	}
 	return totalValue
