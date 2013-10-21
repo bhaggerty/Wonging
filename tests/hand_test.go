@@ -65,4 +65,12 @@ func Test_DetermineOutcome(t *testing.T) {
 	} else {
 		t.Log("DetermineOutcome() PlayerWins case works")
 	}
+
+	//trying a case passing in two parameters
+	outcome = handBJ.DetermineOutcome(15, 22)
+	if outcome != "Player busted" {
+		t.Error("DetermineOutcome() - Expected 'Player busted', Actual: " + outcome)
+	} else {
+		t.Log("DetermineOutcome() PlayerBusted case works")
+	}
 }
