@@ -7,29 +7,11 @@ import (
 	"time"
 )
 
-type Card struct {
-	value       string
-	numberValue int8
-	suit        string
-}
 type Deck struct {
 	cards []*Card
 	dealt []*Card
 }
 
-//Card methods
-func (c *Card) NewCard(v string, n int8, s string) *Card {
-	c.value = v
-	c.numberValue = n
-	c.suit = s
-	return c
-}
-
-func (c *Card) printCard() {
-	fmt.Println(c.value + " of " + c.suit)
-}
-
-//Deck methods
 func (d *Deck) InitDeck() *Deck {
 	suits := [4]string{"Diamonds", "Spades", "Hearts", "Clubs"} // unsorted
 	for _, suit := range suits {
