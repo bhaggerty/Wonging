@@ -63,7 +63,7 @@ func (h *Hand) ifBusted(total ...int8) bool {
 //two totals passed in: we will do the comparison right away
 //One total passed in: assuming it is the total of the hand of opponent
 //                     proceed to calculating own total then compare
-func (h *Hand) determineOutcome(totals ...int8) string {
+func (h *Hand) DetermineOutcome(totals ...int8) string {
 	var myTotal int8
 	if len(totals) == 2 {
 		myTotal = totals[1]
