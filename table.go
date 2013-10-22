@@ -8,11 +8,13 @@ import (
 )
 
 type Player struct {
+	id         uint8
 	hand       *Hand
 	currentBet float32
 	totalCash  float32
 }
 type Dealer struct {
+	id   uint8
 	shoe *Deck
 }
 type Table struct {
@@ -24,8 +26,19 @@ type Table struct {
 
 	//Many players sitting at the table
 	players []*Player
+
+	//limit on how many players can join
+	playerLimit uint8
 }
 
 func (t *Table) GetTablePlayerNumber() int {
 	return len(t.players)
+}
+
+func (t *Table) joinTable(p *Player) {
+	if t.playerLimit > len(t.players) {
+		t.players = append(t.players, p)
+	} else {
+		fmt.Println("Table is full, player " + p.id + " cannot join")
+	}
 }
