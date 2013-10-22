@@ -7,17 +7,23 @@ import (
 // "time"
 )
 
+const DEFAULTPLAYERLIMIT int8 = 5
+
 type Player struct {
 	id         uint8
+	tableId    int8
 	hand       *Hand
 	currentBet float32
 	totalCash  float32
 }
 type Dealer struct {
-	id   uint8
-	shoe *Deck
+	id      uint8
+	tableId uint8
+	shoe    *Deck
 }
 type Table struct {
+	id int8
+
 	//current count for all cards on table
 	count int8
 
@@ -31,11 +37,20 @@ type Table struct {
 	playerLimit uint8
 }
 
+func (t *Table) Initialize(id int8) *Table {
+	t.id = id
+	t.count = 0
+	t.dealer = nil
+	t.players = nil
+	t.playerLimit = DEFAULTPLAYERLIMIT
+	return t
+}
+
 func (t *Table) GetTablePlayerNumber() int {
 	return len(t.players)
 }
 
-func (t *Table) joinTable(p *Player) {
+func (t *Table) addPlayer(p *Player) {
 	if t.playerLimit > len(t.players) {
 		t.players = append(t.players, p)
 	} else {
