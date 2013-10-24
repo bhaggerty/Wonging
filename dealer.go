@@ -9,3 +9,7 @@ type Dealer struct {
 func (d *Dealer) changeTable(table *Table) {
 	d.table = table
 }
+
+func (d *Dealer) printDealer() {
+	fmt.Println("Dealer %d, sitting at table %d", d.id, d.table.id)
+}
