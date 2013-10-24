@@ -9,18 +9,6 @@ import (
 
 const DEFAULTPLAYERLIMIT int8 = 5
 
-type Player struct {
-	id         uint8
-	tableId    int8
-	hand       *Hand
-	currentBet float32
-	totalCash  float32
-}
-type Dealer struct {
-	id      uint8
-	tableId uint8
-	shoe    *Deck
-}
 type Table struct {
 	id int8
 
