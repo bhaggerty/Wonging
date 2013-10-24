@@ -1,5 +1,9 @@
 package wonging
 
+import (
+	"fmt"
+)
+
 type Dealer struct {
 	id    uint8
 	table *Table
