@@ -35,8 +35,15 @@ func (t *Table) Initialize(id uint8) *Table {
 	return t
 }
 
-func (t *Table) GetTablePlayerNumber() int {
+func (t *Table) getNumberOfPlayers() int {
 	return len(t.players)
+}
+func (t *Table) getNumberOfDealers() int {
+	if t.dealer != nil {
+		return 1
+	} else {
+		return 0
+	}
 }
 
 func (t *Table) addPlayer(p *Player) {
