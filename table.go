@@ -1,16 +1,17 @@
 package wonging
 
 import (
-// "fmt"
-// "math/rand"
-// "strconv"
+	"fmt"
+
+	// "math/rand"
+	// "strconv"
 // "time"
 )
 
-const DEFAULTPLAYERLIMIT int8 = 5
+const DEFAULTPLAYERLIMIT uint8 = 5
 
 type Table struct {
-	id int8
+	id uint8
 
 	//current count for all cards on table
 	count int8
@@ -25,7 +26,7 @@ type Table struct {
 	playerLimit uint8
 }
 
-func (t *Table) Initialize(id int8) *Table {
+func (t *Table) Initialize(id uint8) *Table {
 	t.id = id
 	t.count = 0
 	t.dealer = nil
@@ -39,9 +40,9 @@ func (t *Table) GetTablePlayerNumber() int {
 }
 
 func (t *Table) addPlayer(p *Player) {
-	if t.playerLimit > len(t.players) {
+	if t.playerLimit > uint8(len(t.players)) {
 		t.players = append(t.players, p)
 	} else {
-		fmt.Println("Table is full, player " + p.id + " cannot join")
+		fmt.Printf("Table is full, player %d cannot join", p.id)
 	}
 }

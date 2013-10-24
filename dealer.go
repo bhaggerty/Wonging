@@ -1,4 +1,4 @@
-package Wonging
+package wonging
 
 type Dealer struct {
 	id      uint8
