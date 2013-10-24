@@ -17,6 +17,9 @@ type Player struct {
 
 	//TODO: implement in phase 2, for group counting
 	//groupId uint8
+
+	//TODO: implement in phase 2, for simulation of getting caught
+	//strike uint8
 }
 
 func (p *Player) bet(money float32) {

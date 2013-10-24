@@ -8,8 +8,6 @@ import (
 // "time"
 )
 
-const DEFAULTPLAYERLIMIT uint8 = 5
-
 type Table struct {
 	id uint8
 
@@ -31,7 +29,7 @@ func (t *Table) Initialize(id uint8) *Table {
 	t.count = 0
 	t.dealer = nil
 	t.players = nil
-	t.playerLimit = DEFAULTPLAYERLIMIT
+	t.playerLimit = DEFAULTPLAYERLIMITPERTABLE
 	return t
 }
 

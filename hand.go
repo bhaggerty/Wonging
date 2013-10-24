@@ -1,7 +1,5 @@
 package wonging
 
-const BLACKJACK int8 = 21
-
 type Hand struct {
 	cards []*Card
 }
