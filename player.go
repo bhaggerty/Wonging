@@ -35,3 +35,7 @@ func (p *Player) changeTable(table *Table) {
 func (p *Player) acceptCard(c *Card) {
 	p.hand.AddCard(c)
 }
+
+func (p *Player) printPlayer() {
+	fmt.Println("Player %d, sitting at table %d, currently betting %f, total cash: %f", p.id, p.table.id, p.currentBet, p.totalCash)
+}
