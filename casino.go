@@ -22,30 +22,34 @@ func (c *Casino) Initialize() *Casino {
 }
 
 func (c *Casino) dealerBecomesIdle(d *Dealer) {
-	dealerAlreadyIdle := false
-	for _, iD := range c.idleDealers {
-		if iD == d {
-			dealerAlreadyIdle = true
-		}
-	}
-	if dealerAlreadyIdle {
+	if checkDealerContain(d, c.idleDealers) != -1 {
 		fmt.Println("Dealer already idle")
 	} else {
 		c.idleDealers = append(c.idleDealers, d)
 	}
 }
+func (c *Casino) dealerBecomesActive(d *Dealer) {
+	if index := checkDealerContain(d, c.idleDealers); index == -1 {
+		fmt.Println("Dealer not idling, cannot make him/her active")
+	} else {
+		c.idleDealers = append(c.idleDealers[:index], c.idleDealers[index+1:]...)
 
-func (c *Casino) playerBecomesIdle(d *Player) {
-	playerAlreadyIdle := false
-	for _, iP := range c.idlePlayers {
-		if iP == d {
-			playerAlreadyIdle = true
-		}
 	}
-	if playerAlreadyIdle {
+}
+func (c *Casino) playerBecomesIdle(p *Player) {
+	if checkPlayerContain(p, c.idlePlayers) != -1 {
 		fmt.Println("Player already idle")
 	} else {
-		c.idlePlayers = append(c.idlePlayers, d)
+		c.idlePlayers = append(c.idlePlayers, p)
+	}
+}
+
+func (c *Casino) playerBecomesActive(d *Player) {
+	if index := checkPlayerContain(d, c.idlePlayers); index == -1 {
+		fmt.Println("Player not idling, cannot make him/her active")
+	} else {
+		c.idlePlayers = append(c.idlePlayers[:index], c.idlePlayers[index+1:]...)
+
 	}
 }
 
