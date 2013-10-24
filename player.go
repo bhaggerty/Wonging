@@ -14,6 +14,9 @@ type Player struct {
 	currentBet float32
 	//how much money does the player have
 	totalCash float32
+
+	//TODO: implement in phase 2, for group counting
+	//groupId uint8
 }
 
 func (p *Player) bet(money float32) {
