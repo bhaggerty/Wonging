@@ -9,6 +9,9 @@ type Casino struct {
 	tables      []*Table
 	idleDealers []*Dealer
 	idlePlayers []*Player
+
+	//TODO: implement in phase 2: for bannning card counters
+	//bannedPlayers []*Player
 }
 
 func (c *Casino) Initialize() *Casino {

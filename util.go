@@ -1,5 +1,6 @@
 package wonging
 
+// -1 means cannot find
 func checkDealerContain(d *Dealer, dealers []*Dealer) int {
 	index := -1
 	for i := 0; i < len(dealers); i++ {
