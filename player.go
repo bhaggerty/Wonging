@@ -7,7 +7,7 @@ import (
 type Player struct {
 	id uint8
 	//current table the player is sitting at
-	tableId uint8
+	table *Table
 	//current hand
 	hand *Hand
 	//how much is the player betting
@@ -28,8 +28,8 @@ func (p *Player) bet(money float32) {
 	}
 }
 
-func (p *Player) changeTable(tableId uint8) {
-	p.tableId = tableId
+func (p *Player) changeTable(table *Table) {
+	p.table = table
 }
 
 func (p *Player) acceptCard(c *Card) {
