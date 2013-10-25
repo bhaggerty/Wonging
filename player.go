@@ -24,13 +24,14 @@ type Player struct {
 	//strike uint8
 }
 
-func (p *Player) Initialize(id uint8, c *Casino, t *Table, h *Hand) {
+func (p *Player) Initialize(id uint8, c *Casino, t *Table, h *Hand) *Player {
 	p.id = id
 	p.casino = c
 	p.table = t
 	p.hand = h
 	p.currentBet = 0
 	p.totalCash = DEFAULTPLAYERSTARTINGCASH
+	return p
 }
 
 func (p *Player) bet(money float64) {

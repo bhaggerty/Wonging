@@ -12,7 +12,7 @@ type Deck struct {
 	dealt []*Card
 }
 
-func (d *Deck) InitDeck() *Deck {
+func (d *Deck) Initialize() *Deck {
 	suits := [4]string{"Diamonds", "Spades", "Hearts", "Clubs"} // unsorted
 	for _, suit := range suits {
 		//take care of 2-10 first, their facevalues are the same as num value

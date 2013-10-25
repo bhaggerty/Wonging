@@ -10,6 +10,17 @@ type Dealer struct {
 	shoe  *Deck
 }
 
+func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) {
+	d.id = id
+	d.table = t
+	if s != nil {
+		d.shoe = s
+	} else {
+		newShoe := new(Deck).Initialize()
+		d.shoe = newShoe
+	}
+}
+
 func (d *Dealer) changeTable(table *Table) {
 	d.table = table
 }

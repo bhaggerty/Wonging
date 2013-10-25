@@ -14,6 +14,9 @@ type Table struct {
 	//current count for all cards on table
 	count int8
 
+	//which casino this table belongs to
+	casino *Casino
+
 	//assuming one deck of card per dealer
 	dealer *Dealer
 
