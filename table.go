@@ -27,9 +27,15 @@ type Table struct {
 	playerLimit uint8
 }
 
-func (t *Table) Initialize(id uint8) *Table {
+func (t *Table) Initialize(id uint8, c *Casino) *Table {
 	t.id = id
 	t.count = 0
+	if c != nil {
+		t.casino = c
+
+	} else {
+		t.casino = nil
+	}
 	t.dealer = nil
 	t.players = nil
 	t.playerLimit = DEFAULTPLAYERLIMITPERTABLE
