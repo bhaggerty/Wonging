@@ -25,7 +25,7 @@ type Player struct {
 	//groupId uint8
 
 	//TODO: implement in phase 2, for simulation of getting caught
-	//strike uint8
+	//strikes uint8
 }
 
 func (p *Player) Initialize(id uint8, c *Casino, t *Table, h *Hand) *Player {
@@ -35,15 +35,32 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table, h *Hand) *Player {
 	p.hands = []*Hand{h}
 	p.currentBet = 0
 	p.totalCash = DEFAULTPLAYERSTARTINGCASH
+	p.isInsured = false
+	p.isDoubled = false
 	return p
 }
 
 func (p *Player) bet(money float64) {
 	if money <= 0 || (p.totalCash-money) < 0 {
-		fmt.Println("Invalid bet")
+		fmt.Println("No more money to make that bet, current cash: " + p.totalCash)
 	} else {
 		p.currentBet += money
 		p.totalCash -= money
+	}
+}
+func (p *Player) win(money float64) {
+	if money < 0 {
+		fmt.Println("Use lose() instead!")
+	} else {
+		p.totalCash += money
+		p.currentBet = 0
+	}
+}
+func (p *Player) lose(money float64) {
+	if p.totalCash >= money {
+		p.totalCash -= money
+	} else {
+		p.totalCash = 0
 	}
 }
 
@@ -94,7 +111,7 @@ func (p *Player) split() {
 func (p *Player) buyInsurance() {
 	if p.currentBet != 0 && !p.isInsured {
 		p.bet(p.currentBet / 2)
-
+		p.isInsured = true
 	}
 }
 
