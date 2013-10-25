@@ -14,6 +14,8 @@ type Player struct {
 	hand *Hand
 	//how much is the player betting
 	currentBet float64
+	//if bought insurance for dealer getting blackjack
+	currentInsurance bool
 	//how much money does the player have
 	totalCash float64
 
@@ -53,4 +55,37 @@ func (p *Player) acceptCard(c *Card) {
 
 func (p *Player) printPlayer() {
 	fmt.Println("Player %d, sitting at table %d, currently betting %f, total cash: %f", p.id, p.table.id, p.currentBet, p.totalCash)
+}
+
+//player actions
+func (p *Player) hit() {
+	if p.currentBet != 0 {
+
+	}
+}
+
+func (p *Player) stand() {
+	if p.currentBet != 0 {
+
+	}
+}
+
+func (p *Player) double() {
+	if p.currentBet != 0 {
+
+	}
+}
+
+func (p *Player) split() {
+	if p.currentBet != 0 {
+
+	}
+}
+
+func (p *Player) buyInsurance() {
+	if p.currentBet != 0 {
+		p.bet(p.currentBet / 2)
+
+	}
+	//TODO
 }
