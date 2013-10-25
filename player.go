@@ -97,3 +97,7 @@ func (p *Player) buyInsurance() {
 
 	}
 }
+
+func (p *Player) isBroke() {
+	return p.currentBet+p.totalCash == 0
+}
