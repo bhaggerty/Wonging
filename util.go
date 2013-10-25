@@ -20,3 +20,7 @@ func checkPlayerContain(p *Player, players []*Player) int {
 	}
 	return index
 }
+
+func combineCounters(counters ...*Counter) {
+
+}
