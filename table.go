@@ -32,7 +32,7 @@ type Table struct {
 
 func (t *Table) Initialize(id uint8, c *Casino) *Table {
 	t.id = id
-	t.count = 0
+	t.count = new(Counter).initialize()
 	if c != nil {
 		t.casino = c
 
@@ -77,6 +77,10 @@ func (t *Table) addDealer(d *Dealer) {
 	t.dealer.changeTable(t)
 }
 
-func (t *Table) calculateTableCount() *Table {
-
+func (t *Table) calculateTableCount() *Counter {
+	var allCounters []*Counter
+	for _, player := range t.players {
+		allCounters = append(allCounters, player.hand.calculateCount())
+	}
+	return combineCounters(allCounters)
 }

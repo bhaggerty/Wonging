@@ -32,7 +32,7 @@ func (h *Hand) CalculateValue() int8 {
 	return totalValue
 }
 
-func (h *Hand) CalculateCount() *Counter {
+func (h *Hand) calculateCount() *Counter {
 	counter := new(Counter).initialize()
 	for _, card := range h.cards {
 		counter = counter.count(card.value)

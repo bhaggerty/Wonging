@@ -21,6 +21,16 @@ func checkPlayerContain(p *Player, players []*Player) int {
 	return index
 }
 
-func combineCounters(counters ...*Counter) {
-
+func combineCounters(counters []*Counter) *Counter {
+	combinedCounter := new(Counter).initialize()
+	for _, counter := range counters {
+		combinedCounter.HiLo += counter.HiLo
+		combinedCounter.HiOpt1 += counter.HiOpt1
+		combinedCounter.HiOpt2 += counter.HiOpt2
+		combinedCounter.KO += counter.KO
+		combinedCounter.Omega2 += counter.Omega2
+		combinedCounter.Red7 += counter.Red7
+		combinedCounter.ZenCount += counter.ZenCount
+	}
+	return combinedCounter
 }

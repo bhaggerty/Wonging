@@ -17,7 +17,7 @@ type Casino struct {
 func (c *Casino) Initialize() *Casino {
 	c.bank = DEFAULTCASINOSTARTINGCASH
 	for i := 0; i < DEFAULTNUMBEROFTABLESPERCASINO; i++ {
-		c.tables = append(c.tables, new(Table).Initialize(uint8(i)))
+		c.tables = append(c.tables, new(Table).Initialize(uint8(i), c))
 	}
 	c.idleDealers = nil
 	c.idlePlayers = nil
