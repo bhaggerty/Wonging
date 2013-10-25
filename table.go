@@ -12,7 +12,7 @@ type Table struct {
 	id uint8
 
 	//current count for all cards on table
-	count int8
+	count *Counter
 
 	//which casino this table belongs to
 	casino *Casino
@@ -22,6 +22,9 @@ type Table struct {
 
 	//Many players sitting at the table
 	players []*Player
+
+	//observers
+	idlePlayers []*Player
 
 	//limit on how many players can join
 	playerLimit uint8
@@ -72,4 +75,8 @@ func (t *Table) addDealer(d *Dealer) {
 	}
 	t.dealer = d
 	t.dealer.changeTable(t)
+}
+
+func (t *Table) calculateTableCount() *Table {
+
 }
