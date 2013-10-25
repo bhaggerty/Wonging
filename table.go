@@ -43,7 +43,11 @@ func (t *Table) Initialize(id uint8, c *Casino) *Table {
 }
 
 func (t *Table) getNumberOfPlayers() int {
-	return len(t.players)
+	if t.players != nil {
+		return len(t.players)
+	} else {
+		return 0
+	}
 }
 func (t *Table) getNumberOfDealers() int {
 	if t.dealer != nil {
