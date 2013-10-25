@@ -6,11 +6,11 @@ import (
 
 type Card struct {
 	value       string
-	numberValue int8
+	numberValue uint8
 	suit        string
 }
 
-func (c *Card) NewCard(v string, n int8, s string) *Card {
+func (c *Card) NewCard(v string, n uint8, s string) *Card {
 	c.value = v
 	c.numberValue = n
 	c.suit = s

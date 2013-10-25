@@ -1,7 +1,7 @@
 package wonging
 
 // default blackjack value
-const BLACKJACK int8 = 21
+const BLACKJACK uint8 = 21
 
 //================== Casino ==================\\
 //how much money casino opens with - 1 billion

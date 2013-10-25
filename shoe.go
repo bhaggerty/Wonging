@@ -17,7 +17,7 @@ func (d *Deck) Initialize() *Deck {
 	for _, suit := range suits {
 		//take care of 2-10 first, their facevalues are the same as num value
 		for i := 2; i <= 10; i++ {
-			d.cards = append(d.cards, new(Card).NewCard(strconv.Itoa(i), int8(i), suit))
+			d.cards = append(d.cards, new(Card).NewCard(strconv.Itoa(i), uint8(i), suit))
 		}
 		//JQKA
 		d.cards = append(d.cards, new(Card).NewCard("J", 10, suit))

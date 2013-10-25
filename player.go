@@ -15,9 +15,9 @@ type Player struct {
 	//how much is the player betting
 	currentBet float64
 	//if bought insurance for dealer getting blackjack
-	hasInsured bool
+	isInsured bool
 	//if already doubled
-	hasDoubled bool
+	isDoubled bool
 	//how much money does the player have
 	totalCash float64
 
@@ -58,6 +58,9 @@ func (p *Player) acceptCard(c *Card, handIndex uint8) {
 		p.hands[0].AddCard(c)
 	}
 }
+func (p *Player) isNatural() bool {
+	return (len(p.hands) == 1 && p.hands[0].isBlackJack())
+}
 
 func (p *Player) printPlayer() {
 	fmt.Println("Player %d, sitting at table %d, currently betting %f, total cash: %f", p.id, p.table.id, p.currentBet, p.totalCash)
@@ -77,7 +80,7 @@ func (p *Player) stand() {
 }
 
 func (p *Player) double() {
-	if p.currentBet != 0 && !p.hasDoubled {
+	if p.currentBet != 0 && !p.isDoubled {
 
 	}
 }
@@ -89,9 +92,8 @@ func (p *Player) split() {
 }
 
 func (p *Player) buyInsurance() {
-	if p.currentBet != 0 && !p.hasInsured {
+	if p.currentBet != 0 && !p.isInsured {
 		p.bet(p.currentBet / 2)
 
 	}
-	//TODO
 }
