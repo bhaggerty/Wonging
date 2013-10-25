@@ -10,12 +10,14 @@ type Player struct {
 	table *Table
 	//current casino
 	casino *Casino
-	//current hand
-	hand *Hand
+	//current hand, can be split into multiple hands
+	hands []*Hand
 	//how much is the player betting
 	currentBet float64
 	//if bought insurance for dealer getting blackjack
-	currentInsurance bool
+	hasInsured bool
+	//if already doubled
+	hasDoubled bool
 	//how much money does the player have
 	totalCash float64
 
@@ -30,7 +32,7 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table, h *Hand) *Player {
 	p.id = id
 	p.casino = c
 	p.table = t
-	p.hand = h
+	p.hands = []*Hand{h}
 	p.currentBet = 0
 	p.totalCash = DEFAULTPLAYERSTARTINGCASH
 	return p
@@ -49,8 +51,12 @@ func (p *Player) changeTable(table *Table) {
 	p.table = table
 }
 
-func (p *Player) acceptCard(c *Card) {
-	p.hand.AddCard(c)
+func (p *Player) acceptCard(c *Card, handIndex uint8) {
+	if handIndex > 0 {
+		p.hands[handIndex].AddCard(c)
+	} else {
+		p.hands[0].AddCard(c)
+	}
 }
 
 func (p *Player) printPlayer() {
@@ -71,7 +77,7 @@ func (p *Player) stand() {
 }
 
 func (p *Player) double() {
-	if p.currentBet != 0 {
+	if p.currentBet != 0 && !p.hasDoubled {
 
 	}
 }
@@ -83,7 +89,7 @@ func (p *Player) split() {
 }
 
 func (p *Player) buyInsurance() {
-	if p.currentBet != 0 {
+	if p.currentBet != 0 && !p.hasInsured {
 		p.bet(p.currentBet / 2)
 
 	}

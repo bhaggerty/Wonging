@@ -80,7 +80,9 @@ func (t *Table) addDealer(d *Dealer) {
 func (t *Table) calculateTableCount() *Counter {
 	var allCounters []*Counter
 	for _, player := range t.players {
-		allCounters = append(allCounters, player.hand.calculateCount())
+		for _, hand := range player.hands {
+			allCounters = append(allCounters, hand.calculateCount())
+		}
 	}
 	return combineCounters(allCounters)
 }
