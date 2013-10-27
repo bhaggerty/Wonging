@@ -21,11 +21,11 @@ type Player struct {
 	//how much money does the player have
 	totalCash float64
 
-	//TODO: implement in phase 2, for group counting
-	//groupId uint8
+	// TODO: implement in phase 2, for group counting
+	groupId uint8
 
 	//TODO: implement in phase 2, for simulation of getting caught
-	//strikes uint8
+	strikes uint8
 }
 
 func (p *Player) Initialize(id uint8, c *Casino, t *Table, h *Hand) *Player {
@@ -102,10 +102,20 @@ func (p *Player) double() {
 	}
 }
 
-func (p *Player) split() {
-	if p.currentBet != 0 {
-
+func (p *Player) splitHand(handIndex uint8) {
+	handToSplit := p.hands[handIndex]
+	if p.currentBet != 0 && len(handToSplit.cards) == 2 && checkCardsValueEqual(handToSplit.cards[0], handToSplit.cards[1]) {
+		//pointing new hand to second card
+		var newHand *Hand
+		newHand = new(Hand)
+		newHand.AddCard(handToSplit.cards[1])
+		p.hands = append(p.hands, newHand)
+		//delete second card
+		handToSplit.pop()
 	}
+}
+func (p *Player) splitAll() {
+
 }
 
 func (p *Player) buyInsurance() {
@@ -117,4 +127,8 @@ func (p *Player) buyInsurance() {
 
 func (p *Player) isBroke() bool {
 	return p.currentBet+p.totalCash == 0
+}
+
+func (p *Player) isBanned() bool {
+	return p.strikes > DEFAULTSTRIKEOUT
 }

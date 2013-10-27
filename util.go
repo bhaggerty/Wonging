@@ -34,3 +34,7 @@ func combineCounters(counters []*Counter) *Counter {
 	}
 	return combinedCounter
 }
+
+func checkCardsValueEqual(c1 *Card, c2 *Card) bool {
+	return c1.value == c2.value
+}
