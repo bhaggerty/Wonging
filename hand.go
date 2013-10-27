@@ -7,6 +7,9 @@ type Hand struct {
 func (h *Hand) AddCard(c *Card) {
 	h.cards = append(h.cards, c)
 }
+func (h *Hand) pop() {
+	h.cards = h.cards[:len(h.cards)-1]
+}
 func (h *Hand) CalculateValue() uint8 {
 	var totalValue uint8 = 0
 	totalAs := 0
