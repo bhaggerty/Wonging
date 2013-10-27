@@ -10,7 +10,7 @@ type Card struct {
 	suit        string
 }
 
-func (c *Card) NewCard(v string, n uint8, s string) *Card {
+func (c *Card) Initialize(v string, n uint8, s string) *Card {
 	c.value = v
 	c.numberValue = n
 	c.suit = s
