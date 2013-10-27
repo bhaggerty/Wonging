@@ -41,7 +41,7 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table, h *Hand) *Player {
 }
 
 func (p *Player) bet(money float64) {
-	if money <= 0 || (p.totalCash-money) < 0 {
+	if money <= 0 || p.totalCash < money {
 		fmt.Printf("No more money to make that bet, current cash: %f", p.totalCash)
 	} else {
 		p.currentBet += money

@@ -12,18 +12,20 @@ type Deck struct {
 	dealt []*Card
 }
 
-func (d *Deck) Initialize() *Deck {
+func (d *Deck) Initialize(numOfDeck int) *Deck {
 	suits := [4]string{"Diamonds", "Spades", "Hearts", "Clubs"} // unsorted
-	for _, suit := range suits {
-		//take care of 2-10 first, their facevalues are the same as num value
-		for i := 2; i <= 10; i++ {
-			d.cards = append(d.cards, new(Card).NewCard(strconv.Itoa(i), uint8(i), suit))
+	for i := 0; i < numOfDeck; i++ {
+		for _, suit := range suits {
+			//take care of 2-10 first, their facevalues are the same as num value
+			for i := 2; i <= 10; i++ {
+				d.cards = append(d.cards, new(Card).NewCard(strconv.Itoa(i), uint8(i), suit))
+			}
+			//JQKA
+			d.cards = append(d.cards, new(Card).NewCard("J", 10, suit))
+			d.cards = append(d.cards, new(Card).NewCard("Q", 10, suit))
+			d.cards = append(d.cards, new(Card).NewCard("K", 10, suit))
+			d.cards = append(d.cards, new(Card).NewCard("A", 1, suit))
 		}
-		//JQKA
-		d.cards = append(d.cards, new(Card).NewCard("J", 10, suit))
-		d.cards = append(d.cards, new(Card).NewCard("Q", 10, suit))
-		d.cards = append(d.cards, new(Card).NewCard("K", 10, suit))
-		d.cards = append(d.cards, new(Card).NewCard("A", 1, suit))
 	}
 	d.PrintDeck()
 	return d

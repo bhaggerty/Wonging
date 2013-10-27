@@ -8,7 +8,7 @@ import (
 func main() {
 	fmt.Println("This is the client")
 
-	deck := new(wonging.Deck).InitDeck()
+	deck := new(wonging.Deck).Initialize(1)
 	deck = deck.Deal()
 	deck = deck.Deal()
 	deck = deck.DealRandom()

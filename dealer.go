@@ -16,7 +16,7 @@ func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) {
 	if s != nil {
 		d.shoe = s
 	} else {
-		newShoe := new(Deck).Initialize()
+		newShoe := new(Deck).Initialize(1)
 		d.shoe = newShoe
 	}
 }
