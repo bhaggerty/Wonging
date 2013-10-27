@@ -100,6 +100,7 @@ func (p *Player) double() {
 	if p.currentBet != 0 && !p.isDoubled {
 		p.bet(p.currentBet)
 		p.hit()
+		p.isDoubled = true
 	}
 }
 
