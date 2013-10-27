@@ -115,7 +115,18 @@ func (p *Player) splitHand(handIndex uint8) {
 	}
 }
 func (p *Player) splitAll() {
-
+	if p.currentBet != 0 {
+		for _, hand := range p.hands {
+			if len(hand.cards) == 2 && checkCardsValueEqual(hand.cards[0], hand.cards[1]) {
+				var newHand *Hand
+				newHand = new(Hand)
+				newHand.AddCard(hand.cards[1])
+				p.hands = append(p.hands, newHand)
+				//delete second card
+				hand.pop()
+			}
+		}
+	}
 }
 
 func (p *Player) buyInsurance() {
