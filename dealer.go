@@ -21,6 +21,8 @@ func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) {
 		newShoe := new(Deck).Initialize(DEFAULTDECKPERSHOE)
 		d.shoe = newShoe
 	}
+	d.curHand = new(Hand)
+	d.faceDown = nil
 	d.shoe.Shuffle()
 }
 
@@ -34,7 +36,11 @@ func (d *Dealer) PrintDealer() {
 
 //Dealer actions
 func (d *Dealer) dealSelf() {
-
+	if d.faceDown == nil {
+		d.faceDown = c
+	} else {
+		d.curHand.cards = append(d.curHand.cards, d.shoe.pop())
+	}
 }
 func (d *Dealer) deal() {
 
