@@ -37,7 +37,7 @@ func (d *Dealer) PrintDealer() {
 //Dealer actions
 func (d *Dealer) dealSelf() {
 	if d.faceDown == nil {
-		d.faceDown = c
+		d.faceDown = d.shoe.pop()
 	} else {
 		d.curHand.cards = append(d.curHand.cards, d.shoe.pop())
 	}
