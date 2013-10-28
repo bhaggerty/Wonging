@@ -38,7 +38,7 @@ func (d *Deck) PrintDeck() {
 	}
 }
 
-func (d *Deck) DealRandom() *Deck {
+func (d *Deck) popRandom() *Deck {
 	//randomly select a card from deck
 	randomIndex := 0 + rand.Intn(len(d.cards))
 	fmt.Println("===============================")
@@ -51,7 +51,7 @@ func (d *Deck) DealRandom() *Deck {
 	return d
 }
 
-func (d *Deck) Deal() *Deck {
+func (d *Deck) pop() *Deck {
 	fmt.Println("===============================")
 	fmt.Print("Dealing from top: ")
 	d.cards[len(d.cards)-1].printCard()
@@ -61,7 +61,7 @@ func (d *Deck) Deal() *Deck {
 	return d
 }
 
-func (d *Deck) Shuffle() *Deck {
+func (d *Deck) Shuffle() {
 	rand.Seed(time.Now().Unix())
 
 	for i := 0; i < len(d.cards); i++ {
@@ -72,6 +72,4 @@ func (d *Deck) Shuffle() *Deck {
 	}
 	fmt.Println("\nAfter Shuffling:")
 	d.PrintDeck()
-
-	return d
 }

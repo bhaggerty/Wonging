@@ -14,6 +14,10 @@ const DEFAULTNUMBEROFTABLESPERCASINO int = 10
 // how many players can sit at one table
 const DEFAULTPLAYERLIMITPERTABLE uint8 = 5
 
+//================== Dealer ==================\\
+//How many decks in a shoe
+const DEFAULTDECKPERSHOE = 1
+
 //================== Player ==================\\
 //how much money player starts with
 const DEFAULTPLAYERSTARTINGCASH float64 = 1000

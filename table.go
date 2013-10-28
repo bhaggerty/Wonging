@@ -41,10 +41,17 @@ func (t *Table) Initialize(id uint8, c *Casino) *Table {
 	}
 	t.dealer = nil
 	t.players = nil
+	t.idlePlayers = nil
 	t.playerLimit = DEFAULTPLAYERLIMITPERTABLE
 	return t
 }
-
+func (t *Table) getNumberOfObservers() int {
+	if t.idlePlayers != nil {
+		return len(t.idlePlayers)
+	} else {
+		return 0
+	}
+}
 func (t *Table) getNumberOfPlayers() int {
 	if t.players != nil {
 		return len(t.players)
