@@ -42,16 +42,21 @@ func (d *Dealer) dealSelf() {
 		d.curHand.cards = append(d.curHand.cards, d.shoe.pop())
 	}
 }
-func (d *Dealer) deal(isDeal []bool) {
-	for i := 0; i < len(d.table.players); i++ {
-		if isDeal[i] {
-			if d.table.players[i].currentBet != 0 {
-				for _, hand := range d.table.players[i].hands {
-					hand.AddCard(d.shoe.pop())
-				}
-			}
-		}
-	}
+
+// func (d *Dealer) deal(isDeal []bool) {
+// 	for i := 0; i < len(d.table.players); i++ {
+// 		if isDeal[i] {
+// 			if d.table.players[i].currentBet != 0 {
+// 				for _, hand := range d.table.players[i].hands {
+// 					hand.AddCard(d.shoe.pop())
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
+func (d *Dealer) deal() *Card {
+	return d.shoe.pop()
 }
 
 //Dealer strategies
