@@ -39,12 +39,7 @@ func (t *Table) Initialize(id uint8, c *Casino) *Table {
 	if c != nil {
 		t.casino = c
 
-	} else {
-		t.casino = nil
 	}
-	t.dealer = nil
-	t.players = nil
-	t.idlePlayers = nil
 	t.playerLimit = DEFAULTPLAYERLIMITPERTABLE
 	return t
 }
@@ -71,21 +66,28 @@ func (t *Table) getNumberOfDealers() int {
 	}
 }
 
-func (t *Table) addPlayer(p *Player) {
+func (t *Table) addPlayer(p *Player) bool {
 	if t.playerLimit > uint8(len(t.players)) {
 		t.players = append(t.players, p)
 		p.changeTable(t)
+		return true
 	} else {
 		fmt.Printf("Table is full, player %d cannot join", p.id)
+		//putting player into observer array
+		t.idlePlayers = append(t.idlePlayers, p)
+		return false
 	}
 }
-func (t *Table) addDealer(d *Dealer) {
+func (t *Table) addDealer(d *Dealer) bool {
 	if t.dealer != nil {
 		fmt.Printf("Table already has a dealer %d, he/she is now replaced by %d", t.dealer.id, d.id)
-		t.dealer.changeTable(nil)
+		//putting dealer into casino's idleDealer array
+		t.casino.dealerBecomesIdle(t.dealer)
+		return false
 	}
 	t.dealer = d
 	t.dealer.changeTable(t)
+	return true
 }
 
 func (t *Table) calculateTableCount() *Counter {
@@ -112,6 +114,8 @@ func (t *Table) playerRequest(action string, p *Player) {
 
 func (t *Table) newGame() {
 	fmt.Println("Table %d: Initializing a new game", t.id)
+	game := new(Game).Initialize()
+	t.games = append(t.games, game)
 	for i := 1; i < 2; i++ {
 		t.dealer.dealSelf()
 		for _, player := range t.players {

@@ -12,6 +12,11 @@ type Game struct {
 	round uint8
 }
 
+func (g *Game) Initialize() *Game {
+	g.round = 0
+	return g
+}
+
 func (g *Game) biggestWinner() int {
 	return MaxFloatS(g.moneyResult)
 }
