@@ -86,18 +86,20 @@ func (p *Player) printPlayer() {
 //player actions
 func (p *Player) hit() {
 	if p.currentBet != 0 {
-
+		p.table.playerRequest("hit", p)
+		fmt.Println("Player %d requesting a hit", p.id)
 	}
 }
 
 func (p *Player) stand() {
 	if p.currentBet != 0 {
-
+		fmt.Println("Player %d is standing.", p.id)
 	}
 }
 
 func (p *Player) double() {
 	if p.currentBet != 0 && !p.isDoubled {
+		fmt.Println("Player %d is doubling his/her money, to %f", p.id, p.currentBet)
 		p.bet(p.currentBet)
 		p.hit()
 		p.isDoubled = true
