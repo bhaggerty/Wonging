@@ -17,6 +17,6 @@ func (c *Card) Initialize(v string, n uint8, s string) *Card {
 	return c
 }
 
-func (c *Card) printCard() {
+func (c *Card) PrintCard() {
 	fmt.Println(c.value + " of " + c.suit)
 }
