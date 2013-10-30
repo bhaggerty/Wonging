@@ -5,6 +5,7 @@ import (
 )
 
 type Casino struct {
+	id          uint8
 	bank        float64
 	tables      []*Table
 	idleDealers []*Dealer
@@ -14,7 +15,8 @@ type Casino struct {
 	bannedPlayers []*Player
 }
 
-func (c *Casino) Initialize() *Casino {
+func (c *Casino) Initialize(id uint8) *Casino {
+	c.id = id
 	c.bank = DEFAULTCASINOSTARTINGCASH
 	for i := 0; i < DEFAULTNUMBEROFTABLESPERCASINO; i++ {
 		c.tables = append(c.tables, new(Table).Initialize(uint8(i), c))
@@ -39,20 +41,23 @@ func (c *Casino) dealerBecomesActive(d *Dealer) {
 
 	}
 }
-func (c *Casino) playerBecomesIdle(p *Player) {
+func (c *Casino) playerBecomesIdle(p *Player) bool {
 	if checkPlayerContain(p, c.idlePlayers) != -1 {
 		fmt.Println("Player already idle")
+		return false
 	} else {
 		c.idlePlayers = append(c.idlePlayers, p)
+		return true
 	}
 }
 
-func (c *Casino) playerBecomesActive(d *Player) {
+func (c *Casino) playerBecomesActive(d *Player) bool {
 	if index := checkPlayerContain(d, c.idlePlayers); index == -1 {
 		fmt.Println("Player not idling, cannot make him/her active")
+		return false
 	} else {
 		c.idlePlayers = append(c.idlePlayers[:index], c.idlePlayers[index+1:]...)
-
+		return true
 	}
 }
 
@@ -100,4 +105,12 @@ func (c *Casino) totalActivePlayers() uint8 {
 
 func (c *Casino) totalInactivePlayers() uint8 {
 	return uint8(len(c.idlePlayers))
+}
+
+func (c *Casino) PrintCasino() {
+	fmt.Printf("[[==== Casino %d ====]]\n", c.id)
+	for _, table := range c.tables {
+		table.printTable()
+	}
+
 }
