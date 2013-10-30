@@ -93,3 +93,14 @@ func (t *Table) calculateTableCount() *Counter {
 	}
 	return combineCounters(allCounters)
 }
+
+//pubsub
+func (t *Table) playerRequest(action string, p *Player) {
+	fmt.Println("Request from: %d action: %s", p.id, action)
+	switch {
+	case action == "hit":
+		//do hit
+	case action == "stand":
+		//do stand
+	}
+}
