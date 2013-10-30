@@ -28,6 +28,9 @@ type Table struct {
 
 	//limit on how many players can join
 	playerLimit uint8
+
+	//game object to record results
+	games []*Game
 }
 
 func (t *Table) Initialize(id uint8, c *Casino) *Table {
@@ -45,6 +48,7 @@ func (t *Table) Initialize(id uint8, c *Casino) *Table {
 	t.playerLimit = DEFAULTPLAYERLIMITPERTABLE
 	return t
 }
+
 func (t *Table) getNumberOfObservers() int {
 	if t.idlePlayers != nil {
 		return len(t.idlePlayers)
@@ -100,8 +104,18 @@ func (t *Table) playerRequest(action string, p *Player) {
 	fmt.Println("Request from: %d action: %s", p.id, action)
 	switch {
 	case action == "hit":
-		//do hit
+		// p.acceptCard(t.dealer.deal())
 	case action == "stand":
 		//do stand
+	}
+}
+
+func (t *Table) newGame() {
+	fmt.Println("Table %d: Initializing a new game", t.id)
+	for i := 1; i < 2; i++ {
+		t.dealer.dealSelf()
+		for _, player := range t.players {
+			player.acceptCard(t.dealer.deal(), 0)
+		}
 	}
 }
