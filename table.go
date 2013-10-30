@@ -90,6 +90,26 @@ func (t *Table) addDealer(d *Dealer) bool {
 	return true
 }
 
+func (t *Table) playerBecomesObserver(p *Player) bool {
+	if checkPlayerContain(p, t.idlePlayers) != -1 {
+		fmt.Println("Player is already observer")
+		return false
+	} else {
+		t.idlePlayers = append(t.idlePlayers, p)
+		return true
+	}
+}
+
+func (t *Table) playerBecomesActive(p *Player) bool {
+	if index := checkPlayerContain(p, t.idlePlayers); index == -1 {
+		fmt.Println("Player not observing, cannot make him/her active")
+		return false
+	} else {
+		t.idlePlayers = append(t.idlePlayers[:index], t.idlePlayers[index+1:]...)
+		return true
+	}
+}
+
 func (t *Table) calculateTableCount() *Counter {
 	var allCounters []*Counter
 	for _, player := range t.players {
@@ -122,4 +142,13 @@ func (t *Table) newGame() {
 			player.acceptCard(t.dealer.deal(), 0)
 		}
 	}
+}
+
+func (t *Table) printTable() {
+	fmt.Printf("[===== Table %d =====]\n", t.id)
+	t.dealer.PrintDealer()
+	for _, player := range t.players {
+		player.PrintPlayer()
+	}
+
 }

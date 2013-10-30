@@ -32,9 +32,9 @@ func (d *Deck) Initialize(numOfDeck int) *Deck {
 }
 
 func (d *Deck) PrintDeck() {
-	fmt.Println("===============================\nThere are " + strconv.Itoa(len(d.cards)) + " cards in the deck\n===============================")
+	fmt.Printf("===== Deck: %d cards =====", len(d.cards))
 	for _, card := range d.cards {
-		card.printCard()
+		card.PrintCard()
 	}
 }
 
@@ -43,7 +43,7 @@ func (d *Deck) popRandom() *Deck {
 	randomIndex := 0 + rand.Intn(len(d.cards))
 	fmt.Println("===============================")
 	fmt.Print("Dealing random: ")
-	d.cards[randomIndex].printCard()
+	d.cards[randomIndex].PrintCard()
 	d.dealt = append(d.dealt, d.cards[randomIndex])
 	d.cards = d.cards[:randomIndex+copy(d.cards[randomIndex:], d.cards[randomIndex+1:])]
 	fmt.Print(strconv.Itoa(len(d.cards)) + "cards left\n")
@@ -55,7 +55,7 @@ func (d *Deck) pop() *Card {
 	cardPopped := d.cards[len(d.cards)-1]
 	fmt.Println("===============================")
 	fmt.Print("Dealing from top: ")
-	cardPopped.printCard()
+	cardPopped.PrintCard()
 	d.dealt = append(d.dealt, cardPopped)
 	d.cards = d.cards[:len(d.cards)-1]
 	fmt.Print(strconv.Itoa(len(d.cards)) + " cards left\n")

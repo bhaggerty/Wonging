@@ -42,7 +42,8 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table, h *Hand) *Player {
 
 func (p *Player) bet(money float64) {
 	if money <= 0 || p.totalCash < money {
-		fmt.Printf("No more money to make that bet, current cash: %f", p.totalCash)
+		fmt.Printf("No more money to make that bet")
+		p.PrintPlayer()
 	} else {
 		p.currentBet += money
 		p.totalCash -= money
@@ -66,6 +67,14 @@ func (p *Player) lose(money float64) {
 
 func (p *Player) changeTable(table *Table) {
 	p.table = table
+	table.addPlayer(p)
+}
+func (p *Player) becomeObserver() bool {
+	return p.table.playerBecomesObserver(p)
+}
+func (p *Player) leavesTable() bool {
+	p.table = nil
+	return p.casino.playerBecomesIdle(p)
 }
 
 func (p *Player) acceptCard(c *Card, handIndex uint8) {
@@ -74,13 +83,6 @@ func (p *Player) acceptCard(c *Card, handIndex uint8) {
 	} else {
 		p.hands[0].AddCard(c)
 	}
-}
-func (p *Player) isNatural() bool {
-	return (len(p.hands) == 1 && p.hands[0].isBlackJack())
-}
-
-func (p *Player) printPlayer() {
-	fmt.Println("Player %d, sitting at table %d, currently betting %f, total cash: %f", p.id, p.table.id, p.currentBet, p.totalCash)
 }
 
 //player actions
@@ -146,4 +148,18 @@ func (p *Player) isBroke() bool {
 
 func (p *Player) isBanned() bool {
 	return p.strikes > DEFAULTSTRIKEOUT
+}
+
+func (p *Player) isNatural() bool {
+	return (len(p.hands) == 1 && p.hands[0].isBlackJack())
+}
+
+func (p *Player) PrintPlayer() {
+	fmt.Printf("[===== Player %d =====]\ncurrently betting: %f\ntotal cash: %f\n", p.id, p.currentBet, p.totalCash)
+	for _, hand := range p.hands {
+		fmt.Printf("==> hand:\n")
+		for _, card := range hand.cards {
+			card.PrintCard()
+		}
+	}
 }
