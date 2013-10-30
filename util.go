@@ -38,3 +38,34 @@ func combineCounters(counters []*Counter) *Counter {
 func checkCardsValueEqual(c1 *Card, c2 *Card) bool {
 	return c1.value == c2.value
 }
+
+func MinFloatS(v []float32) int {
+	var index int
+	var m float32
+	if len(v) > 0 {
+		m = v[0]
+
+	}
+	for i := 1; i < len(v); i++ {
+		if v[i] < m {
+			m = v[i]
+			index = i
+		}
+	}
+	return index
+}
+
+func MaxFloatS(v []float32) int {
+	var index int
+	var m float32
+	if len(v) > 0 {
+		m = v[0]
+	}
+	for i := 1; i < len(v); i++ {
+		if v[i] > m {
+			m = v[i]
+			index = i
+		}
+	}
+	return index
+}
