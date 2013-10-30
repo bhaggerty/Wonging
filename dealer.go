@@ -22,7 +22,6 @@ func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) {
 		d.shoe = newShoe
 	}
 	d.curHand = new(Hand)
-	d.faceDown = nil
 	d.shoe.Shuffle()
 }
 
@@ -31,7 +30,11 @@ func (d *Dealer) changeTable(table *Table) {
 }
 
 func (d *Dealer) PrintDealer() {
-	fmt.Println("Dealer %d, sitting at table %d", d.id, d.table.id)
+	fmt.Printf("[===== Dealer %d =====]\nFacedown card: ", d.id)
+	d.faceDown.PrintCard()
+	for _, card := range d.curHand.cards {
+		card.PrintCard()
+	}
 }
 
 //Dealer actions
