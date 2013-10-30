@@ -2,6 +2,10 @@
 //analytics later
 package wonging
 
+import (
+	"fmt"
+)
+
 type Game struct {
 	//an array of money in/out for both dealers and players
 	//index 0 is dealer
@@ -13,7 +17,7 @@ type Game struct {
 }
 
 func (g *Game) Initialize() *Game {
-	g.round = 0
+	g.round = 1
 	return g
 }
 
@@ -22,4 +26,8 @@ func (g *Game) biggestWinner() int {
 }
 func (g *Game) biggestLoser() int {
 	return MinFloatS(g.moneyResult)
+}
+
+func (g *Game) PrintGame() {
+	fmt.Printf(">> Game Result: %@", g.moneyResult)
 }
