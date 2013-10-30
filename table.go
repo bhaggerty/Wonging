@@ -91,6 +91,7 @@ func (t *Table) calculateTableCount() *Counter {
 			allCounters = append(allCounters, hand.calculateCount())
 		}
 	}
+	allCounters = append(allCounters, t.dealer.curHand.calculateCount())
 	return combineCounters(allCounters)
 }
 
