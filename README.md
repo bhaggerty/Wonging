@@ -3,7 +3,7 @@ Wonging
 
 ####(WORK IN PROGRESS!)
 ###What is it
-A little card counting tool/simulator, mainly to help myself and my friend(s) prepare our minds
+A little card counting tool/simulator (for educational purpose only!)
 
 Wonging: Back-counting, consists of standing behind a blackjack table that other players are playing on, and counting the cards as they are dealt. Stanford Wong first proposed the idea of back-counting, and the term "Wong" comes from his name.
 
@@ -13,20 +13,3 @@ The plan is to create a complete simulator of the backjack table section of a ty
 The second phase of the project will cover group counting/strategies, by combining players into groups, this simulator hopefully may reveal different(better) winning percentages than individual operations
 
 Third phase? Sims Casino - AI for the game
-
-###Detailed plan proposal:
-
-
-####Casino
----
-Casino contains multiple tables, idleDealers, idlePlayers, as well as a bank to store all its cash.
-The main function of casino is to assign dealers and players to different tables and control their state. It also maintains the bank, from where the owner will know how much he is profiting
-
-####Table
----
-
-Table contains:
-*1 dealer
-*multiple players
-*multiple observers
-*a reference to parent casino
