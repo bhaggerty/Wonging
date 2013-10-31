@@ -38,26 +38,20 @@ func (d *Deck) PrintDeck() {
 }
 
 func (d *Deck) popRandom() *Deck {
-	//randomly select a card from deck
 	randomIndex := 0 + rand.Intn(len(d.cards))
-	fmt.Println("===============================")
-	fmt.Print("Dealing random: ")
-	d.cards[randomIndex].PrintCard()
 	d.dealt = append(d.dealt, d.cards[randomIndex])
 	d.cards = d.cards[:randomIndex+copy(d.cards[randomIndex:], d.cards[randomIndex+1:])]
-	fmt.Print(strconv.Itoa(len(d.cards)) + "cards left\n")
-
+	fmt.Printf("===== Deck: %d cards ===== Popped random: ", len(d.cards))
+	d.cards[randomIndex].PrintCard()
 	return d
 }
 
 func (d *Deck) pop() *Card {
 	cardPopped := d.cards[len(d.cards)-1]
-	fmt.Println("===============================")
-	fmt.Print("Dealing from top: ")
-	cardPopped.PrintCard()
 	d.dealt = append(d.dealt, cardPopped)
 	d.cards = d.cards[:len(d.cards)-1]
-	fmt.Print(strconv.Itoa(len(d.cards)) + " cards left\n")
+	fmt.Printf("===== Deck: %d cards ===== Popped from top: ", len(d.cards))
+	cardPopped.PrintCard()
 	return cardPopped
 }
 
