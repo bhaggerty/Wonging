@@ -27,12 +27,11 @@ func (d *Deck) Initialize(numOfDeck int) *Deck {
 			d.cards = append(d.cards, new(Card).Initialize("A", 1, suit))
 		}
 	}
-	d.PrintDeck()
 	return d
 }
 
 func (d *Deck) PrintDeck() {
-	fmt.Printf("===== Deck: %d cards =====", len(d.cards))
+	fmt.Printf("===== Deck: %d cards =====\n", len(d.cards))
 	for _, card := range d.cards {
 		card.PrintCard()
 	}
