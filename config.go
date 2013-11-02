@@ -9,6 +9,8 @@ const DEFAULTCASINOSTARTINGCASH float64 = 1000000000
 
 //how many blackjack tables are there in this casino
 const DEFAULTNUMBEROFTABLESPERCASINO int = 10
+const DEFAULTNUMBEROFDEALERSPERCASINO int = 12
+const DEFAULTNUMBEROFPLAYERSPERCASINO int = 60
 
 //================== Table ==================\\
 // how many players can sit at one table
