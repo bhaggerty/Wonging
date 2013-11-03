@@ -21,8 +21,12 @@ func (c *Casino) Initialize(id uint8) *Casino {
 	for i := 0; i < DEFAULTNUMBEROFTABLESPERCASINO; i++ {
 		c.tables = append(c.tables, new(Table).Initialize(uint8(i), c))
 	}
-	c.idleDealers = nil
-	c.idlePlayers = nil
+	for i := 0; i < DEFAULTNUMBEROFDEALERSPERCASINO; i++ {
+		c.dealerBecomesIdle(new(Dealer).Initialize(uint8(i), nil, nil))
+	}
+	for i := 0; i < DEFAULTNUMBEROFPLAYERSPERCASINO; i++ {
+		c.idlePlayers = append(c.idlePlayers, new(Player).Initialize(uint8(i), c, nil, nil))
+	}
 	return c
 }
 

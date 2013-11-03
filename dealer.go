@@ -12,7 +12,7 @@ type Dealer struct {
 	faceDown *Card
 }
 
-func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) {
+func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) *Dealer {
 	d.id = id
 	d.table = t
 	if s != nil {
@@ -23,6 +23,7 @@ func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) {
 	}
 	d.curHand = new(Hand)
 	d.shoe.Shuffle()
+	return d
 }
 
 func (d *Dealer) changeTable(table *Table) {
