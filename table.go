@@ -146,9 +146,18 @@ func (t *Table) newGame() {
 
 func (t *Table) printTable() {
 	fmt.Printf("[===== Table %d =====]\n", t.id)
-	t.dealer.PrintDealer()
-	for _, player := range t.players {
-		player.PrintPlayer()
+	if t.dealer != nil {
+		t.dealer.PrintDealer()
+	} else {
+		fmt.Println("No dealer present")
+	}
+
+	if t.players != nil && len(t.players) > 0 {
+		for _, player := range t.players {
+			player.PrintPlayer()
+		}
+	} else {
+		fmt.Println("No player present")
 	}
 
 }
