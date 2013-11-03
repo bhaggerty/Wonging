@@ -31,11 +31,20 @@ func (d *Dealer) changeTable(table *Table) {
 }
 
 func (d *Dealer) PrintDealer() {
-	fmt.Printf("[===== Dealer %d =====]\nFacedown card: ", d.id)
-	d.faceDown.PrintCard()
-	for _, card := range d.curHand.cards {
-		card.PrintCard()
+	fmt.Printf("[===== Dealer %d =====]\n", d.id)
+
+	if d.faceDown != nil {
+		fmt.Print("Facedown card: ")
+		d.faceDown.PrintCard()
+		if d.curHand != nil && d.curHand.cards != nil && len(d.curHand.cards) > 0 {
+			for _, card := range d.curHand.cards {
+				card.PrintCard()
+			}
+		}
+	} else {
+		fmt.Println("Dealer has no cards at the moment.")
 	}
+
 }
 
 //Dealer actions

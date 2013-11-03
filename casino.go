@@ -22,10 +22,10 @@ func (c *Casino) Initialize(id uint8) *Casino {
 		c.tables = append(c.tables, new(Table).Initialize(uint8(i), c))
 	}
 	for i := 0; i < DEFAULTNUMBEROFDEALERSPERCASINO; i++ {
-		c.dealerBecomesIdle(new(Dealer).Initialize(uint8(i), nil, nil))
+		c.idleDealers = append(c.idleDealers, new(Dealer).Initialize(uint8(i), nil, nil))
 	}
 	for i := 0; i < DEFAULTNUMBEROFPLAYERSPERCASINO; i++ {
-		c.idlePlayers = append(c.idlePlayers, new(Player).Initialize(uint8(i), c, nil, nil))
+		c.idlePlayers = append(c.idlePlayers, new(Player).Initialize(uint8(i), c, nil))
 	}
 	return c
 }
@@ -115,6 +115,12 @@ func (c *Casino) PrintCasino() {
 	fmt.Printf("[[==== Casino %d ====]]\n", c.id)
 	for _, table := range c.tables {
 		table.printTable()
+	}
+	for _, idlePlayer := range c.idlePlayers {
+		idlePlayer.PrintPlayer()
+	}
+	for _, idleDealer := range c.idleDealers {
+		idleDealer.PrintDealer()
 	}
 
 }

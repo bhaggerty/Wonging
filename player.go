@@ -28,11 +28,10 @@ type Player struct {
 	strikes uint8
 }
 
-func (p *Player) Initialize(id uint8, c *Casino, t *Table, h *Hand) *Player {
+func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	p.id = id
 	p.casino = c
 	p.table = t
-	p.hands = []*Hand{h}
 	p.currentBet = 0
 	p.totalCash = DEFAULTPLAYERSTARTINGCASH
 	p.isInsured = false
@@ -156,10 +155,16 @@ func (p *Player) isNatural() bool {
 
 func (p *Player) PrintPlayer() {
 	fmt.Printf("[===== Player %d =====]\ncurrently betting: %f\ntotal cash: %f\n", p.id, p.currentBet, p.totalCash)
-	for _, hand := range p.hands {
-		fmt.Printf("==> hand:\n")
-		for _, card := range hand.cards {
-			card.PrintCard()
+	if p.hands != nil && len(p.hands) > 0 {
+		for _, hand := range p.hands {
+			fmt.Printf("==> hand:\n")
+			if hand.cards != nil && len(hand.cards) > 0 {
+				for _, card := range hand.cards {
+					card.PrintCard()
+				}
+			}
 		}
+	} else {
+		fmt.Println("Player has no cards at the moment")
 	}
 }
