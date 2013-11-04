@@ -15,6 +15,6 @@ func main() {
 	casino := new(wonging.Casino).Initialize(0)
 	// casino.PrintCasino()
 	casino.DistributeDealers()
-	// casino.DistributePlayers()
+	casino.DistributePlayers()
 	casino.PrintCasino()
 }

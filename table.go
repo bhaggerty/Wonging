@@ -69,7 +69,7 @@ func (t *Table) getNumberOfDealers() int {
 func (t *Table) addPlayer(p *Player) bool {
 	if t.playerLimit > uint8(len(t.players)) {
 		t.players = append(t.players, p)
-		p.changeTable(t)
+		// p.changeTable(t)
 		return true
 	} else {
 		fmt.Printf("Table is full, player %d cannot join", p.id)
@@ -146,18 +146,15 @@ func (t *Table) newGame() {
 
 func (t *Table) printTable() {
 	fmt.Printf("[===== Table %d =====]\n", t.id)
-	if t.dealer != nil {
+	fmt.Printf("[Number of dealers: %d]\n", t.getNumberOfDealers())
+	fmt.Printf("[Number of players: %d]\n", t.getNumberOfPlayers())
+	fmt.Printf("[Number of observers: %d]\n", t.getNumberOfObservers())
+	if t.getNumberOfDealers() > 0 {
 		t.dealer.PrintDealer()
-	} else {
-		fmt.Println("No dealer present")
 	}
-
-	if t.players != nil && len(t.players) > 0 {
+	if t.getNumberOfPlayers() > 0 {
 		for _, player := range t.players {
 			player.PrintPlayer()
 		}
-	} else {
-		fmt.Println("No player present")
 	}
-
 }

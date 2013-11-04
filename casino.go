@@ -40,11 +40,11 @@ func (c *Casino) DistributeDealers() *Casino {
 }
 
 func (c *Casino) DistributePlayers() *Casino {
+	playerPointer := 0
 	for i := 0; i < len(c.tables); i++ {
-		playerPointer := 0
 		for j := 0; j < int(c.tables[i].playerLimit); j++ {
 			c.tables[i].addPlayer(c.idlePlayers[playerPointer])
-			c.idlePlayers[playerPointer].changeTable(c.tables[i])
+			// c.idlePlayers[playerPointer].changeTable(c.tables[i])
 			// c.playerBecomesActive(c.idlePlayers[j])
 			playerPointer++
 		}
@@ -134,7 +134,12 @@ func (c *Casino) totalInactivePlayers() uint8 {
 }
 
 func (c *Casino) PrintCasino() {
-	fmt.Printf("[[==== Casino %d ====]]\n", c.id)
+	fmt.Printf("[[===== Casino %d =====]]\n", c.id)
+	fmt.Printf("Total Dealers: %d\n", c.totalDealers())
+	fmt.Printf("Total Players: %d\n", c.totalPlayers())
+	fmt.Printf("Current cash: %f\n", c.bank)
+	fmt.Println("[[===== Casino actives: =====]]")
+
 	for _, table := range c.tables {
 		table.printTable()
 	}
