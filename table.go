@@ -69,7 +69,7 @@ func (t *Table) getNumberOfDealers() int {
 func (t *Table) addPlayer(p *Player) bool {
 	if t.playerLimit > uint8(len(t.players)) {
 		t.players = append(t.players, p)
-		// p.changeTable(t)
+		p.changeTable(t)
 		return true
 	} else {
 		fmt.Printf("Table is full, player %d cannot join", p.id)

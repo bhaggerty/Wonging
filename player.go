@@ -66,7 +66,6 @@ func (p *Player) lose(money float64) {
 
 func (p *Player) changeTable(table *Table) {
 	p.table = table
-	table.addPlayer(p)
 }
 func (p *Player) becomeObserver() bool {
 	return p.table.playerBecomesObserver(p)
