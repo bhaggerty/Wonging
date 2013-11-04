@@ -90,7 +90,7 @@ func (c *Casino) playerBecomesActive(d *Player) bool {
 
 //calculate total cash flow
 func (c *Casino) totalProfit() float32 {
-	return bank - DEFAULTCASINOSTARTINGCASH
+	return c.bank - DEFAULTCASINOSTARTINGCASH
 }
 
 //total dealers
