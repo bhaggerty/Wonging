@@ -136,8 +136,10 @@ func (c *Casino) totalInactivePlayers() uint8 {
 
 func (c *Casino) PrintCasino() {
 	fmt.Printf("[[===== Casino %d =====]]\n", c.id)
-	fmt.Printf("Total Dealers: %d\n", c.totalDealers())
-	fmt.Printf("Total Players: %d\n", c.totalPlayers())
+	fmt.Printf("Total dealers: %d\n", c.totalDealers())
+	fmt.Printf("Total players: %d\n", c.totalPlayers())
+	fmt.Printf("Total idling dealers: %d\n", c.totalInactiveDealers())
+	fmt.Printf("Total idling players: %d\n", c.totalInactivePlayers())
 	fmt.Printf("Current cash: %f\n", c.bank)
 	fmt.Println("[[===== Casino actives: =====]]")
 
@@ -152,4 +154,7 @@ func (c *Casino) PrintCasino() {
 		idleDealer.PrintDealer()
 	}
 
+}
+func (c *Casino) Start() {
+	fmt.Println("Casino operating.")
 }
