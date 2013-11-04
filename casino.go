@@ -89,15 +89,8 @@ func (c *Casino) playerBecomesActive(d *Player) bool {
 }
 
 //calculate total cash flow
-func (c *Casino) totalCashFlow() float32 {
-	//TODO
-	return 0.1
-}
-
-//calculate total profit
 func (c *Casino) totalProfit() float32 {
-	//TODO
-	return 0.1
+	return bank - DEFAULTCASINOSTARTINGCASH
 }
 
 //total dealers
@@ -141,6 +134,7 @@ func (c *Casino) PrintCasino() {
 	fmt.Printf("Total idling dealers: %d\n", c.totalInactiveDealers())
 	fmt.Printf("Total idling players: %d\n", c.totalInactivePlayers())
 	fmt.Printf("Current cash: %f\n", c.bank)
+	fmt.Printf("Current profit: %f\n", c.totalProfit())
 	fmt.Println("[[===== Casino actives: =====]]")
 
 	for _, table := range c.tables {
