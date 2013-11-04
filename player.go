@@ -165,6 +165,6 @@ func (p *Player) PrintPlayer() {
 			}
 		}
 	} else {
-		fmt.Println("Player has no cards at the moment")
+		fmt.Println("Player has no cards at the moment.")
 	}
 }

@@ -13,5 +13,8 @@ func main() {
 	// deck = deck.DealRandom()
 	// deck = deck.Shuffle()
 	casino := new(wonging.Casino).Initialize(0)
+	// casino.PrintCasino()
+	casino.DistributeDealers()
+	// casino.DistributePlayers()
 	casino.PrintCasino()
 }

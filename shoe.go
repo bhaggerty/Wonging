@@ -64,6 +64,4 @@ func (d *Deck) Shuffle() {
 		d.cards[i] = d.cards[r]
 		d.cards[r] = temp
 	}
-	fmt.Println("\nAfter Shuffling:")
-	d.PrintDeck()
 }

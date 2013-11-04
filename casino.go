@@ -30,6 +30,28 @@ func (c *Casino) Initialize(id uint8) *Casino {
 	return c
 }
 
+func (c *Casino) DistributeDealers() *Casino {
+	for i := 0; i < len(c.tables); i++ {
+		c.tables[i].addDealer(c.idleDealers[0])
+		c.idleDealers[0].changeTable(c.tables[i])
+		c.dealerBecomesActive(c.idleDealers[0])
+	}
+	return c
+}
+
+func (c *Casino) DistributePlayers() *Casino {
+	for i := 0; i < len(c.tables); i++ {
+		playerPointer := 0
+		for j := 0; j < int(c.tables[i].playerLimit); j++ {
+			c.tables[i].addPlayer(c.idlePlayers[playerPointer])
+			c.idlePlayers[playerPointer].changeTable(c.tables[i])
+			// c.playerBecomesActive(c.idlePlayers[j])
+			playerPointer++
+		}
+	}
+	return c
+}
+
 func (c *Casino) dealerBecomesIdle(d *Dealer) {
 	if checkDealerContain(d, c.idleDealers) != -1 {
 		fmt.Println("Dealer already idle")
@@ -116,6 +138,7 @@ func (c *Casino) PrintCasino() {
 	for _, table := range c.tables {
 		table.printTable()
 	}
+	fmt.Println("[[==== Casino idles: ====]]")
 	for _, idlePlayer := range c.idlePlayers {
 		idlePlayer.PrintPlayer()
 	}
