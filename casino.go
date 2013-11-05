@@ -40,14 +40,10 @@ func (c *Casino) DistributeDealers() *Casino {
 }
 
 func (c *Casino) DistributePlayers() *Casino {
-	// playerPointer := 0
 	for i := 0; i < len(c.tables); i++ {
 		for j := 0; j < int(c.tables[i].playerLimit); j++ {
 			c.tables[i].addPlayer(c.idlePlayers[0])
-			// c.tables[i].players[len(c.tables[i].players)-1].changeTable(c.tables[i])
-			// c.idlePlayers[playerPointer].changeTable(c.tables[i])
 			c.playerBecomesActive(c.idlePlayers[0])
-			// playerPointer++
 		}
 	}
 	return c
@@ -151,4 +147,7 @@ func (c *Casino) PrintCasino() {
 }
 func (c *Casino) Start() {
 	fmt.Println("Casino operating.")
+	for _, table := range c.tables {
+		table.newGame()
+	}
 }

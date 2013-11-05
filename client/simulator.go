@@ -14,4 +14,5 @@ func main() {
 
 	//casino fully operational
 	casino.Start()
+	casino.PrintCasino()
 }

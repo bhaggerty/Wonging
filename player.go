@@ -79,6 +79,9 @@ func (p *Player) acceptCard(c *Card, handIndex uint8) {
 	if handIndex > 0 {
 		p.hands[handIndex].AddCard(c)
 	} else {
+		if p.hands == nil {
+			p.hands = []*Hand{new(Hand)}
+		}
 		p.hands[0].AddCard(c)
 	}
 }

@@ -133,10 +133,10 @@ func (t *Table) playerRequest(action string, p *Player) {
 }
 
 func (t *Table) newGame() {
-	fmt.Println("Table %d: Initializing a new game", t.id)
+	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
 	game := new(Game).Initialize()
 	t.games = append(t.games, game)
-	for i := 1; i < 2; i++ {
+	for i := 0; i < 2; i++ {
 		t.dealer.dealSelf()
 		for _, player := range t.players {
 			player.acceptCard(t.dealer.deal(), 0)
