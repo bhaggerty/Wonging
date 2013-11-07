@@ -23,6 +23,7 @@ const DEFAULTDECKPERSHOE = 1
 //================== Player ==================\\
 //how much money player starts with
 const DEFAULTPLAYERSTARTINGCASH float64 = 1000
+const DEFAULTPLAYERBET float64 = 10
 
 //3 strikes and you are out
 const DEFAULTSTRIKEOUT uint8 = 3

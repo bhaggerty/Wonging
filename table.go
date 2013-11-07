@@ -136,6 +136,11 @@ func (t *Table) newGame() {
 	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
 	game := new(Game).Initialize()
 	t.games = append(t.games, game)
+	go func() {
+		for _, player := range t.players {
+			player.bet(DEFAULTPLAYERBET)
+		}
+	}()
 	for i := 0; i < 2; i++ {
 		t.dealer.dealSelf()
 		for _, player := range t.players {
