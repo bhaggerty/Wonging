@@ -117,6 +117,7 @@ func (t *Table) calculateTableCount() *Counter {
 			allCounters = append(allCounters, hand.calculateCount())
 		}
 	}
+	//get visible cards from dealer as well
 	allCounters = append(allCounters, t.dealer.curHand.calculateCount())
 	return combineCounters(allCounters)
 }
