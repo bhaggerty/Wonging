@@ -26,7 +26,7 @@ func (h *Hand) CalculateValue() uint8 {
 		}
 	}
 	for i := 0; i < totalAs; i++ {
-		if totalValue > 10 {
+		if totalValue > 10 || totalAs > 1 {
 			totalValue++
 		} else {
 			totalValue += 11
