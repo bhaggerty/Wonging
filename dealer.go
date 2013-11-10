@@ -30,6 +30,33 @@ func (d *Dealer) changeTable(table *Table) {
 	d.table = table
 }
 
+func (d *Dealer) calculateHandValue() uint8 {
+	var totalValue uint8 = 0
+	totalAs := 0
+	if len(d.curHand.cards) == 0 && d.faceDown == nil {
+		//No card present, returning 0
+		return 0
+	}
+	//combining cards into one hand
+	tmpHand := append(d.curHand, d.faceDown)
+	for _, card := range tmpHand.cards {
+		if card.value != "A" {
+			totalValue += card.numberValue
+		} else {
+			//determine the optimal value of Aces later
+			totalAs++
+		}
+	}
+	for i := 0; i < totalAs; i++ {
+		if totalValue > 10 || totalAs > 1 {
+			totalValue++
+		} else {
+			totalValue += 11
+		}
+	}
+	return totalValue
+}
+
 func (d *Dealer) PrintDealer() {
 	fmt.Printf("[===== Dealer %d =====]\n", d.id)
 
@@ -70,12 +97,4 @@ func (d *Dealer) dealSelf() {
 
 func (d *Dealer) deal() *Card {
 	return d.shoe.pop()
-}
-
-//Dealer strategies
-func (d *Dealer) standsOnAll17() {
-
-}
-func (d *Dealer) hitOnSoft17() {
-
 }
