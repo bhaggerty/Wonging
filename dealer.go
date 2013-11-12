@@ -38,7 +38,8 @@ func (d *Dealer) calculateHandValue() uint8 {
 		return 0
 	}
 	//combining cards into one hand
-	tmpHand := append(d.curHand, d.faceDown)
+	tmpHand := new(Hand)
+	tmpHand.cards = append(d.curHand.cards, d.faceDown)
 	for _, card := range tmpHand.cards {
 		if card.value != "A" {
 			totalValue += card.numberValue
