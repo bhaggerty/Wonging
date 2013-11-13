@@ -38,14 +38,21 @@ func (d *Dealer) calculateHandValue() (uint8, bool) {
 	//combining cards into one hand
 	tmpHand := new(Hand)
 	tmpHand.cards = append(d.curHand.cards, d.faceDown)
-	totalValue, soft := tmpHand.CalculateValue()
-	return totalValue, soft
+	return tmpHand.CalculateValue()
 }
 
 func (d *Dealer) PrintDealer() {
 	fmt.Printf("[===== Dealer %d =====]\n", d.id)
 
 	if d.faceDown != nil {
+		value, soft := d.calculateHandValue()
+		var softString string
+		if soft {
+			softString = "soft"
+		} else {
+			softString = "hard"
+		}
+		fmt.Printf("==> hand: (%s %d)\n", softString, value)
 		fmt.Print("Facedown card: ")
 		d.faceDown.PrintCard()
 		if d.curHand != nil && d.curHand.cards != nil && len(d.curHand.cards) > 0 {
