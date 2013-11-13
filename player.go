@@ -68,9 +68,9 @@ func (p *Player) changeTable(table *Table) {
 	p.table = table
 }
 
-func (p *Player) calculateHandValue(handIndex uint8) uint8 {
-	value, _ := p.hands[handIndex].CalculateValue()
-	return value
+func (p *Player) calculateHandValue(handIndex uint8) (uint8, bool) {
+	value, soft := p.hands[handIndex].CalculateValue()
+	return value, soft
 }
 func (p *Player) becomeObserver() bool {
 	return p.table.playerBecomesObserver(p)

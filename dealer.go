@@ -30,32 +30,16 @@ func (d *Dealer) changeTable(table *Table) {
 	d.table = table
 }
 
-func (d *Dealer) calculateHandValue() uint8 {
-	var totalValue uint8 = 0
-	totalAs := 0
+func (d *Dealer) calculateHandValue() (uint8, bool) {
 	if len(d.curHand.cards) == 0 && d.faceDown == nil {
 		//No card present, returning 0
-		return 0
+		return 0, false
 	}
 	//combining cards into one hand
 	tmpHand := new(Hand)
 	tmpHand.cards = append(d.curHand.cards, d.faceDown)
-	for _, card := range tmpHand.cards {
-		if card.value != "A" {
-			totalValue += card.numberValue
-		} else {
-			//determine the optimal value of Aces later
-			totalAs++
-		}
-	}
-	for i := 0; i < totalAs; i++ {
-		if totalValue > 10 || totalAs > 1 {
-			totalValue++
-		} else {
-			totalValue += 11
-		}
-	}
-	return totalValue
+	totalValue, soft := tmpHand.CalculateValue()
+	return totalValue, soft
 }
 
 func (d *Dealer) PrintDealer() {
