@@ -31,17 +31,18 @@ func (h *Hand) CalculateValue() (uint8, bool) {
 			totalAs++
 		}
 	}
-	if totalValue > 10 {
-		totalValue += uint8(totalAs)
-	} else {
-		if totalValue+11+uint8(totalAs-1) <= BLACKJACK {
-			totalValue = totalValue + 11 + uint8(totalAs-1)
-			soft = true
-		} else {
+	if totalAs > 0 {
+		if totalValue > 10 {
 			totalValue += uint8(totalAs)
+		} else {
+			if totalValue+11+uint8(totalAs-1) <= BLACKJACK {
+				totalValue = totalValue + 11 + uint8(totalAs-1)
+				soft = true
+			} else {
+				totalValue += uint8(totalAs)
+			}
 		}
 	}
-
 	return totalValue, soft
 }
 func (h *Hand) isBlackJack() bool {
