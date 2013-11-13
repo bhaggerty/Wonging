@@ -10,5 +10,9 @@ type PlayerStrategies interface {
 
 //a basic strategy
 func basic(p *Player) {
-	fmt.Println("basic")
+	if value, _ := p.calculateHandValue(handIndex); value < 17 {
+		p.hit()
+	} else {
+		p.stand()
+	}
 }
