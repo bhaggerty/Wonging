@@ -10,12 +10,18 @@ func (h *Hand) AddCard(c *Card) {
 func (h *Hand) pop() {
 	h.cards = h.cards[:len(h.cards)-1]
 }
-func (h *Hand) CalculateValue() uint8 {
+
+//calculate the value of current hand
+//returns:
+//	totalValue: uint8 [value of hand]
+//	soft: bool [if the hand is considered soft]
+func (h *Hand) CalculateValue() (uint8, bool) {
 	var totalValue uint8 = 0
+	var soft bool = false
 	totalAs := 0
 	if len(h.cards) == 0 {
 		//No card present, returning 0
-		return 0
+		return 0, false
 	}
 	for _, card := range h.cards {
 		if card.value != "A" {
@@ -25,14 +31,18 @@ func (h *Hand) CalculateValue() uint8 {
 			totalAs++
 		}
 	}
-	for i := 0; i < totalAs; i++ {
-		if totalValue > 10 || totalAs > 1 {
-			totalValue++
+	if totalValue > 10 {
+		totalValue += uint8(totalAs)
+	} else {
+		if totalValue+11+uint8(totalAs-1) <= BLACKJACK {
+			totalValue = totalValue + 11 + uint8(totalAs-1)
+			soft = true
 		} else {
-			totalValue += 11
+			totalValue += uint8(totalAs)
 		}
 	}
-	return totalValue
+
+	return totalValue, soft
 }
 func (h *Hand) isBlackJack() bool {
 	if len(h.cards) == 2 {
@@ -43,6 +53,7 @@ func (h *Hand) isBlackJack() bool {
 	}
 
 }
+
 func (h *Hand) calculateCount() *Counter {
 	counter := new(Counter).initialize()
 	for _, card := range h.cards {
@@ -56,7 +67,7 @@ func (h *Hand) calculateCount() *Counter {
 func (h *Hand) ifBusted(total ...uint8) bool {
 	var myTotal uint8
 	if len(total) == 0 {
-		myTotal = h.CalculateValue()
+		myTotal, _ = h.CalculateValue()
 	} else if len(total) == 1 {
 		myTotal = total[0]
 	}
@@ -77,7 +88,7 @@ func (h *Hand) DetermineOutcome(totals ...uint8) string {
 	if len(totals) == 2 {
 		myTotal = totals[1]
 	} else if len(totals) == 1 {
-		myTotal = h.CalculateValue()
+		myTotal, _ = h.CalculateValue()
 	} else {
 		return "Pass in at least one, but not more than two totals for comparison"
 	}
