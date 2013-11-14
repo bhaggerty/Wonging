@@ -92,24 +92,24 @@ func (p *Player) acceptCard(c *Card, handIndex uint8) {
 }
 
 //player actions
-func (p *Player) hit() {
+func (p *Player) hit(handIndex uint8) {
 	if p.currentBet != 0 {
-		p.table.playerRequest("hit", p)
-		fmt.Println("Player %d requesting a hit", p.id)
+		p.table.playerRequest("hit", p, handIndex)
+		fmt.Println("Player %d requesting a hit for hand: %d", p.id, handIndex)
 	}
 }
 
-func (p *Player) stand() {
+func (p *Player) stand(handIndex uint8) {
 	if p.currentBet != 0 {
-		fmt.Println("Player %d is standing.", p.id)
+		fmt.Println("Player %d is standing for hand: %d", p.id, handIndex)
 	}
 }
 
-func (p *Player) double() {
+func (p *Player) double(handIndex uint8) {
 	if p.currentBet != 0 && !p.isDoubled {
-		fmt.Println("Player %d is doubling his/her money, to %f", p.id, p.currentBet)
+		fmt.Println("Player %d is doubling his/her money, to %f, for hand: %d", p.id, p.currentBet, handIndex)
 		p.bet(p.currentBet)
-		p.hit()
+		p.hit(handIndex)
 		p.isDoubled = true
 	}
 }

@@ -123,11 +123,11 @@ func (t *Table) calculateTableCount() *Counter {
 }
 
 //pubsub
-func (t *Table) playerRequest(action string, p *Player) {
+func (t *Table) playerRequest(action string, p *Player, handIndex uint8) {
 	fmt.Println("Request from: %d action: %s", p.id, action)
 	switch {
 	case action == "hit":
-		// p.acceptCard(t.dealer.deal())
+		p.acceptCard(t.dealer.deal(), handIndex)
 	case action == "stand":
 		//do stand
 	}

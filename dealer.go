@@ -5,11 +5,12 @@ import (
 )
 
 type Dealer struct {
-	id       uint8
-	table    *Table
-	shoe     *Deck
-	curHand  *Hand
-	faceDown *Card
+	id              uint8
+	table           *Table
+	shoe            *Deck
+	curHand         *Hand
+	faceDown        *Card
+	executeStrategy *DealerStrategies
 }
 
 func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) *Dealer {

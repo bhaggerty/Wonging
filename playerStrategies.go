@@ -1,7 +1,7 @@
 package wonging
 
 import (
-	"fmt"
+// "fmt"
 )
 
 type PlayerStrategies interface {
@@ -10,9 +10,14 @@ type PlayerStrategies interface {
 
 //a basic strategy
 func basic(p *Player) {
-	if value, _ := p.calculateHandValue(handIndex); value < 17 {
-		p.hit()
-	} else {
-		p.stand()
+	for i := 0; i < len(p.hands); i++ {
+		if value, _ := p.calculateHandValue(uint8(i)); value < 17 {
+			p.hit(uint8(i))
+		} else {
+			p.stand(uint8(i))
+		}
 	}
+}
+
+func doubleDown() {
 }
