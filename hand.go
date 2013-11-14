@@ -1,5 +1,9 @@
 package wonging
 
+import (
+	"fmt"
+)
+
 type Hand struct {
 	cards []*Card
 }
@@ -75,6 +79,22 @@ func (h *Hand) ifBusted(total ...uint8) bool {
 		return true
 	} else {
 		return false
+	}
+}
+
+func (h *Hand) PrintHand() {
+	if h.cards != nil && len(h.cards) > 0 {
+		value, soft := h.CalculateValue()
+		var softString string
+		if soft {
+			softString = "soft"
+		} else {
+			softString = "hard"
+		}
+		fmt.Printf("==> hand: (%s %d)\n", softString, value)
+		for _, card := range h.cards {
+			card.PrintCard()
+		}
 	}
 }
 

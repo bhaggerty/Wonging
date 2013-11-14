@@ -164,19 +164,7 @@ func (p *Player) PrintPlayer() {
 	fmt.Printf("[===== Player %d =====]\ncurrently betting: %f\ntotal cash: %f\n", p.id, p.currentBet, p.totalCash)
 	if p.hands != nil && len(p.hands) > 0 {
 		for _, hand := range p.hands {
-			value, soft := hand.CalculateValue()
-			var softString string
-			if soft {
-				softString = "soft"
-			} else {
-				softString = "hard"
-			}
-			fmt.Printf("==> hand: (%s %d)\n", softString, value)
-			if hand.cards != nil && len(hand.cards) > 0 {
-				for _, card := range hand.cards {
-					card.PrintCard()
-				}
-			}
+			hand.PrintHand()
 		}
 	} else {
 		fmt.Println("Player has no cards at the moment.")
