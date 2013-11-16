@@ -159,7 +159,7 @@ func (t *Table) newGame() {
 //main engine of the entire project
 //TODO: Might need to find a new place to put this
 func (t *Table) simulate() {
-	requestQueue := make(chan *Request, 5)
+	requestQueue := make(chan *Request, len(t.players))
 	//order matters here, no go routine
 	for i := 0; i < len(t.players); i++ {
 		requestQueue <- t.players[i].simulate()
@@ -170,8 +170,10 @@ func (t *Table) simulate() {
 				switch req.action {
 				case "hit":
 					fmt.Println("player requests hitting")
+					t.players[i].acceptCard(t.dealer.deal(), 0)
+
 				case "stand":
-					fmt.Println("player requesets standing")
+					fmt.Println("player requests standing")
 				}
 			case "dealer":
 			}

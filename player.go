@@ -27,7 +27,7 @@ type Player struct {
 	//TODO: implement in phase 2, for simulation of getting caught
 	strikes uint8
 
-	strategy *PlayerStrategies
+	action PlayerStrategy
 }
 
 func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
@@ -38,6 +38,7 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	p.totalCash = DEFAULTPLAYERSTARTINGCASH
 	p.isInsured = false
 	p.isDoubled = false
+	p.action = randomPlayerStrategy()
 	return p
 }
 
@@ -168,7 +169,7 @@ func (p *Player) simulate() *Request {
 	var req Request
 	req.entityType = "player"
 	req.id = p.id
-	req.action = "hit"
+	req.action = p.action(p)
 	req.handIndex = 0
 	return &req
 }
