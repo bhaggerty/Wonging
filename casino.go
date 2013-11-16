@@ -134,7 +134,7 @@ func (c *Casino) PrintCasino() {
 	fmt.Println("[[===== Casino actives: =====]]")
 
 	for _, table := range c.tables {
-		table.printTable()
+		table.PrintTable()
 	}
 	fmt.Println("[[==== Casino idles: ====]]")
 	for _, idlePlayer := range c.idlePlayers {
@@ -149,5 +149,6 @@ func (c *Casino) Start() {
 	fmt.Println("Casino operating.")
 	for _, table := range c.tables {
 		table.newGame()
+		table.simulate()
 	}
 }

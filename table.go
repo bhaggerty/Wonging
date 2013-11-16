@@ -137,20 +137,50 @@ func (t *Table) newGame() {
 	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
 	game := new(Game).Initialize()
 	t.games = append(t.games, game)
+
+	//player betting amounts
 	go func() {
 		for _, player := range t.players {
 			player.bet(DEFAULTPLAYERBET)
 		}
 	}()
+
+	//deal cards to dealers and players, 2/person
 	for i := 0; i < 2; i++ {
 		t.dealer.dealSelf()
 		for _, player := range t.players {
 			player.acceptCard(t.dealer.deal(), 0)
 		}
 	}
+
+	//assign random strategy to
 }
 
-func (t *Table) printTable() {
+//main engine of the entire project
+//TODO: Might need to find a new place to put this
+func (t *Table) simulate() {
+	requestQueue := make(chan *Request, 5)
+	//order matters here, no go routine
+	for i := 0; i < len(t.players); i++ {
+		requestQueue <- t.players[i].simulate()
+		select {
+		case req := <-requestQueue:
+			switch req.entityType {
+			case "player":
+				switch req.action {
+				case "hit":
+					fmt.Println("player requests hitting")
+				case "stand":
+					fmt.Println("player requesets standing")
+				}
+			case "dealer":
+			}
+		}
+	}
+	close(requestQueue)
+}
+
+func (t *Table) PrintTable() {
 	fmt.Printf("[===== Table %d =====]\n", t.id)
 	fmt.Printf("[Number of dealers: %d]\n", t.getNumberOfDealers())
 	fmt.Printf("[Number of players: %d]\n", t.getNumberOfPlayers())

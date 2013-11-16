@@ -26,6 +26,8 @@ type Player struct {
 
 	//TODO: implement in phase 2, for simulation of getting caught
 	strikes uint8
+
+	strategy *PlayerStrategies
 }
 
 func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
@@ -148,6 +150,7 @@ func (p *Player) buyInsurance() {
 	}
 }
 
+// player state
 func (p *Player) isBroke() bool {
 	return p.currentBet+p.totalCash == 0
 }
@@ -158,6 +161,16 @@ func (p *Player) isBanned() bool {
 
 func (p *Player) isNatural() bool {
 	return (len(p.hands) == 1 && p.hands[0].isBlackJack())
+}
+
+// player simulation
+func (p *Player) simulate() *Request {
+	var req Request
+	req.entityType = "player"
+	req.id = p.id
+	req.action = "hit"
+	req.handIndex = 0
+	return &req
 }
 
 func (p *Player) PrintPlayer() {
