@@ -1,5 +1,10 @@
 package wonging
 
+import (
+	"math/rand"
+	"time"
+)
+
 // -1 means cannot find
 func checkDealerContain(d *Dealer, dealers []*Dealer) int {
 	index := -1
@@ -68,4 +73,13 @@ func MaxFloatS(v []float32) int {
 		}
 	}
 	return index
+}
+
+func randInt(min, max int) int {
+	rand.Seed(time.Now().Unix())
+	if min == max {
+		return min
+	} else {
+		return min + rand.Intn(max-min)
+	}
 }
