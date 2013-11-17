@@ -21,6 +21,9 @@ type Player struct {
 	//how much money does the player have
 	totalCash float64
 
+	winCount  uint8
+	loseCount uint8
+
 	// TODO: implement in phase 2, for group counting
 	groupId uint8
 
@@ -39,6 +42,8 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	p.isInsured = false
 	p.isDoubled = false
 	p.action = randomPlayerStrategy()
+	p.winCount = 0
+	p.loseCount = 0
 	return p
 }
 
@@ -59,16 +64,18 @@ func (p *Player) win(money float64) {
 		p.totalCash += p.currentBet
 		p.totalCash += money
 		p.currentBet = 0
+		p.casino.lose(money)
+		p.winCount++
 	}
 }
 func (p *Player) lose() {
-	// if p.totalCash >= money {
-	// 	p.totalCash -= money
-	// } else {
-	// 	p.totalCash = 0
-	// }
 	p.casino.win(p.currentBet)
 	p.currentBet = 0
+	p.loseCount++
+}
+
+func (p *Player) profit() float64 {
+	return p.totalCash - DEFAULTPLAYERSTARTINGCASH
 }
 
 func (p *Player) changeTable(table *Table) {

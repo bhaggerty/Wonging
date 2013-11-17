@@ -209,14 +209,44 @@ func (t *Table) simulate() {
 		curGame.round++
 	}
 	t.determineOutcome()
+	t.games[len(t.games)-1].updatePlayerResult(t)
 }
 
 func (t *Table) determineOutcome() {
+	fmt.Println("==[[ Trying to determine outcome of this game ]]==")
 	// case player busted
+	var remainingPlayers = []*Player{}
 	for _, player := range t.players {
 		if player.isAllBusted() {
-			fmt.Printf("Player %d Busted", player.id)
+			fmt.Printf("Player %d Busted\n", player.id)
 			player.lose()
+		} else {
+			remainingPlayers = append(remainingPlayers, player)
+		}
+	}
+	if len(remainingPlayers) > 0 {
+		// case dealer is busted, everyone not busted get 3/2 payout
+		if t.dealer.isBusted() {
+			fmt.Printf("Dealer %d Busted\n", t.dealer.id)
+			for _, player := range remainingPlayers {
+				player.win(player.currentBet * 0.5)
+			}
+		} else {
+			for _, player := range remainingPlayers {
+				for i := 0; i < len(player.hands); i++ {
+					pValue, _ := player.calculateHandValue(uint8(i))
+					dValue, _ := t.dealer.calculateHandValue()
+					if pValue == dValue {
+						fmt.Printf("Player %d same value, push? [%d vs %d]\n", player.id, pValue, dValue)
+					} else if pValue > dValue {
+						fmt.Printf("Player %d beats dealer hand [%d vs %d]\n", player.id, pValue, dValue)
+						player.win(player.currentBet * 0.5)
+					} else {
+						fmt.Printf("Player %d loses to dealer's hand [%d vs %d]\n", player.id, pValue, dValue)
+						player.lose()
+					}
+				}
+			}
 		}
 	}
 }
