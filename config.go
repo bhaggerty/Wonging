@@ -27,3 +27,12 @@ const DEFAULTPLAYERBET float64 = 10
 
 //3 strikes and you are out
 const DEFAULTSTRIKEOUT uint8 = 3
+
+//valid actions
+var PlayerAction = map[string]string{
+	"hit":      "hit",
+	"stand":    "stand",
+	"double":   "double",
+	"split":    "split",
+	"splitAll": "splitAll",
+}
