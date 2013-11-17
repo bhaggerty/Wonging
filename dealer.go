@@ -23,7 +23,6 @@ func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) *Dealer {
 		d.shoe = newShoe
 	}
 	d.curHand = new(Hand)
-	d.shoe.Shuffle()
 	d.action = randomDealerStrategy()
 	return d
 }
@@ -41,31 +40,6 @@ func (d *Dealer) calculateHandValue() (uint8, bool) {
 	tmpHand := new(Hand)
 	tmpHand.cards = append(d.curHand.cards, d.faceDown)
 	return tmpHand.CalculateValue()
-}
-
-func (d *Dealer) PrintDealer() {
-	fmt.Printf("[===== Dealer %d =====]\n", d.id)
-
-	if d.faceDown != nil {
-		value, soft := d.calculateHandValue()
-		var softString string
-		if soft {
-			softString = "soft"
-		} else {
-			softString = "hard"
-		}
-		fmt.Printf("==> hand: (%s %d)\n", softString, value)
-		fmt.Print("Facedown card: ")
-		d.faceDown.PrintCard()
-		if d.curHand != nil && d.curHand.cards != nil && len(d.curHand.cards) > 0 {
-			for _, card := range d.curHand.cards {
-				card.PrintCard()
-			}
-		}
-	} else {
-		fmt.Println("Dealer has no cards at the moment.")
-	}
-
 }
 
 //Dealer actions
@@ -91,4 +65,37 @@ func (d *Dealer) dealSelf() {
 
 func (d *Dealer) deal() *Card {
 	return d.shoe.pop()
+}
+
+// player simulation
+func (d *Dealer) simulate() *Request {
+	var req Request
+	req.entityType = "dealer"
+	req.id = d.id
+	req.action = d.action(d)
+	return &req
+}
+func (d *Dealer) PrintDealer() {
+	fmt.Printf("[===== Dealer %d =====]\n", d.id)
+
+	if d.faceDown != nil {
+		value, soft := d.calculateHandValue()
+		var softString string
+		if soft {
+			softString = "soft"
+		} else {
+			softString = "hard"
+		}
+		fmt.Printf("==> hand: (%s %d)\n", softString, value)
+		fmt.Print("Facedown card: ")
+		d.faceDown.PrintCard()
+		if d.curHand != nil && d.curHand.cards != nil && len(d.curHand.cards) > 0 {
+			for _, card := range d.curHand.cards {
+				card.PrintCard()
+			}
+		}
+	} else {
+		fmt.Println("Dealer has no cards at the moment.")
+	}
+
 }
