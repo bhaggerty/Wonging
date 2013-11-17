@@ -5,12 +5,12 @@ import (
 )
 
 type Dealer struct {
-	id              uint8
-	table           *Table
-	shoe            *Deck
-	curHand         *Hand
-	faceDown        *Card
-	executeStrategy *DealerStrategies
+	id       uint8
+	table    *Table
+	shoe     *Deck
+	curHand  *Hand
+	faceDown *Card
+	action   DealerStrategy
 }
 
 func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) *Dealer {
@@ -24,6 +24,7 @@ func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) *Dealer {
 	}
 	d.curHand = new(Hand)
 	d.shoe.Shuffle()
+	d.action = randomDealerStrategy()
 	return d
 }
 
