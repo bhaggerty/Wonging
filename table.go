@@ -208,6 +208,17 @@ func (t *Table) simulate() {
 		curGame := t.games[len(t.games)-1]
 		curGame.round++
 	}
+	t.determineOutcome()
+}
+
+func (t *Table) determineOutcome() {
+	// case player busted
+	for _, player := range t.players {
+		if player.isAllBusted() {
+			fmt.Printf("Player %d Busted", player.id)
+			player.lose()
+		}
+	}
 }
 
 func (t *Table) PrintTable() {

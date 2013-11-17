@@ -17,7 +17,7 @@ func randomPlayerStrategy() PlayerStrategy {
 	return strategies[randInt(0, len(strategies))]
 }
 
-//a basic strategy
+//a basic strategy, hit if below 17
 func basic(p *Player) (string, uint8) {
 	fmt.Print("[strategy: basic]: ")
 
