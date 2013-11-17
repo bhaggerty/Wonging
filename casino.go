@@ -84,6 +84,13 @@ func (c *Casino) playerBecomesActive(d *Player) bool {
 	}
 }
 
+func (c *Casino) win(money float64) {
+	c.bank += money
+}
+func (c *Casino) lose(money float64) {
+	c.bank -= money
+}
+
 //calculate total cash flow
 func (c *Casino) totalProfit() float64 {
 	return (float64)(c.bank) - DEFAULTCASINOSTARTINGCASH
