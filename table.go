@@ -139,11 +139,9 @@ func (t *Table) newGame() {
 	t.games = append(t.games, game)
 
 	//player betting amounts
-	go func() {
-		for _, player := range t.players {
-			player.bet(DEFAULTPLAYERBET)
-		}
-	}()
+	for _, player := range t.players {
+		player.bet(DEFAULTPLAYERBET)
+	}
 
 	//deal cards to dealers and players, 2/person
 	for i := 0; i < 2; i++ {
