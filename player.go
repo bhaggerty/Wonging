@@ -95,12 +95,12 @@ func (p *Player) acceptCard(c *Card, handIndex uint8) {
 }
 
 //player actions
-func (p *Player) hit(handIndex uint8) {
-	if p.currentBet != 0 {
-		p.table.playerRequest("hit", p, handIndex)
-		fmt.Println("Player %d requesting a hit for hand: %d", p.id, handIndex)
-	}
-}
+// func (p *Player) hit(handIndex uint8) {
+// 	if p.currentBet != 0 {
+// 		p.table.playerRequest("hit", p, handIndex)
+// 		fmt.Println("Player %d requesting a hit for hand: %d", p.id, handIndex)
+// 	}
+// }
 
 func (p *Player) stand(handIndex uint8) {
 	if p.currentBet != 0 {
@@ -108,14 +108,14 @@ func (p *Player) stand(handIndex uint8) {
 	}
 }
 
-func (p *Player) double(handIndex uint8) {
-	if p.currentBet != 0 && !p.isDoubled {
-		fmt.Println("Player %d is doubling his/her money, to %f, for hand: %d", p.id, p.currentBet, handIndex)
-		p.bet(p.currentBet)
-		p.hit(handIndex)
-		p.isDoubled = true
-	}
-}
+// func (p *Player) double(handIndex uint8) {
+// 	if p.currentBet != 0 && !p.isDoubled {
+// 		fmt.Println("Player %d is doubling his/her money, to %f, for hand: %d", p.id, p.currentBet, handIndex)
+// 		p.bet(p.currentBet)
+// 		p.hit(handIndex)
+// 		p.isDoubled = true
+// 	}
+// }
 
 func (p *Player) splitHand(handIndex uint8) {
 	handToSplit := p.hands[handIndex]
@@ -169,8 +169,7 @@ func (p *Player) simulate() *Request {
 	var req Request
 	req.entityType = "player"
 	req.id = p.id
-	req.action = p.action(p)
-	req.handIndex = 0
+	req.action, req.handIndex = p.action(p)
 	return &req
 }
 

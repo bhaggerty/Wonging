@@ -1,9 +1,12 @@
+//similar to dealer strategies class
+//To use: first init a Player's strategy in init function
+//call simulate(), which would in turn call one of these strategy functions
 package wonging
 
 // type PlayerStrategies interface {
 // 	basic(p *Player) *Player
 // }
-type PlayerStrategy func(*Player) string
+type PlayerStrategy func(*Player) (string, uint8)
 
 func randomPlayerStrategy() PlayerStrategy {
 	strategies := []PlayerStrategy{basic}
@@ -11,15 +14,15 @@ func randomPlayerStrategy() PlayerStrategy {
 }
 
 //a basic strategy
-func basic(p *Player) string {
+func basic(p *Player) (string, uint8) {
 	for i := 0; i < len(p.hands); i++ {
 		if value, _ := p.calculateHandValue(uint8(i)); value < 17 {
-			return "hit"
+			return "hit", uint8(i)
 		} else {
-			return "stand"
+			return "stand", uint8(i)
 		}
 	}
-	return ""
+	return "", 0
 }
 
 func doubleDown() {
