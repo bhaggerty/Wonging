@@ -123,15 +123,15 @@ func (t *Table) calculateTableCount() *Counter {
 }
 
 //pubsub
-func (t *Table) playerRequest(action string, p *Player, handIndex uint8) {
-	fmt.Println("Request from: %d action: %s", p.id, action)
-	switch {
-	case action == "hit":
-		p.acceptCard(t.dealer.deal(), handIndex)
-	case action == "stand":
-		//do stand
-	}
-}
+// func (t *Table) playerRequest(action string, p *Player, handIndex uint8) {
+// 	fmt.Println("Request from: %d action: %s", p.id, action)
+// 	switch {
+// 	case action == "hit":
+// 		p.acceptCard(t.dealer.deal(), handIndex)
+// 	case action == "stand":
+// 		//do stand
+// 	}
+// }
 
 func (t *Table) newGame() {
 	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
@@ -159,27 +159,50 @@ func (t *Table) newGame() {
 //main engine of the entire project
 //TODO: Might need to find a new place to put this
 func (t *Table) simulate() {
-	requestQueue := make(chan *Request, len(t.players))
-	//order matters here, no go routine
+	playerRequestQueue := make(chan *Request, len(t.players))
+	//players simulations - order matters here, no go routine
 	for i := 0; i < len(t.players); i++ {
-		requestQueue <- t.players[i].simulate()
+		playerRequestQueue <- t.players[i].simulate()
 		select {
-		case req := <-requestQueue:
-			switch req.entityType {
-			case "player":
-				switch req.action {
-				case "hit":
-					fmt.Println("player requests hitting")
-					t.players[i].acceptCard(t.dealer.deal(), 0)
-
-				case "stand":
-					fmt.Println("player requests standing")
+		case req := <-playerRequestQueue:
+			// switch req.entityType {
+			// case "player":
+			switch req.action {
+			case "hit":
+				fmt.Printf("player %d requests hitting\n", req.id)
+				if t.players[i].currentBet != 0 {
+					t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
 				}
-			case "dealer":
+			case "stand":
+				fmt.Printf("player %d requests standing\n", req.id)
+			case "double":
+				fmt.Printf("player %d requests double money\n", req.id)
+				if t.players[i].currentBet != 0 && !t.players[i].isDoubled {
+					//bet same money
+					t.players[i].bet(t.players[i].currentBet)
+					t.players[i].isDoubled = true
+
+					//hit
+					t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
+				}
+			case "splitHand":
+				fmt.Printf("player %d requests splitting hand: %d\n", t.players[i], req.handIndex)
+
+			case "splitAllHands":
+				fmt.Printf("player %d requests splitting all hands\n", t.players[i])
+
 			}
+			// case "dealer":
+			// 	switch req.action {
+			// 	case "dealSelf":
+			// 		fmt.Println("dealer requests dealself")
+			// 	}
+			// }
 		}
 	}
-	close(requestQueue)
+	close(playerRequestQueue)
+	// dealerRequestQueue := make(chan *Request, 1)
+	// dealerRequestQueue <- t.dealer.simulate()
 }
 
 func (t *Table) PrintTable() {
