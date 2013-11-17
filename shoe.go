@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
-	"time"
+	// "time"
 )
 
 type Deck struct {
@@ -27,6 +27,7 @@ func (d *Deck) Initialize(numOfDeck int) *Deck {
 			d.cards = append(d.cards, new(Card).Initialize("A", 1, suit))
 		}
 	}
+	d.Shuffle()
 	return d
 }
 
@@ -56,7 +57,6 @@ func (d *Deck) pop() *Card {
 }
 
 func (d *Deck) Shuffle() {
-	rand.Seed(time.Now().Unix())
 
 	for i := 0; i < len(d.cards); i++ {
 		r := rand.Intn(len(d.cards))

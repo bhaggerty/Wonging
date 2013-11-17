@@ -2,7 +2,6 @@ package wonging
 
 import (
 	"math/rand"
-	"time"
 )
 
 // -1 means cannot find
@@ -76,7 +75,6 @@ func MaxFloatS(v []float32) int {
 }
 
 func randInt(min, max int) int {
-	rand.Seed(time.Now().Unix())
 	if min == max {
 		return min
 	} else {
