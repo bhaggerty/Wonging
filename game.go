@@ -21,7 +21,7 @@ type Game struct {
 
 func (g *Game) Initialize(t *Table) *Game {
 	g.table = t
-	g.round = 1
+	g.round = 0
 	//dealer
 	g.moneyResult = append(g.moneyResult, 0)
 	//player betting amount
@@ -44,5 +44,5 @@ func (g *Game) biggestLoser() int {
 }
 
 func (g *Game) PrintGame() {
-	fmt.Printf(">> Game Result:\n    round: %d\n    money: %@\n", g.round-1, g.moneyResult)
+	fmt.Printf(">> Game Result:\n    round: %d\n    money: %@\n", g.round, g.moneyResult)
 }
