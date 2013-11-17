@@ -13,7 +13,8 @@ type Game struct {
 	//an array of money in/out for both dealers and players
 	//index 0 is dealer
 	//index 1... are players, tracking players array position
-	moneyResult []float64
+	casinoEarning float64
+	playerResult  []float64
 
 	//current round or final when everythings done
 	round uint8
@@ -22,27 +23,31 @@ type Game struct {
 func (g *Game) Initialize(t *Table) *Game {
 	g.table = t
 	g.round = 0
-	//dealer
-	g.moneyResult = append(g.moneyResult, 0)
+	g.casinoEarning = 0
 	//player betting amount
-	for i := 1; i < len(t.players); i++ {
-		g.moneyResult = append(g.moneyResult, 0-t.players[i-1].currentBet)
+	for i := 0; i < len(t.players); i++ {
+		g.playerResult = append(g.playerResult, 0)
 	}
 	return g
 }
 
-func (g *Game) updateMoneyResult() *Game {
-	// g.moneyResult =
+func (g *Game) updatePlayerResult(t *Table) *Game {
+	var sum float64 = g.casinoEarning
+	for i := 0; i < len(t.players); i++ {
+		g.playerResult[i] = t.players[i].profit()
+		sum -= g.playerResult[i]
+	}
+	g.casinoEarning = sum
 	return g
 }
 
 func (g *Game) biggestWinner() int {
-	return MaxFloatS(g.moneyResult)
+	return MaxFloatS(g.playerResult)
 }
 func (g *Game) biggestLoser() int {
-	return MinFloatS(g.moneyResult)
+	return MinFloatS(g.playerResult)
 }
 
 func (g *Game) PrintGame() {
-	fmt.Printf(">> Game Result:\n    round: %d\n    money: %@\n", g.round, g.moneyResult)
+	fmt.Printf(">> Game Result:\n    round: %d\n    players: %@\n    casino: %f\n", g.round, g.playerResult, g.casinoEarning)
 }
