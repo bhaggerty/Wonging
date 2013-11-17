@@ -53,18 +53,22 @@ func (p *Player) bet(money float64) {
 }
 func (p *Player) win(money float64) {
 	if money < 0 {
-		fmt.Println("Use lose() instead!")
+		fmt.Println("invalid amount, can't be negative!")
 	} else {
+		//get the current bet back
+		p.totalCash += p.currentBet
 		p.totalCash += money
 		p.currentBet = 0
 	}
 }
-func (p *Player) lose(money float64) {
-	if p.totalCash >= money {
-		p.totalCash -= money
-	} else {
-		p.totalCash = 0
-	}
+func (p *Player) lose() {
+	// if p.totalCash >= money {
+	// 	p.totalCash -= money
+	// } else {
+	// 	p.totalCash = 0
+	// }
+	p.casino.win(p.currentBet)
+	p.currentBet = 0
 }
 
 func (p *Player) changeTable(table *Table) {
