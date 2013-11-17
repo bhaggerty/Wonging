@@ -135,8 +135,6 @@ func (t *Table) calculateTableCount() *Counter {
 
 func (t *Table) newGame() {
 	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
-	game := new(Game).Initialize()
-	t.games = append(t.games, game)
 
 	//player betting amounts
 	for _, player := range t.players {
@@ -150,8 +148,8 @@ func (t *Table) newGame() {
 			player.acceptCard(t.dealer.deal(), 0)
 		}
 	}
-
-	//assign random strategy to
+	game := new(Game).Initialize(t)
+	t.games = append(t.games, game)
 }
 
 //main engine of the entire project
@@ -183,12 +181,6 @@ func (t *Table) simulate() {
 			case "splitAllHands":
 
 			}
-			// case "dealer":
-			// 	switch req.action {
-			// 	case "dealSelf":
-			// 		fmt.Println("dealer requests dealself")
-			// 	}
-			// }
 		}
 	}
 	close(playerRequestQueue)
@@ -203,7 +195,11 @@ func (t *Table) simulate() {
 		}
 	}
 
-	// update the game object, end of round
+	/** update the game object, end of round **/
+
+	//get last game obj = current
+	curGame := t.games[len(t.games)-1]
+	curGame.round++
 }
 
 func (t *Table) PrintTable() {
@@ -218,5 +214,8 @@ func (t *Table) PrintTable() {
 		for _, player := range t.players {
 			player.PrintPlayer()
 		}
+	}
+	if t.games != nil && len(t.games) > 0 {
+		t.games[len(t.games)-1].PrintGame()
 	}
 }

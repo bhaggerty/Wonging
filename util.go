@@ -43,9 +43,9 @@ func checkCardsValueEqual(c1 *Card, c2 *Card) bool {
 	return c1.value == c2.value
 }
 
-func MinFloatS(v []float32) int {
+func MinFloatS(v []float64) int {
 	var index int
-	var m float32
+	var m float64
 	if len(v) > 0 {
 		m = v[0]
 
@@ -59,9 +59,9 @@ func MinFloatS(v []float32) int {
 	return index
 }
 
-func MaxFloatS(v []float32) int {
+func MaxFloatS(v []float64) int {
 	var index int
-	var m float32
+	var m float64
 	if len(v) > 0 {
 		m = v[0]
 	}
