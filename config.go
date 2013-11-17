@@ -36,3 +36,8 @@ var PlayerAction = map[string]string{
 	"split":    "split",
 	"splitAll": "splitAll",
 }
+
+var dealerAction = map[string]string{
+	"dealSelf": "dealSelf",
+	"stand":    "stand",
+}
