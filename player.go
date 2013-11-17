@@ -164,6 +164,18 @@ func (p *Player) isNatural() bool {
 	return (len(p.hands) == 1 && p.hands[0].isBlackJack())
 }
 
+func (p *Player) isBusted(handIndex uint8) bool {
+	return p.hands[handIndex].ifBusted()
+}
+func (p *Player) isAllBusted() bool {
+	for _, hand := range p.hands {
+		if !(hand.ifBusted()) {
+			return false
+		}
+	}
+	return true
+}
+
 // player simulation
 func (p *Player) simulate() *Request {
 	var req Request
