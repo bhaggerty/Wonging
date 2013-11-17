@@ -155,51 +155,59 @@ func (t *Table) newGame() {
 //main engine of the entire project
 //TODO: Might need to find a new place to put this
 func (t *Table) simulate() {
-	playerRequestQueue := make(chan *Request, len(t.players))
-	//players simulations - order matters here, no go routine
-	for i := 0; i < len(t.players); i++ {
-		playerRequestQueue <- t.players[i].simulate()
-		select {
-		case req := <-playerRequestQueue:
-			req.printRequest()
-			switch req.action {
-			case "hit":
-				if t.players[i].currentBet != 0 {
-					t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
+	doneCount := 0
+	for doneCount < (t.getNumberOfPlayers() + t.getNumberOfDealers()) {
+		doneCount = 0
+		playerRequestQueue := make(chan *Request, len(t.players))
+		//players simulations - order matters here, no go routine
+		for i := 0; i < len(t.players); i++ {
+			playerRequestQueue <- t.players[i].simulate()
+			select {
+			case req := <-playerRequestQueue:
+				req.printRequest()
+				switch req.action {
+				case "stand":
+					doneCount++
+				case "hit":
+					if t.players[i].currentBet != 0 {
+						t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
+					}
+				case "double":
+					if t.players[i].currentBet != 0 && !t.players[i].isDoubled {
+						//bet same money
+						t.players[i].bet(t.players[i].currentBet)
+						t.players[i].isDoubled = true
+
+						//hit
+						t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
+					}
+				case "splitHand":
+
+				case "splitAllHands":
+
 				}
-			case "double":
-				if t.players[i].currentBet != 0 && !t.players[i].isDoubled {
-					//bet same money
-					t.players[i].bet(t.players[i].currentBet)
-					t.players[i].isDoubled = true
-
-					//hit
-					t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
-				}
-			case "splitHand":
-
-			case "splitAllHands":
-
 			}
 		}
-	}
-	close(playerRequestQueue)
-	dealerRequestQueue := make(chan *Request, 1)
-	dealerRequestQueue <- t.dealer.simulate()
-	select {
-	case req := <-dealerRequestQueue:
-		req.printRequest()
-		switch req.action {
-		case "dealSelf":
-			t.dealer.dealSelf()
+		close(playerRequestQueue)
+		dealerRequestQueue := make(chan *Request, 1)
+		dealerRequestQueue <- t.dealer.simulate()
+		select {
+		case req := <-dealerRequestQueue:
+			req.printRequest()
+			switch req.action {
+			case "stand":
+				doneCount++
+			case "dealSelf":
+				t.dealer.dealSelf()
+			}
 		}
+
+		/** update the game object, end of round **/
+
+		//get last game obj = current
+		curGame := t.games[len(t.games)-1]
+		curGame.round++
 	}
-
-	/** update the game object, end of round **/
-
-	//get last game obj = current
-	curGame := t.games[len(t.games)-1]
-	curGame.round++
 }
 
 func (t *Table) PrintTable() {
