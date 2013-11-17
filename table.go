@@ -163,18 +163,13 @@ func (t *Table) simulate() {
 		playerRequestQueue <- t.players[i].simulate()
 		select {
 		case req := <-playerRequestQueue:
-			// switch req.entityType {
-			// case "player":
+			req.printRequest()
 			switch req.action {
 			case "hit":
-				fmt.Printf("player %d requests hitting\n", req.id)
 				if t.players[i].currentBet != 0 {
 					t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
 				}
-			case "stand":
-				fmt.Printf("player %d requests standing\n", req.id)
 			case "double":
-				fmt.Printf("player %d requests double money\n", req.id)
 				if t.players[i].currentBet != 0 && !t.players[i].isDoubled {
 					//bet same money
 					t.players[i].bet(t.players[i].currentBet)
@@ -184,10 +179,8 @@ func (t *Table) simulate() {
 					t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
 				}
 			case "splitHand":
-				fmt.Printf("player %d requests splitting hand: %d\n", t.players[i], req.handIndex)
 
 			case "splitAllHands":
-				fmt.Printf("player %d requests splitting all hands\n", t.players[i])
 
 			}
 			// case "dealer":
@@ -199,8 +192,18 @@ func (t *Table) simulate() {
 		}
 	}
 	close(playerRequestQueue)
-	// dealerRequestQueue := make(chan *Request, 1)
-	// dealerRequestQueue <- t.dealer.simulate()
+	dealerRequestQueue := make(chan *Request, 1)
+	dealerRequestQueue <- t.dealer.simulate()
+	select {
+	case req := <-dealerRequestQueue:
+		req.printRequest()
+		switch req.action {
+		case "dealSelf":
+			t.dealer.dealSelf()
+		}
+	}
+
+	// update the game object, end of round
 }
 
 func (t *Table) PrintTable() {
