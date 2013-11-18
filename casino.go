@@ -131,6 +131,8 @@ func (c *Casino) totalInactivePlayers() uint8 {
 }
 
 func (c *Casino) PrintCasino() {
+	fmt.Printf("\n[[======================================== PRINTING Casino %d ========================================]]\n", c.id)
+
 	fmt.Printf("[[===== Casino %d =====]]\n", c.id)
 	fmt.Printf("Total dealers: %d\n", c.totalDealers())
 	fmt.Printf("Total players: %d\n", c.totalPlayers())
@@ -154,8 +156,12 @@ func (c *Casino) PrintCasino() {
 }
 func (c *Casino) Start() {
 	fmt.Println("Casino operating.")
-	for _, table := range c.tables {
-		table.newGame()
-		table.simulate()
+	//do 200 games and see what happens
+	for i := 0; i < 200; i++ {
+		for _, table := range c.tables {
+			table.newGame(true)
+			table.simulate()
+		}
 	}
+
 }
