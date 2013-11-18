@@ -133,13 +133,21 @@ func (t *Table) calculateTableCount() *Counter {
 // 	}
 // }
 
-func (t *Table) newGame() {
+func (t *Table) newGame(resetDeck bool) {
 	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
 
 	//player betting amounts
+	//and reset other settings
 	for _, player := range t.players {
 		player.bet(DEFAULTPLAYERBET)
+		player.reset()
 	}
+	// take care of resetDeck
+	if resetDeck {
+		t.dealer.resetDeck()
+	}
+	// dealer reset his/her cards
+	t.dealer.reset()
 
 	//deal cards to dealers and players, 2/person
 	for i := 0; i < 2; i++ {
