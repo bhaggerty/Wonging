@@ -47,9 +47,16 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	return p
 }
 
+func (p *Player) reset() {
+	p.isInsured = false
+	p.isDoubled = false
+	p.action = randomPlayerStrategy()
+	p.hands = nil
+}
+
 func (p *Player) bet(money float64) {
 	if money <= 0 || p.totalCash < money {
-		fmt.Printf("No more money to make that bet")
+		fmt.Println("No more money to make that bet")
 		p.PrintPlayer()
 	} else {
 		p.currentBet += money

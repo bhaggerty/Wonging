@@ -27,6 +27,12 @@ func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) *Dealer {
 	return d
 }
 
+func (d *Dealer) reset() {
+	d.faceDown = new(Card)
+	d.curHand = new(Hand)
+	d.action = randomDealerStrategy()
+}
+
 func (d *Dealer) changeTable(table *Table) {
 	d.table = table
 }
@@ -71,6 +77,11 @@ func (d *Dealer) dealSelf() {
 
 func (d *Dealer) deal() *Card {
 	return d.shoe.pop()
+}
+
+func (d *Dealer) resetDeck() {
+	d.shoe = new(Deck).Initialize(DEFAULTDECKPERSHOE)
+	d.shoe.Shuffle()
 }
 
 // player simulation
