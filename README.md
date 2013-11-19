@@ -13,3 +13,13 @@ The plan is to create a complete simulator of the backjack table section of a ty
 The second phase of the project will cover group counting/strategies, by combining players into groups, this simulator hopefully may reveal different(better) winning percentages than individual operations
 
 Third phase? Sims Casino - AI for the game
+
+###Install
+installing GoLang:
+http://golang.org/doc/install
+
+`go get github.com/josephyzhou/Wonging`
+
+`cd /client`
+
+`go run simulator.go`
