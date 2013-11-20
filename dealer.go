@@ -28,7 +28,7 @@ func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) *Dealer {
 }
 
 func (d *Dealer) reset() {
-	d.faceDown = new(Card)
+	d.faceDown = nil
 	d.curHand = new(Hand)
 	d.action = randomDealerStrategy()
 }
@@ -44,6 +44,7 @@ func (d *Dealer) calculateHandValue() (uint8, bool) {
 	}
 	//combining cards into one hand
 	tmpHand := new(Hand)
+	d.faceDown.PrintCard()
 	tmpHand.cards = append(d.curHand.cards, d.faceDown)
 	return tmpHand.CalculateValue()
 }
