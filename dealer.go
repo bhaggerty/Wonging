@@ -44,7 +44,6 @@ func (d *Dealer) calculateHandValue() (uint8, bool) {
 	}
 	//combining cards into one hand
 	tmpHand := new(Hand)
-	d.faceDown.PrintCard()
 	tmpHand.cards = append(d.curHand.cards, d.faceDown)
 	return tmpHand.CalculateValue()
 }
