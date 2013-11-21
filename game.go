@@ -9,12 +9,10 @@ import (
 type Game struct {
 	//pointer to parent
 	table *Table
-
-	//an array of money in/out for both dealers and players
-	//index 0 is dealer
-	//index 1... are players, tracking players array position
+	//casino earning
 	casinoEarning float64
-	playerResult  []float64
+	//an array of money in/out for players
+	playerResult []float64
 
 	//current round or final when everythings done
 	round uint8
