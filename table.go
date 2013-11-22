@@ -173,26 +173,30 @@ func (t *Table) simulate() {
 			select {
 			case req := <-playerRequestQueue:
 				req.printRequest()
-				switch req.action {
-				case "stand":
-					doneCount++
-				case "hit":
-					if t.players[i].currentBet != 0 {
+				if t.players[i].currentBet != 0 {
+					switch req.action {
+					case "stand":
+						doneCount++
+					case "hit":
 						t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
+					case "double":
+						if !t.players[i].isDoubled {
+							//bet same money
+							t.players[i].bet(t.players[i].currentBet)
+							t.players[i].isDoubled = true
+
+							//hit
+							t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
+						}
+					case "splitHand":
+						t.players[i].splitHand(req.handIndex)
+					case "splitAllHands":
+						t.players[i].splitAll()
+					case "surrender":
+						save := t.players[i].currentBet / 2
+						t.players[i].lose()
+						t.players[i].win(save)
 					}
-				case "double":
-					if t.players[i].currentBet != 0 && !t.players[i].isDoubled {
-						//bet same money
-						t.players[i].bet(t.players[i].currentBet)
-						t.players[i].isDoubled = true
-
-						//hit
-						t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
-					}
-				case "splitHand":
-
-				case "splitAllHands":
-
 				}
 			}
 		}
