@@ -162,6 +162,19 @@ func (p *Player) splitAll() {
 	}
 }
 
+func (p *Player) surrenderAll() {
+	save := p.currentBet / 2
+	p.lose()
+	p.win(save)
+}
+
+func (p *Player) surrender(handIndex uint8) {
+	save := p.currentBet / 2 / len(p.hands)
+	p.lose()
+	p.win(save)
+	p.hands[handIndex] = nil
+}
+
 func (p *Player) buyInsurance() {
 	if p.currentBet != 0 && !p.isInsured {
 		p.bet(p.currentBet / 2)
