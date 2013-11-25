@@ -13,7 +13,7 @@ import (
 type PlayerStrategy func(*Player) (string, uint8)
 
 func randomPlayerStrategy() PlayerStrategy {
-	strategies := []PlayerStrategy{basic}
+	strategies := []PlayerStrategy{basic, wizardOfOzz}
 	return strategies[randInt(0, len(strategies))]
 }
 
@@ -47,7 +47,6 @@ Split 4s only if DAS is allowed and the dealer shows a 5 or 6.
 Split 6s against a dealer 3-6, and against a 2 if DAS is allowed.
 Split 7s against a dealer 2-7.
 Split 9s against a dealer 2-6 or 8-9.
-Double
 
 Double hard 9 vs. dealer 3-6.
 Double hard 10 except against a dealer 10 or A.
@@ -55,7 +54,6 @@ Double hard 11 except against a dealer A.
 Double soft 13 or 14 vs. dealer 5-6.
 Double soft 15 or 16 vs. dealer 4-6.
 Double soft 17 or 18 vs. dealer 3-6.
-Hit or Stand
 
 Always hit hard 11 or less.
 Stand on hard 12 against a dealer 4-6, otherwise hit.
@@ -66,14 +64,74 @@ Stand on soft 18 except hit against a dealer 9, 10, or A.
 Always stand on soft 19 or more.
 As I've said many times, the above strategy will be fine under any set of rules. However, for you perfectionists out there, here are the modifications to make if the dealer hits a soft 17.
 
-Surrender 15, a pair of 8s, and 17 vs. dealer A.
-Double 11 vs. dealer A.
-Double soft 18 vs. dealer 2.
-Double soft 19 vs. dealer 6.
 */
-// func wizardOfOzz(p *Player) (string, uint8) {
-//surrender
-// for i, hand := range p.hands {
-// 	if
-// }
-// }
+func wizardOfOzz(p *Player) (string, uint8) {
+	fmt.Print("[strategy: WizardOfOzz]: ")
+	dealerCard := p.table.dealer.curHand.cards[0]
+	for i, hand := range p.hands {
+		playerHandValue, isSoft := p.calculateHandValue(uint8(i))
+		//split logic
+		if len(hand.cards) == 2 {
+			if hand.cards[0].value == "8" && hand.cards[1].value == "8" && dealerCard.value == "A" {
+				return "surrender", uint8(i)
+			}
+			if (hand.cards[0].value == "A" && hand.cards[1].value == "A") || (hand.cards[0].value == "8" && hand.cards[1].value == "8") {
+				return "split", uint8(i)
+			}
+			if (hand.cards[0].value == "2" && hand.cards[1].value == "2") || (hand.cards[0].value == "3" && hand.cards[1].value == "3") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 4) {
+				return "split", uint8(i)
+			}
+			if (hand.cards[0].value == "6" && hand.cards[1].value == "6") && (dealerCard.numberValue <= 6 && dealerCard.numberValue >= 3) {
+				return "split", uint8(i)
+			}
+			if (hand.cards[0].value == "7" && hand.cards[1].value == "7") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 2) {
+				return "split", uint8(i)
+			}
+			if (hand.cards[0].value == "9" && hand.cards[1].value == "9") && ((dealerCard.numberValue <= 6 && dealerCard.numberValue >= 2) || (dealerCard.numberValue <= 9 && dealerCard.numberValue >= 8)) {
+				return "split", uint8(i)
+			}
+		}
+		//surrender
+		if (playerHandValue == 15 || playerHandValue == 17) && dealerCard.value == "A" {
+			return "surrender", uint8(i)
+		}
+		if (playerHandValue == 15 && !isSoft) && dealerCard.value == "10" {
+			return "surrender", uint8(i)
+		}
+		if (playerHandValue == 16 && !isSoft) && (dealerCard.value == "9" || dealerCard.value == "10" || dealerCard.value == "A") {
+			return "surrender", uint8(i)
+		}
+
+		//double
+		if (playerHandValue == 9 && !isSoft) && (dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
+			return "double", uint8(i)
+		}
+		if (playerHandValue == 10 && !isSoft) && (dealerCard.value != "10" && dealerCard.value != "A") {
+			return "double", uint8(i)
+		}
+		if (playerHandValue == 11 && !isSoft) && dealerCard.value != "A" {
+			return "double", uint8(i)
+		}
+		if (playerHandValue == 13 && playerHandValue == 14 && isSoft) && (dealerCard.value == "5" && dealerCard.value == "6") {
+			return "double", uint8(i)
+		}
+		if (playerHandValue == 15 && playerHandValue == 16 && isSoft) && (dealerCard.value == "4" && dealerCard.value == "5" && dealerCard.value == "6") {
+			return "double", uint8(i)
+		}
+		if (playerHandValue == 17 && playerHandValue == 18 && isSoft) && (dealerCard.value == "3" && dealerCard.value == "4" && dealerCard.value == "5" && dealerCard.value == "6") {
+			return "double", uint8(i)
+		}
+
+		//hit or stand
+		if playerHandValue <= 11 && !isSoft {
+			return "hit", uint8(i)
+		}
+		if playerHandValue < 17 && isSoft {
+			return "hit", uint8(i)
+		}
+		return "stand", uint8(i)
+
+	}
+	return "stand", 0
+
+}
