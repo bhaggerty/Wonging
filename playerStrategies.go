@@ -71,6 +71,9 @@ Double 11 vs. dealer A.
 Double soft 18 vs. dealer 2.
 Double soft 19 vs. dealer 6.
 */
-func wizardOfOzz(p *Player) (string, uint8) {
-
-}
+// func wizardOfOzz(p *Player) (string, uint8) {
+//surrender
+// for i, hand := range p.hands {
+// 	if
+// }
+// }

@@ -122,17 +122,6 @@ func (t *Table) calculateTableCount() *Counter {
 	return combineCounters(allCounters)
 }
 
-//pubsub
-// func (t *Table) playerRequest(action string, p *Player, handIndex uint8) {
-// 	fmt.Println("Request from: %d action: %s", p.id, action)
-// 	switch {
-// 	case action == "hit":
-// 		p.acceptCard(t.dealer.deal(), handIndex)
-// 	case action == "stand":
-// 		//do stand
-// 	}
-// }
-
 func (t *Table) newGame(resetDeck bool) {
 	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
 
@@ -164,7 +153,8 @@ func (t *Table) newGame(resetDeck bool) {
 //TODO: Might need to find a new place to put this
 func (t *Table) simulate() {
 	doneCount := 0
-	for doneCount < (t.getNumberOfPlayers() + t.getNumberOfDealers()) {
+	dealerDone := false
+	for doneCount < t.getNumberOfPlayers() {
 		doneCount = 0
 		playerRequestQueue := make(chan *Request, len(t.players))
 		//players simulations - order matters here, no go routine
@@ -201,6 +191,8 @@ func (t *Table) simulate() {
 			}
 		}
 		close(playerRequestQueue)
+	}
+	for !dealerDone {
 		dealerRequestQueue := make(chan *Request, 1)
 		dealerRequestQueue <- t.dealer.simulate()
 		select {
@@ -208,17 +200,11 @@ func (t *Table) simulate() {
 			req.printRequest()
 			switch req.action {
 			case "stand":
-				doneCount++
+				dealerDone = true
 			case "dealSelf":
 				t.dealer.dealSelf()
 			}
 		}
-
-		/** update the game object, end of round **/
-
-		//get last game obj = current
-		curGame := t.games[len(t.games)-1]
-		curGame.round++
 	}
 	t.determineOutcome()
 	t.games[len(t.games)-1].updatePlayerResult(t)
