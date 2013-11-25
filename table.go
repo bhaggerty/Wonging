@@ -155,7 +155,6 @@ func (t *Table) simulate() {
 	doneCount := 0
 	dealerDone := false
 	for doneCount < t.getNumberOfPlayers() {
-		doneCount = 0
 		playerRequestQueue := make(chan *Request, len(t.players))
 		//players simulations - order matters here, no go routine
 		for i := 0; i < len(t.players); i++ {
@@ -178,14 +177,13 @@ func (t *Table) simulate() {
 							//hit
 							t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
 						}
-					case "splitHand":
+					case "split":
 						t.players[i].splitHand(req.handIndex)
 					case "splitAllHands":
 						t.players[i].splitAll()
 					case "surrender":
-						save := t.players[i].currentBet / 2
-						t.players[i].lose()
-						t.players[i].win(save)
+						t.players[i].surrenderAll()
+						doneCount++
 					}
 				}
 			}
