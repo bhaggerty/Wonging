@@ -48,6 +48,13 @@ func (d *Dealer) calculateHandValue() (uint8, bool) {
 	return tmpHand.CalculateValue()
 }
 
+func (d *Dealer) calculateVisibleHandValue() (uint8, bool) {
+	if len(d.curHand.cards) == 0 {
+		return 0, false
+	}
+	return d.curHand.CalculateValue()
+}
+
 func (d *Dealer) isBusted() bool {
 	tmpHand := new(Hand)
 	tmpHand.cards = append(d.curHand.cards, d.faceDown)
