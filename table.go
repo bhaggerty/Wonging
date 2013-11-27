@@ -221,11 +221,18 @@ func (t *Table) determineOutcome() {
 		}
 	}
 	if len(remainingPlayers) > 0 {
-		// case dealer is busted, everyone not busted get 3/2 payout
+		// case player is natural blackjack, dealer is not, 3:2 payout
+		for _, player := range remainingPlayers {
+			if player.isNatural() && !t.dealer.curHand.isBlackJack() {
+				player.win(player.currentBet * 1.5)
+			}
+		}
+
+		// case dealer is busted, everyone not busted get 1:1 payout
 		if t.dealer.isBusted() {
 			fmt.Printf("Dealer %d Busted\n", t.dealer.id)
 			for _, player := range remainingPlayers {
-				player.win(player.currentBet * 0.5)
+				player.win(player.currentBet)
 			}
 		} else {
 			for _, player := range remainingPlayers {
@@ -233,10 +240,11 @@ func (t *Table) determineOutcome() {
 					pValue, _ := player.calculateHandValue(uint8(i))
 					dValue, _ := t.dealer.calculateHandValue()
 					if pValue == dValue {
-						fmt.Printf("Player %d same value, push? [%d vs %d]\n", player.id, pValue, dValue)
+						fmt.Printf("Player %d same value, dealer wins [%d vs %d]\n", player.id, pValue, dValue)
+						player.lose()
 					} else if pValue > dValue {
 						fmt.Printf("Player %d beats dealer hand [%d vs %d]\n", player.id, pValue, dValue)
-						player.win(player.currentBet * 0.5)
+						player.win(player.currentBet)
 					} else {
 						fmt.Printf("Player %d loses to dealer's hand [%d vs %d]\n", player.id, pValue, dValue)
 						player.lose()
