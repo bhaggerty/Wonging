@@ -97,6 +97,7 @@ func (d *Dealer) simulate() *Request {
 	req.entityType = "dealer"
 	req.id = d.id
 	req.action = d.action(d)
+	req.handIndex = []uint8{0}
 	return &req
 }
 func (d *Dealer) PrintDealer() {

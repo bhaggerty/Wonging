@@ -10,7 +10,7 @@ import (
 // type PlayerStrategies interface {
 // 	basic(p *Player) *Player
 // }
-type PlayerStrategy func(*Player) (string, uint8)
+type PlayerStrategy func(*Player) ([]string, []uint8)
 
 func randomPlayerStrategy() PlayerStrategy {
 	strategies := []PlayerStrategy{basic, wizardOfOzz}
@@ -18,18 +18,23 @@ func randomPlayerStrategy() PlayerStrategy {
 }
 
 //a very basic/stupid strategy, hit if below 17, stand otherwise
-func basic(p *Player) (string, uint8) {
+func basic(p *Player) ([]string, []uint8) {
+	actions := []string{}
+	handIndices := []uint8{}
+
 	fmt.Print("[strategy: basic]: ")
 	if p.currentBet > 0 {
 		for i := 0; i < len(p.hands); i++ {
 			if value, _ := p.calculateHandValue(uint8(i)); value < 17 {
-				return "hit", uint8(i)
+				actions = append(actions, "hit")
+				handIndices = append(handIndices, uint8(i))
 			} else {
-				return "stand", uint8(i)
+				actions = append(actions, "stand")
+				handIndices = append(handIndices, uint8(i))
 			}
 		}
 	}
-	return "stand", 0
+	return actions, handIndices
 }
 
 /*
@@ -65,73 +70,63 @@ Always stand on soft 19 or more.
 As I've said many times, the above strategy will be fine under any set of rules. However, for you perfectionists out there, here are the modifications to make if the dealer hits a soft 17.
 
 */
-func wizardOfOzz(p *Player) (string, uint8) {
+func wizardOfOzz(p *Player) ([]string, []uint8) {
+	actions := []string{}
+	handIndices := []uint8{}
+
 	fmt.Print("[strategy: WizardOfOzz]: ")
+
+	// prepare yourself for the longest fucking if else piece of shit ever
 	dealerCard := p.table.dealer.curHand.cards[0]
 	for i, hand := range p.hands {
 		playerHandValue, isSoft := p.calculateHandValue(uint8(i))
-		//split logic
+		var curAction string
+		if (playerHandValue == 15 || playerHandValue == 17) && dealerCard.value == "A" {
+			curAction = "surrender"
+		} else if (playerHandValue == 15 && !isSoft) && dealerCard.value == "10" {
+			curAction = "surrender"
+		} else if (playerHandValue == 16 && !isSoft) && (dealerCard.value == "9" || dealerCard.value == "10" || dealerCard.value == "A") {
+			curAction = "surrender"
+		} else if (playerHandValue == 9 && !isSoft) && (dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
+			curAction = "double"
+		} else if (playerHandValue == 10 && !isSoft) && (dealerCard.value != "10" && dealerCard.value != "A") {
+			curAction = "double"
+		} else if (playerHandValue == 11 && !isSoft) && dealerCard.value != "A" {
+			curAction = "double"
+		} else if (playerHandValue == 13 && playerHandValue == 14 && isSoft) && (dealerCard.value == "5" && dealerCard.value == "6") {
+			curAction = "double"
+		} else if (playerHandValue == 15 && playerHandValue == 16 && isSoft) && (dealerCard.value == "4" && dealerCard.value == "5" && dealerCard.value == "6") {
+			curAction = "double"
+		} else if (playerHandValue == 17 && playerHandValue == 18 && isSoft) && (dealerCard.value == "3" && dealerCard.value == "4" && dealerCard.value == "5" && dealerCard.value == "6") {
+			curAction = "double"
+		} else if playerHandValue <= 11 && !isSoft {
+			curAction = "hit"
+		} else if playerHandValue < 17 && isSoft {
+			curAction = "hit"
+		} else {
+			curAction = "stand"
+		}
+
 		if len(hand.cards) == 2 {
 			if hand.cards[0].value == "8" && hand.cards[1].value == "8" && dealerCard.value == "A" {
-				return "surrender", uint8(i)
+				curAction = "surrender"
+			} else if (hand.cards[0].value == "A" && hand.cards[1].value == "A") || (hand.cards[0].value == "8" && hand.cards[1].value == "8") {
+				curAction = "split"
+			} else if (hand.cards[0].value == "2" && hand.cards[1].value == "2") || (hand.cards[0].value == "3" && hand.cards[1].value == "3") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 4) {
+				curAction = "split"
+			} else if (hand.cards[0].value == "6" && hand.cards[1].value == "6") && (dealerCard.numberValue <= 6 && dealerCard.numberValue >= 3) {
+				curAction = "split"
+			} else if (hand.cards[0].value == "7" && hand.cards[1].value == "7") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 2) {
+				curAction = "split"
+			} else if (hand.cards[0].value == "9" && hand.cards[1].value == "9") && ((dealerCard.numberValue <= 6 && dealerCard.numberValue >= 2) || (dealerCard.numberValue <= 9 && dealerCard.numberValue >= 8)) {
+				curAction = "split"
 			}
-			if (hand.cards[0].value == "A" && hand.cards[1].value == "A") || (hand.cards[0].value == "8" && hand.cards[1].value == "8") {
-				return "split", uint8(i)
-			}
-			if (hand.cards[0].value == "2" && hand.cards[1].value == "2") || (hand.cards[0].value == "3" && hand.cards[1].value == "3") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 4) {
-				return "split", uint8(i)
-			}
-			if (hand.cards[0].value == "6" && hand.cards[1].value == "6") && (dealerCard.numberValue <= 6 && dealerCard.numberValue >= 3) {
-				return "split", uint8(i)
-			}
-			if (hand.cards[0].value == "7" && hand.cards[1].value == "7") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 2) {
-				return "split", uint8(i)
-			}
-			if (hand.cards[0].value == "9" && hand.cards[1].value == "9") && ((dealerCard.numberValue <= 6 && dealerCard.numberValue >= 2) || (dealerCard.numberValue <= 9 && dealerCard.numberValue >= 8)) {
-				return "split", uint8(i)
-			}
-		}
-		//surrender
-		if (playerHandValue == 15 || playerHandValue == 17) && dealerCard.value == "A" {
-			return "surrender", uint8(i)
-		}
-		if (playerHandValue == 15 && !isSoft) && dealerCard.value == "10" {
-			return "surrender", uint8(i)
-		}
-		if (playerHandValue == 16 && !isSoft) && (dealerCard.value == "9" || dealerCard.value == "10" || dealerCard.value == "A") {
-			return "surrender", uint8(i)
 		}
 
-		//double
-		if (playerHandValue == 9 && !isSoft) && (dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
-			return "double", uint8(i)
-		}
-		if (playerHandValue == 10 && !isSoft) && (dealerCard.value != "10" && dealerCard.value != "A") {
-			return "double", uint8(i)
-		}
-		if (playerHandValue == 11 && !isSoft) && dealerCard.value != "A" {
-			return "double", uint8(i)
-		}
-		if (playerHandValue == 13 && playerHandValue == 14 && isSoft) && (dealerCard.value == "5" && dealerCard.value == "6") {
-			return "double", uint8(i)
-		}
-		if (playerHandValue == 15 && playerHandValue == 16 && isSoft) && (dealerCard.value == "4" && dealerCard.value == "5" && dealerCard.value == "6") {
-			return "double", uint8(i)
-		}
-		if (playerHandValue == 17 && playerHandValue == 18 && isSoft) && (dealerCard.value == "3" && dealerCard.value == "4" && dealerCard.value == "5" && dealerCard.value == "6") {
-			return "double", uint8(i)
-		}
-
-		//hit or stand
-		if playerHandValue <= 11 && !isSoft {
-			return "hit", uint8(i)
-		}
-		if playerHandValue < 17 && isSoft {
-			return "hit", uint8(i)
-		}
-		return "stand", uint8(i)
-
+		actions = append(actions, curAction)
+		handIndices = append(handIndices, uint8(i))
 	}
-	return "stand", 0
+
+	return actions, handIndices
 
 }

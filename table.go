@@ -163,28 +163,31 @@ func (t *Table) simulate() {
 			case req := <-playerRequestQueue:
 				req.printRequest()
 				if t.players[i].currentBet != 0 {
-					switch req.action {
-					case "stand":
-						doneCount++
-					case "hit":
-						t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
-					case "double":
-						if !t.players[i].isDoubled {
-							//bet same money
-							t.players[i].bet(t.players[i].currentBet)
-							t.players[i].isDoubled = true
+					for j := 0; j < len(req.action); j++ {
+						switch req.action[j] {
+						case "stand":
+							doneCount++
+						case "hit":
+							t.players[i].acceptCard(t.dealer.deal(), req.handIndex[j])
+						case "double":
+							if !t.players[i].isDoubled {
+								//bet same money
+								t.players[i].bet(t.players[i].currentBet)
+								t.players[i].isDoubled = true
 
-							//hit
-							t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
+								//hit
+								t.players[i].acceptCard(t.dealer.deal(), req.handIndex[j])
+							}
+						case "split":
+							t.players[i].splitHand(req.handIndex[j])
+						case "splitAllHands":
+							t.players[i].splitAll()
+						case "surrender":
+							t.players[i].surrenderAll()
+							doneCount++
 						}
-					case "split":
-						t.players[i].splitHand(req.handIndex)
-					case "splitAllHands":
-						t.players[i].splitAll()
-					case "surrender":
-						t.players[i].surrenderAll()
-						doneCount++
 					}
+
 				}
 			}
 		}
@@ -196,12 +199,15 @@ func (t *Table) simulate() {
 		select {
 		case req := <-dealerRequestQueue:
 			req.printRequest()
-			switch req.action {
-			case "stand":
-				dealerDone = true
-			case "dealSelf":
-				t.dealer.dealSelf()
+			for _, action := range req.action {
+				switch action {
+				case "stand":
+					dealerDone = true
+				case "dealSelf":
+					t.dealer.dealSelf()
+				}
 			}
+
 		}
 	}
 	t.determineOutcome()
