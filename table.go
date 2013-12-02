@@ -121,6 +121,13 @@ func (t *Table) calculateTableCount() *Counter {
 	allCounters = append(allCounters, t.dealer.curHand.calculateCount())
 	return combineCounters(allCounters)
 }
+func (t *Table) calculateTotalNumberOfHands() int {
+	sum := 0
+	for _, player := range t.players {
+		sum += len(player.hands)
+	}
+	return sum
+}
 
 func (t *Table) newGame(resetDeck bool) {
 	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
@@ -154,8 +161,9 @@ func (t *Table) newGame(resetDeck bool) {
 func (t *Table) simulate() {
 	doneCount := 0
 	dealerDone := false
-	for doneCount < t.getNumberOfPlayers() {
+	for doneCount < t.calculateTotalNumberOfHands() {
 		playerRequestQueue := make(chan *Request, len(t.players))
+		doneCount = 0
 		//players simulations - order matters here, no go routine
 		for i := 0; i < len(t.players); i++ {
 			playerRequestQueue <- t.players[i].simulate()
@@ -167,23 +175,27 @@ func (t *Table) simulate() {
 						switch req.action[j] {
 						case "stand":
 							doneCount++
+						case "surrender":
+							doneCount++
+							t.players[i].surrender(req.handIndex[j])
+							req.action = append(req.action[:j], req.action[j+1:]...)
+							req.handIndex = append(req.handIndex[:j], req.handIndex[j+1:]...)
 						case "hit":
 							t.players[i].acceptCard(t.dealer.deal(), req.handIndex[j])
 						case "double":
-							if !t.players[i].isDoubled {
+							if !t.players[i].isDoubled[j] {
 								//bet same money
-								t.players[i].bet(t.players[i].currentBet)
-								t.players[i].isDoubled = true
-
-								//hit
-								t.players[i].acceptCard(t.dealer.deal(), req.handIndex[j])
+								t.players[i].bet(t.players[i].currentBet / (float64)(len(t.players[i].hands)))
+								t.players[i].isDoubled[j] = true
 							}
+							//hit
+							t.players[i].acceptCard(t.dealer.deal(), req.handIndex[j])
 						case "split":
 							t.players[i].splitHand(req.handIndex[j])
 						case "splitAllHands":
 							t.players[i].splitAll()
-						case "surrender":
-							t.players[i].surrenderAll()
+						default:
+							fmt.Println("invalid action")
 							doneCount++
 						}
 					}
@@ -191,6 +203,8 @@ func (t *Table) simulate() {
 				}
 			}
 		}
+		fmt.Println("Done count, calculateTotalNumberOfHands: ", doneCount, " ", t.calculateTotalNumberOfHands())
+
 		close(playerRequestQueue)
 	}
 	for !dealerDone {

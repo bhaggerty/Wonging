@@ -67,7 +67,6 @@ Always stand on hard 17 or more.
 Always hit soft 17 or less.
 Stand on soft 18 except hit against a dealer 9, 10, or A.
 Always stand on soft 19 or more.
-As I've said many times, the above strategy will be fine under any set of rules. However, for you perfectionists out there, here are the modifications to make if the dealer hits a soft 17.
 
 */
 func wizardOfOzz(p *Player) ([]string, []uint8) {
@@ -93,13 +92,17 @@ func wizardOfOzz(p *Player) ([]string, []uint8) {
 			curAction = "double"
 		} else if (playerHandValue == 11 && !isSoft) && dealerCard.value != "A" {
 			curAction = "double"
-		} else if (playerHandValue == 13 && playerHandValue == 14 && isSoft) && (dealerCard.value == "5" && dealerCard.value == "6") {
+		} else if (playerHandValue == 13 || playerHandValue == 14 || isSoft) && (dealerCard.value == "5" || dealerCard.value == "6") {
 			curAction = "double"
-		} else if (playerHandValue == 15 && playerHandValue == 16 && isSoft) && (dealerCard.value == "4" && dealerCard.value == "5" && dealerCard.value == "6") {
+		} else if (playerHandValue == 15 || playerHandValue == 16 || isSoft) && (dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
 			curAction = "double"
-		} else if (playerHandValue == 17 && playerHandValue == 18 && isSoft) && (dealerCard.value == "3" && dealerCard.value == "4" && dealerCard.value == "5" && dealerCard.value == "6") {
+		} else if (playerHandValue == 17 || playerHandValue == 18 || isSoft) && (dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
 			curAction = "double"
 		} else if playerHandValue <= 11 && !isSoft {
+			curAction = "hit"
+		} else if playerHandValue == 12 && !isSoft && !(dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
+			curAction = "hit"
+		} else if (playerHandValue == 13 || playerHandValue == 14 || playerHandValue == 15 || playerHandValue == 16) && !isSoft && !(dealerCard.value == "2" || dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
 			curAction = "hit"
 		} else if playerHandValue < 17 && isSoft {
 			curAction = "hit"
