@@ -169,7 +169,7 @@ func (p *Player) surrenderAll() {
 }
 
 func (p *Player) surrender(handIndex uint8) {
-	save := p.currentBet / 2 / len(p.hands)
+	save := p.currentBet / 2 / (float64)(len(p.hands))
 	p.lose()
 	p.win(save)
 	p.hands[handIndex] = nil
