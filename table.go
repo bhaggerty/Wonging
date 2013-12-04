@@ -135,7 +135,6 @@ func (t *Table) newGame(resetDeck bool) {
 	//player betting amounts
 	//and reset other settings
 	for _, player := range t.players {
-		player.bet(DEFAULTPLAYERBET)
 		player.reset()
 	}
 	// take care of resetDeck
@@ -151,6 +150,11 @@ func (t *Table) newGame(resetDeck bool) {
 		for _, player := range t.players {
 			player.acceptCard(t.dealer.deal(), 0)
 		}
+	}
+
+	//place bet on hand
+	for _, player := range t.players {
+		player.bet(DEFAULTPLAYERBET, 0)
 	}
 	game := new(Game).Initialize(t)
 	t.games = append(t.games, game)
@@ -170,30 +174,35 @@ func (t *Table) simulate() {
 			select {
 			case req := <-playerRequestQueue:
 				req.printRequest()
-				if t.players[i].currentBet != 0 {
+				if t.players[i].currentBet > 0 {
+					currentPlayer := t.players[i]
 					for j := 0; j < len(req.action); j++ {
+						fmt.Println("current index: ", j)
+
 						switch req.action[j] {
 						case "stand":
 							doneCount++
 						case "surrender":
+							fmt.Println("len req.action:", len(req.action))
 							doneCount++
-							t.players[i].surrender(req.handIndex[j])
+							currentPlayer.surrender(req.handIndex[j])
 							req.action = append(req.action[:j], req.action[j+1:]...)
 							req.handIndex = append(req.handIndex[:j], req.handIndex[j+1:]...)
+							j--
 						case "hit":
-							t.players[i].acceptCard(t.dealer.deal(), req.handIndex[j])
+							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
 						case "double":
-							if !t.players[i].isDoubled[j] {
+							if !currentPlayer.isDoubled[j] {
 								//bet same money
-								t.players[i].bet(t.players[i].currentBet / (float64)(len(t.players[i].hands)))
-								t.players[i].isDoubled[j] = true
+								currentPlayer.bet(currentPlayer.hands[req.handIndex[j]].currentBet, req.handIndex[j])
+								currentPlayer.isDoubled[j] = true
 							}
 							//hit
-							t.players[i].acceptCard(t.dealer.deal(), req.handIndex[j])
+							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
 						case "split":
-							t.players[i].splitHand(req.handIndex[j])
+							currentPlayer.splitHand(req.handIndex[j])
 						case "splitAllHands":
-							t.players[i].splitAll()
+							currentPlayer.splitAll()
 						default:
 							fmt.Println("invalid action")
 							doneCount++
