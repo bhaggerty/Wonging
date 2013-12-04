@@ -15,7 +15,7 @@ type Player struct {
 	//how much is the player betting
 	currentBet float64
 	//if bought insurance for dealer getting blackjack
-	isInsured bool
+	isInsured []bool
 	//if already doubled, index matching handIndex
 	isDoubled []bool
 	//how much money does the player have
@@ -39,7 +39,8 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	p.table = t
 	p.currentBet = 0
 	p.totalCash = DEFAULTPLAYERSTARTINGCASH
-	p.isInsured = false
+	//TODO: fix this fucking hack
+	p.isInsured = []bool{false, false, false, false, false}
 	p.isDoubled = []bool{false, false, false, false, false}
 	p.action = randomPlayerStrategy()
 	p.winCount = 0
@@ -48,17 +49,19 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 }
 
 func (p *Player) reset() {
-	p.isInsured = false
+	//TODO: fix this fucking hack
+	p.isInsured = []bool{false, false, false, false, false}
 	p.isDoubled = []bool{false, false, false, false, false}
 	p.action = randomPlayerStrategy()
 	p.hands = nil
 }
 
-func (p *Player) bet(money float64) {
+func (p *Player) bet(money float64, handIndex uint8) {
 	if money <= 0 || p.totalCash < money {
 		fmt.Println("No more money to make that bet")
 		p.PrintPlayer()
 	} else {
+		p.hands[handIndex].bet(money)
 		p.currentBet += money
 		p.totalCash -= money
 	}
@@ -146,7 +149,7 @@ func (p *Player) splitHand(handIndex uint8) {
 		//delete second card
 		handToSplit.pop()
 		//double the bet
-		p.bet(p.currentBet / (float64)(len(p.hands)))
+		p.bet(p.hands[handIndex].currentBet, (uint8)(len(p.hands)-1))
 	}
 }
 func (p *Player) splitAll() {
@@ -180,10 +183,12 @@ func (p *Player) surrender(handIndex uint8) {
 	}
 }
 
-func (p *Player) buyInsurance() {
-	if p.currentBet != 0 && !p.isInsured {
-		p.bet(p.currentBet / 2)
-		p.isInsured = true
+func (p *Player) buyInsurance(handIndex uint8) {
+	if p.currentBet != 0 && !p.isInsured[handIndex] {
+		p.hands[handIndex].insure(p.hands[handIndex].currentBet / 2)
+		p.isInsured[handIndex] = true
+	} else {
+		fmt.Println("Cannot buy insurance")
 	}
 }
 
