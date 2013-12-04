@@ -5,11 +5,21 @@ import (
 )
 
 type Hand struct {
-	cards []*Card
+	cards            []*Card
+	currentBet       float64
+	currentInsurance float64
 }
 
 func (h *Hand) AddCard(c *Card) {
 	h.cards = append(h.cards, c)
+}
+
+func (h *Hand) bet(money float64) {
+	h.currentBet += money
+}
+
+func (h *Hand) insure(money float64) {
+	h.currentInsurance += money
 }
 func (h *Hand) pop() {
 	h.cards = h.cards[:len(h.cards)-1]
