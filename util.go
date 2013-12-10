@@ -81,3 +81,37 @@ func randInt(min, max int) int {
 		return min + rand.Intn(max-min)
 	}
 }
+
+// Colorify things
+
+func BlackText(s string) string {
+	return "\x1b[30;1m" + s + "\x1b[0m"
+}
+
+func RedText(s string) string {
+	return "\x1b[31;1m" + s + "\x1b[0m"
+}
+
+func GreenText(s string) string {
+	return "\x1b[32;1m" + s + "\x1b[0m"
+}
+
+func YellowText(s string) string {
+	return "\x1b[33;1m" + s + "\x1b[0m"
+}
+
+func BlueText(s string) string {
+	return "\x1b[34;1m" + s + "\x1b[0m"
+}
+
+func MagentaText(s string) string {
+	return "\x1b[35;1m" + s + "\x1b[0m"
+}
+
+func CyanText(s string) string {
+	return "\x1b[36;1m" + s + "\x1b[0m"
+}
+
+func WhiteText(s string) string {
+	return "\x1b[37;1m" + s + "\x1b[0m"
+}
