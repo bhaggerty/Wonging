@@ -157,7 +157,7 @@ func (c *Casino) PrintCasino() {
 func (c *Casino) Start() {
 	fmt.Println("Casino operating.")
 	//do 200 games and see what happens
-	for i := 0; i < 200; i++ {
+	for i := 0; i < DEFAULTTOTALNUMBEROFGAMES; i++ {
 		for _, table := range c.tables {
 			table.newGame(true)
 			table.simulate()

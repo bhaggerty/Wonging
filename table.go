@@ -121,6 +121,13 @@ func (t *Table) calculateTableCount() *Counter {
 	allCounters = append(allCounters, t.dealer.curHand.calculateCount())
 	return combineCounters(allCounters)
 }
+func (t *Table) calculateTotalNumberOfHands() int {
+	sum := 0
+	for _, player := range t.players {
+		sum += len(player.hands)
+	}
+	return sum
+}
 
 func (t *Table) newGame(resetDeck bool) {
 	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
@@ -128,7 +135,6 @@ func (t *Table) newGame(resetDeck bool) {
 	//player betting amounts
 	//and reset other settings
 	for _, player := range t.players {
-		player.bet(DEFAULTPLAYERBET)
 		player.reset()
 	}
 	// take care of resetDeck
@@ -145,6 +151,11 @@ func (t *Table) newGame(resetDeck bool) {
 			player.acceptCard(t.dealer.deal(), 0)
 		}
 	}
+
+	//place bet on hand
+	for _, player := range t.players {
+		player.bet(DEFAULTPLAYERBET, 0)
+	}
 	game := new(Game).Initialize(t)
 	t.games = append(t.games, game)
 }
@@ -154,40 +165,50 @@ func (t *Table) newGame(resetDeck bool) {
 func (t *Table) simulate() {
 	doneCount := 0
 	dealerDone := false
-	for doneCount < t.getNumberOfPlayers() {
+	for doneCount < t.calculateTotalNumberOfHands() {
 		playerRequestQueue := make(chan *Request, len(t.players))
+		doneCount = 0
 		//players simulations - order matters here, no go routine
 		for i := 0; i < len(t.players); i++ {
 			playerRequestQueue <- t.players[i].simulate()
 			select {
 			case req := <-playerRequestQueue:
 				req.printRequest()
-				if t.players[i].currentBet != 0 {
-					switch req.action {
-					case "stand":
-						doneCount++
-					case "hit":
-						t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
-					case "double":
-						if !t.players[i].isDoubled {
-							//bet same money
-							t.players[i].bet(t.players[i].currentBet)
-							t.players[i].isDoubled = true
+				if t.players[i].currentBet > 0 {
+					currentPlayer := t.players[i]
+					for j := 0; j < len(req.action); j++ {
 
+						switch req.action[j] {
+						case "stand":
+							doneCount++
+						case "surrender":
+							doneCount++
+							currentPlayer.surrender(req.handIndex[j])
+						case "hit":
+							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
+						case "double":
+							if !currentPlayer.isDoubled[j] {
+								//bet same money
+								currentPlayer.bet(currentPlayer.hands[req.handIndex[j]].currentBet, req.handIndex[j])
+								currentPlayer.isDoubled[j] = true
+							}
 							//hit
-							t.players[i].acceptCard(t.dealer.deal(), req.handIndex)
+							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
+						case "split":
+							currentPlayer.splitHand(req.handIndex[j])
+						case "splitAllHands":
+							currentPlayer.splitAll()
+						default:
+							fmt.Println("invalid action")
+							doneCount++
 						}
-					case "split":
-						t.players[i].splitHand(req.handIndex)
-					case "splitAllHands":
-						t.players[i].splitAll()
-					case "surrender":
-						t.players[i].surrenderAll()
-						doneCount++
 					}
+
 				}
 			}
 		}
+		fmt.Println("Done count, calculateTotalNumberOfHands: ", doneCount, " ", t.calculateTotalNumberOfHands())
+
 		close(playerRequestQueue)
 	}
 	for !dealerDone {
@@ -196,12 +217,15 @@ func (t *Table) simulate() {
 		select {
 		case req := <-dealerRequestQueue:
 			req.printRequest()
-			switch req.action {
-			case "stand":
-				dealerDone = true
-			case "dealSelf":
-				t.dealer.dealSelf()
+			for _, action := range req.action {
+				switch action {
+				case "stand":
+					dealerDone = true
+				case "dealSelf":
+					t.dealer.dealSelf()
+				}
 			}
+
 		}
 	}
 	t.determineOutcome()
@@ -221,10 +245,18 @@ func (t *Table) determineOutcome() {
 		}
 	}
 	if len(remainingPlayers) > 0 {
-		// case player is natural blackjack, dealer is not, 3:2 payout
 		for _, player := range remainingPlayers {
+			// case player is natural blackjack, dealer is not, 3:2 payout
 			if player.isNatural() && !t.dealer.curHand.isBlackJack() {
 				player.win(player.currentBet * 1.5)
+			}
+			// handle player surrender hand(s)
+			for i := 0; i < len(player.hands); i++ {
+				if player.isSurrendered[i] {
+					save := player.hands[i].currentBet / 2
+					player.lose()
+					player.win(save)
+				}
 			}
 		}
 

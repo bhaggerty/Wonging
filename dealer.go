@@ -5,12 +5,13 @@ import (
 )
 
 type Dealer struct {
-	id       uint8
-	table    *Table
-	shoe     *Deck
-	curHand  *Hand
-	faceDown *Card
-	action   DealerStrategy
+	id                  uint8
+	table               *Table
+	shoe                *Deck
+	curHand             *Hand
+	faceDown            *Card
+	action              DealerStrategy
+	strategyDescription string
 }
 
 func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) *Dealer {
@@ -23,14 +24,14 @@ func (d *Dealer) Initialize(id uint8, t *Table, s *Deck) *Dealer {
 		d.shoe = newShoe
 	}
 	d.curHand = new(Hand)
-	d.action = randomDealerStrategy()
+	d.action, d.strategyDescription = randomDealerStrategy()
 	return d
 }
 
 func (d *Dealer) reset() {
 	d.faceDown = nil
 	d.curHand = new(Hand)
-	d.action = randomDealerStrategy()
+	d.action, d.strategyDescription = randomDealerStrategy()
 }
 
 func (d *Dealer) changeTable(table *Table) {
@@ -97,6 +98,7 @@ func (d *Dealer) simulate() *Request {
 	req.entityType = "dealer"
 	req.id = d.id
 	req.action = d.action(d)
+	req.handIndex = []uint8{0}
 	return &req
 }
 func (d *Dealer) PrintDealer() {

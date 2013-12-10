@@ -50,27 +50,27 @@ func Test_CalculateValue(t *testing.T) {
 // 	}
 // }
 
-func Test_DetermineOutcome(t *testing.T) {
-	handBJ := predefineBJ()
-	var outcome string
-	outcome = handBJ.DetermineOutcome(22)
-	if outcome != "Dealer busted" {
-		t.Error("DetermineOutcome() - Expected 'Dealer busted', Actual: " + outcome)
-	} else {
-		t.Log("DetermineOutcome() ifBusted case works")
-	}
-	outcome = handBJ.DetermineOutcome(10)
-	if outcome != "Player wins" {
-		t.Error("DetermineOutcome() - Expected 'Player wins', Actual: " + outcome)
-	} else {
-		t.Log("DetermineOutcome() PlayerWins case works")
-	}
+// func Test_DetermineOutcome(t *testing.T) {
+// 	handBJ := predefineBJ()
+// 	var outcome string
+// 	outcome = handBJ.DetermineOutcome(22)
+// 	if outcome != "Dealer busted" {
+// 		t.Error("DetermineOutcome() - Expected 'Dealer busted', Actual: " + outcome)
+// 	} else {
+// 		t.Log("DetermineOutcome() ifBusted case works")
+// 	}
+// 	outcome = handBJ.DetermineOutcome(10)
+// 	if outcome != "Player wins" {
+// 		t.Error("DetermineOutcome() - Expected 'Player wins', Actual: " + outcome)
+// 	} else {
+// 		t.Log("DetermineOutcome() PlayerWins case works")
+// 	}
 
-	//trying a case passing in two parameters
-	outcome = handBJ.DetermineOutcome(15, 22)
-	if outcome != "Player busted" {
-		t.Error("DetermineOutcome() - Expected 'Player busted', Actual: " + outcome)
-	} else {
-		t.Log("DetermineOutcome() PlayerBusted case works")
-	}
-}
+// 	//trying a case passing in two parameters
+// 	outcome = handBJ.DetermineOutcome(15, 22)
+// 	if outcome != "Player busted" {
+// 		t.Error("DetermineOutcome() - Expected 'Player busted', Actual: " + outcome)
+// 	} else {
+// 		t.Log("DetermineOutcome() PlayerBusted case works")
+// 	}
+// }

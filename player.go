@@ -15,9 +15,11 @@ type Player struct {
 	//how much is the player betting
 	currentBet float64
 	//if bought insurance for dealer getting blackjack
-	isInsured bool
-	//if already doubled
-	isDoubled bool
+	isInsured []bool
+	//if already doubled, index matching handIndex
+	isDoubled []bool
+	//if already surrendered
+	isSurrendered []bool
 	//how much money does the player have
 	totalCash float64
 
@@ -30,7 +32,8 @@ type Player struct {
 	//TODO: implement in phase 2, for simulation of getting caught
 	strikes uint8
 
-	action PlayerStrategy
+	action              PlayerStrategy
+	strategyDescription string
 }
 
 func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
@@ -39,26 +42,31 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	p.table = t
 	p.currentBet = 0
 	p.totalCash = DEFAULTPLAYERSTARTINGCASH
-	p.isInsured = false
-	p.isDoubled = false
-	p.action = randomPlayerStrategy()
+	//TODO: fix this fucking hack
+	p.isInsured = []bool{false, false, false, false, false}
+	p.isDoubled = []bool{false, false, false, false, false}
+	p.isSurrendered = []bool{false, false, false, false, false}
+	p.action, p.strategyDescription = randomPlayerStrategy()
 	p.winCount = 0
 	p.loseCount = 0
 	return p
 }
 
 func (p *Player) reset() {
-	p.isInsured = false
-	p.isDoubled = false
-	p.action = randomPlayerStrategy()
+	//TODO: fix this fucking hack
+	p.isInsured = []bool{false, false, false, false, false}
+	p.isDoubled = []bool{false, false, false, false, false}
+	p.isSurrendered = []bool{false, false, false, false, false}
+	p.action, p.strategyDescription = randomPlayerStrategy()
 	p.hands = nil
 }
 
-func (p *Player) bet(money float64) {
+func (p *Player) bet(money float64, handIndex uint8) {
 	if money <= 0 || p.totalCash < money {
 		fmt.Println("No more money to make that bet")
 		p.PrintPlayer()
 	} else {
+		p.hands[handIndex].bet(money)
 		p.currentBet += money
 		p.totalCash -= money
 	}
@@ -145,6 +153,8 @@ func (p *Player) splitHand(handIndex uint8) {
 		p.hands = append(p.hands, newHand)
 		//delete second card
 		handToSplit.pop()
+		//double the bet
+		p.bet(p.hands[handIndex].currentBet, (uint8)(len(p.hands)-1))
 	}
 }
 func (p *Player) splitAll() {
@@ -169,16 +179,15 @@ func (p *Player) surrenderAll() {
 }
 
 func (p *Player) surrender(handIndex uint8) {
-	save := p.currentBet / 2 / (float64)(len(p.hands))
-	p.lose()
-	p.win(save)
-	p.hands[handIndex] = nil
+	p.isSurrendered[handIndex] = true
 }
 
-func (p *Player) buyInsurance() {
-	if p.currentBet != 0 && !p.isInsured {
-		p.bet(p.currentBet / 2)
-		p.isInsured = true
+func (p *Player) buyInsurance(handIndex uint8) {
+	if p.currentBet != 0 && !p.isInsured[handIndex] {
+		p.hands[handIndex].insure(p.hands[handIndex].currentBet / 2)
+		p.isInsured[handIndex] = true
+	} else {
+		fmt.Println("Cannot buy insurance")
 	}
 }
 
@@ -217,7 +226,7 @@ func (p *Player) simulate() *Request {
 }
 
 func (p *Player) PrintPlayer() {
-	fmt.Printf("[===== Player %d =====]\ncurrently betting: %f\ntotal cash: %f\n", p.id, p.currentBet, p.totalCash)
+	fmt.Printf("[===== Player %d =====]\ncurrently betting: %f\ntotal cash: %f\nstrategy: %s\nwinning: %d/%d\n", p.id, p.currentBet, p.totalCash, p.strategyDescription, p.winCount, DEFAULTTOTALNUMBEROFGAMES)
 	if p.hands != nil && len(p.hands) > 0 {
 		for _, hand := range p.hands {
 			hand.PrintHand()

@@ -3,6 +3,9 @@ package wonging
 // default blackjack value
 const BLACKJACK uint8 = 21
 
+//================== Simulation ==================\\
+const DEFAULTTOTALNUMBEROFGAMES int = 200
+
 //================== Casino ==================\\
 //how much money casino opens with - 1 billion
 const DEFAULTCASINOSTARTINGCASH float64 = 1000000000
