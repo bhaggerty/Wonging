@@ -177,7 +177,6 @@ func (t *Table) simulate() {
 				if t.players[i].currentBet > 0 {
 					currentPlayer := t.players[i]
 					for j := 0; j < len(req.action); j++ {
-						fmt.Println("current index: ", j)
 
 						switch req.action[j] {
 						case "stand":
@@ -246,10 +245,18 @@ func (t *Table) determineOutcome() {
 		}
 	}
 	if len(remainingPlayers) > 0 {
-		// case player is natural blackjack, dealer is not, 3:2 payout
 		for _, player := range remainingPlayers {
+			// case player is natural blackjack, dealer is not, 3:2 payout
 			if player.isNatural() && !t.dealer.curHand.isBlackJack() {
 				player.win(player.currentBet * 1.5)
+			}
+			// handle player surrender hand(s)
+			for i := 0; i < len(player.hands); i++ {
+				if player.isSurrendered[i] {
+					save := player.hands[i].currentBet / 2
+					player.lose()
+					player.win(save)
+				}
 			}
 		}
 

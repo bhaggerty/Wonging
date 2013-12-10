@@ -179,12 +179,6 @@ func (p *Player) surrenderAll() {
 
 func (p *Player) surrender(handIndex uint8) {
 	p.isSurrendered[handIndex] = true
-	// if p.currentBet != 0 {
-	// 	save := p.currentBet / 2 / (float64)(len(p.hands))
-	// 	p.lose()
-	// 	p.win(save)
-	// 	p.hands = append(p.hands[:handIndex], p.hands[handIndex+1:]...)
-	// }
 }
 
 func (p *Player) buyInsurance(handIndex uint8) {
