@@ -187,10 +187,6 @@ func (t *Table) simulate() {
 							fmt.Println("len req.action:", len(req.action), j)
 							doneCount++
 							currentPlayer.surrender(req.handIndex[j])
-							req.action = append(req.action[:j], req.action[j+1:]...)
-							req.handIndex = req.handIndex[0 : len(req.handIndex)-1]
-							j--
-							fmt.Println("len req.action: ", req.action, " req.handIndex: ", req.handIndex)
 						case "hit":
 							fmt.Println("len req.action:", len(req.action), j)
 							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
@@ -204,7 +200,6 @@ func (t *Table) simulate() {
 							//hit
 							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
 						case "split":
-							fmt.Println("len req.action:", len(req.action), j)
 							currentPlayer.splitHand(req.handIndex[j])
 						case "splitAllHands":
 							currentPlayer.splitAll()

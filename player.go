@@ -18,6 +18,8 @@ type Player struct {
 	isInsured []bool
 	//if already doubled, index matching handIndex
 	isDoubled []bool
+	//if already surrendered
+	isSurrendered []bool
 	//how much money does the player have
 	totalCash float64
 
@@ -42,6 +44,7 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	//TODO: fix this fucking hack
 	p.isInsured = []bool{false, false, false, false, false}
 	p.isDoubled = []bool{false, false, false, false, false}
+	p.isSurrendered = []bool{false, false, false, false, false}
 	p.action = randomPlayerStrategy()
 	p.winCount = 0
 	p.loseCount = 0
@@ -52,6 +55,7 @@ func (p *Player) reset() {
 	//TODO: fix this fucking hack
 	p.isInsured = []bool{false, false, false, false, false}
 	p.isDoubled = []bool{false, false, false, false, false}
+	p.isSurrendered = []bool{false, false, false, false, false}
 	p.action = randomPlayerStrategy()
 	p.hands = nil
 }
@@ -175,12 +179,13 @@ func (p *Player) surrenderAll() {
 
 func (p *Player) surrender(handIndex uint8) {
 	fmt.Println("WOOT SURRENDER CALLED")
-	if p.currentBet != 0 {
-		save := p.currentBet / 2 / (float64)(len(p.hands))
-		p.lose()
-		p.win(save)
-		p.hands = append(p.hands[:handIndex], p.hands[handIndex+1:]...)
-	}
+	p.isSurrendered[handIndex] = true
+	// if p.currentBet != 0 {
+	// 	save := p.currentBet / 2 / (float64)(len(p.hands))
+	// 	p.lose()
+	// 	p.win(save)
+	// 	p.hands = append(p.hands[:handIndex], p.hands[handIndex+1:]...)
+	// }
 }
 
 func (p *Player) buyInsurance(handIndex uint8) {
