@@ -226,7 +226,22 @@ func (p *Player) simulate() *Request {
 }
 
 func (p *Player) PrintPlayer() {
-	fmt.Printf("[===== Player %d =====]\ncurrently betting: %f\ntotal cash: %f\nstrategy: %s\nwinning: %d/%d\n", p.id, p.currentBet, p.totalCash, p.strategyDescription, p.winCount, DEFAULTTOTALNUMBEROFGAMES)
+
+	fmt.Printf("[===== Player %d =====]\n", p.id)
+	fmt.Printf("currently betting: %f\n", p.currentBet)
+	fmt.Printf("strategy: %s\n", WhiteText(p.strategyDescription))
+
+	if p.totalCash < DEFAULTPLAYERSTARTINGCASH {
+		fmt.Printf("total cash: %s\n", RedText(fmt.Sprintf("%f", p.totalCash)))
+	} else {
+		fmt.Printf("total cash: %s\n", GreenText(fmt.Sprintf("%f", p.totalCash)))
+	}
+
+	if p.winCount < uint8(DEFAULTTOTALNUMBEROFGAMES/2) {
+		fmt.Printf("winning: %s\n", RedText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
+	} else {
+		fmt.Printf("winning: %s\n", GreenText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
+	}
 	if p.hands != nil && len(p.hands) > 0 {
 		for _, hand := range p.hands {
 			hand.PrintHand()
