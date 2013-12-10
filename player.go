@@ -32,7 +32,8 @@ type Player struct {
 	//TODO: implement in phase 2, for simulation of getting caught
 	strikes uint8
 
-	action PlayerStrategy
+	action              PlayerStrategy
+	strategyDescription string
 }
 
 func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
@@ -45,7 +46,7 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	p.isInsured = []bool{false, false, false, false, false}
 	p.isDoubled = []bool{false, false, false, false, false}
 	p.isSurrendered = []bool{false, false, false, false, false}
-	p.action = randomPlayerStrategy()
+	p.action, p.strategyDescription = randomPlayerStrategy()
 	p.winCount = 0
 	p.loseCount = 0
 	return p
@@ -56,7 +57,7 @@ func (p *Player) reset() {
 	p.isInsured = []bool{false, false, false, false, false}
 	p.isDoubled = []bool{false, false, false, false, false}
 	p.isSurrendered = []bool{false, false, false, false, false}
-	p.action = randomPlayerStrategy()
+	p.action, p.strategyDescription = randomPlayerStrategy()
 	p.hands = nil
 }
 
@@ -225,7 +226,7 @@ func (p *Player) simulate() *Request {
 }
 
 func (p *Player) PrintPlayer() {
-	fmt.Printf("[===== Player %d =====]\ncurrently betting: %f\ntotal cash: %f\n", p.id, p.currentBet, p.totalCash)
+	fmt.Printf("[===== Player %d =====]\ncurrently betting: %f\ntotal cash: %f\nstrategy: %s\nwinning: %d/%d\n", p.id, p.currentBet, p.totalCash, p.strategyDescription, p.winCount, DEFAULTTOTALNUMBEROFGAMES)
 	if p.hands != nil && len(p.hands) > 0 {
 		for _, hand := range p.hands {
 			hand.PrintHand()

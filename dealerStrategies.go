@@ -14,9 +14,11 @@ import (
 //
 type DealerStrategy func(*Dealer) []string
 
-func randomDealerStrategy() DealerStrategy {
+func randomDealerStrategy() (DealerStrategy, string) {
 	strategies := []DealerStrategy{standsOnAll17, hitOnSoft17}
-	return strategies[randInt(0, len(strategies))]
+	description := []string{"Stands On All 17", "Hit On Soft 17"}
+	randomInt := randInt(0, len(strategies))
+	return strategies[randomInt], description[randomInt]
 }
 
 //Dealer strategies
