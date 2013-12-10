@@ -181,17 +181,21 @@ func (t *Table) simulate() {
 
 						switch req.action[j] {
 						case "stand":
+							fmt.Println("len req.action:", len(req.action), j)
 							doneCount++
 						case "surrender":
-							fmt.Println("len req.action:", len(req.action))
+							fmt.Println("len req.action:", len(req.action), j)
 							doneCount++
 							currentPlayer.surrender(req.handIndex[j])
 							req.action = append(req.action[:j], req.action[j+1:]...)
-							req.handIndex = append(req.handIndex[:j], req.handIndex[j+1:]...)
+							req.handIndex = req.handIndex[0 : len(req.handIndex)-1]
 							j--
+							fmt.Println("len req.action: ", req.action, " req.handIndex: ", req.handIndex)
 						case "hit":
+							fmt.Println("len req.action:", len(req.action), j)
 							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
 						case "double":
+							fmt.Println("len req.action:", len(req.action), j)
 							if !currentPlayer.isDoubled[j] {
 								//bet same money
 								currentPlayer.bet(currentPlayer.hands[req.handIndex[j]].currentBet, req.handIndex[j])
@@ -200,6 +204,7 @@ func (t *Table) simulate() {
 							//hit
 							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
 						case "split":
+							fmt.Println("len req.action:", len(req.action), j)
 							currentPlayer.splitHand(req.handIndex[j])
 						case "splitAllHands":
 							currentPlayer.splitAll()
