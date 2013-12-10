@@ -181,17 +181,13 @@ func (t *Table) simulate() {
 
 						switch req.action[j] {
 						case "stand":
-							fmt.Println("len req.action:", len(req.action), j)
 							doneCount++
 						case "surrender":
-							fmt.Println("len req.action:", len(req.action), j)
 							doneCount++
 							currentPlayer.surrender(req.handIndex[j])
 						case "hit":
-							fmt.Println("len req.action:", len(req.action), j)
 							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
 						case "double":
-							fmt.Println("len req.action:", len(req.action), j)
 							if !currentPlayer.isDoubled[j] {
 								//bet same money
 								currentPlayer.bet(currentPlayer.hands[req.handIndex[j]].currentBet, req.handIndex[j])

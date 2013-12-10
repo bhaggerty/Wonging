@@ -178,7 +178,6 @@ func (p *Player) surrenderAll() {
 }
 
 func (p *Player) surrender(handIndex uint8) {
-	fmt.Println("WOOT SURRENDER CALLED")
 	p.isSurrendered[handIndex] = true
 	// if p.currentBet != 0 {
 	// 	save := p.currentBet / 2 / (float64)(len(p.hands))
