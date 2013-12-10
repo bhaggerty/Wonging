@@ -158,6 +158,9 @@ func (t *Table) newGame(resetDeck bool) {
 	}
 	game := new(Game).Initialize(t)
 	t.games = append(t.games, game)
+
+	// start simulation
+	t.simulate()
 }
 
 //main engine of the entire project

@@ -12,8 +12,8 @@ const DEFAULTCASINOSTARTINGCASH float64 = 1000000000
 
 //how many blackjack tables are there in this casino
 const DEFAULTNUMBEROFTABLESPERCASINO int = 10
-const DEFAULTNUMBEROFDEALERSPERCASINO int = 12
-const DEFAULTNUMBEROFPLAYERSPERCASINO int = 60
+const DEFAULTNUMBEROFDEALERSPERCASINO int = 11
+const DEFAULTNUMBEROFPLAYERSPERCASINO int = 52
 
 //================== Table ==================\\
 // how many players can sit at one table
@@ -31,16 +31,16 @@ const DEFAULTPLAYERBET float64 = 10
 //3 strikes and you are out
 const DEFAULTSTRIKEOUT uint8 = 3
 
-//valid actions
-var PlayerAction = map[string]string{
-	"hit":      "hit",
-	"stand":    "stand",
-	"double":   "double",
-	"split":    "split",
-	"splitAll": "splitAll",
-}
+//valid actions - for own record
+// var PlayerAction = map[string]string{
+// 	"h":      "hit",
+// 	"st":    "stand",
+// 	"d":   "double",
+// 	"sp":    "split",
+// 	"spA": "splitAll",
+// }
 
-var dealerAction = map[string]string{
-	"dealSelf": "dealSelf",
-	"stand":    "stand",
-}
+// var dealerAction = map[string]string{
+// 	"ds": "dealSelf",
+// 	"st":    "stand",
+// }

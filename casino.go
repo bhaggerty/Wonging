@@ -160,7 +160,6 @@ func (c *Casino) Start() {
 	for i := 0; i < DEFAULTTOTALNUMBEROFGAMES; i++ {
 		for _, table := range c.tables {
 			table.newGame(true)
-			table.simulate()
 		}
 	}
 
