@@ -229,18 +229,18 @@ func (p *Player) PrintPlayer() {
 
 	fmt.Printf("[===== Player %d =====]\n", p.id)
 	fmt.Printf("currently betting: %f\n", p.currentBet)
-	fmt.Printf("strategy: %s\n", WhiteText(p.strategyDescription))
+	fmt.Println("strategy: ", CyanText(p.strategyDescription))
 
 	if p.totalCash < DEFAULTPLAYERSTARTINGCASH {
-		fmt.Printf("total cash: %s\n", RedText(fmt.Sprintf("%f", p.totalCash)))
+		fmt.Println("total cash: ", RedText(fmt.Sprintf("%f", p.totalCash)))
 	} else {
-		fmt.Printf("total cash: %s\n", GreenText(fmt.Sprintf("%f", p.totalCash)))
+		fmt.Println("total cash: ", GreenText(fmt.Sprintf("%f", p.totalCash)))
 	}
 
 	if p.winCount < uint8(DEFAULTTOTALNUMBEROFGAMES/2) {
-		fmt.Printf("winning: %s\n", RedText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
+		fmt.Println("winning: ", RedText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
 	} else {
-		fmt.Printf("winning: %s\n", GreenText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
+		fmt.Println("winning: ", GreenText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
 	}
 	if p.hands != nil && len(p.hands) > 0 {
 		for _, hand := range p.hands {

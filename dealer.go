@@ -103,6 +103,7 @@ func (d *Dealer) simulate() *Request {
 }
 func (d *Dealer) PrintDealer() {
 	fmt.Printf("[===== Dealer %d =====]\n", d.id)
+	fmt.Println("strategy: ", CyanText(d.strategyDescription))
 
 	if d.faceDown != nil {
 		value, soft := d.calculateHandValue()

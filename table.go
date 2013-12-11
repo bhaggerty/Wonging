@@ -130,7 +130,7 @@ func (t *Table) calculateTotalNumberOfHands() int {
 }
 
 func (t *Table) newGame(resetDeck bool) {
-	fmt.Printf("Table %d: Initializing a new game.\n", t.id)
+	fmt.Println(WhiteText(fmt.Sprintf("\n==[[ Table %d: Initializing a new game. ]]==", t.id)))
 
 	//player betting amounts
 	//and reset other settings
@@ -236,12 +236,12 @@ func (t *Table) simulate() {
 }
 
 func (t *Table) determineOutcome() {
-	fmt.Println("==[[ Trying to determine outcome of this game ]]==")
+	fmt.Println(WhiteText("==[[ Trying to determine outcome of this game ]]=="))
 	// case player busted
 	var remainingPlayers = []*Player{}
 	for _, player := range t.players {
 		if player.isAllBusted() {
-			fmt.Printf("Player %d Busted\n", player.id)
+			fmt.Println(RedText(fmt.Sprintf("Player %d Busted", player.id)))
 			player.lose()
 		} else {
 			remainingPlayers = append(remainingPlayers, player)
@@ -265,7 +265,7 @@ func (t *Table) determineOutcome() {
 
 		// case dealer is busted, everyone not busted get 1:1 payout
 		if t.dealer.isBusted() {
-			fmt.Printf("Dealer %d Busted\n", t.dealer.id)
+			fmt.Println(GreenText(fmt.Sprintf("Dealer %d Busted", t.dealer.id)))
 			for _, player := range remainingPlayers {
 				player.win(player.currentBet)
 			}
@@ -275,13 +275,13 @@ func (t *Table) determineOutcome() {
 					pValue, _ := player.calculateHandValue(uint8(i))
 					dValue, _ := t.dealer.calculateHandValue()
 					if pValue == dValue {
-						fmt.Printf("Player %d same value, dealer wins [%d vs %d]\n", player.id, pValue, dValue)
+						fmt.Println(RedText(fmt.Sprintf("Player %d same value, dealer wins [%d vs %d]", player.id, pValue, dValue)))
 						player.lose()
 					} else if pValue > dValue {
-						fmt.Printf("Player %d beats dealer hand [%d vs %d]\n", player.id, pValue, dValue)
+						fmt.Println(GreenText(fmt.Sprintf("Player %d beats dealer hand [%d vs %d]", player.id, pValue, dValue)))
 						player.win(player.currentBet)
 					} else {
-						fmt.Printf("Player %d loses to dealer's hand [%d vs %d]\n", player.id, pValue, dValue)
+						fmt.Println(RedText(fmt.Sprintf("Player %d loses to dealer's hand [%d vs %d]", player.id, pValue, dValue)))
 						player.lose()
 					}
 				}
