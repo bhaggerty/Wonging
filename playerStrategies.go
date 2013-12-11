@@ -152,3 +152,22 @@ func hiLoCount(p *Player) ([]string, []uint8) {
 	}
 	return actions, handIndices
 }
+
+// corresponding to Ace/Five counting strategy
+func aceFiveCount(p *Player) ([]string, []uint8) {
+	actions := []string{}
+	handIndices := []uint8{}
+	for i, hand := range p.hands {
+		var curAction string
+		tableCounter := p.table.calculateTableCount()
+		runningCount := p.count(tableCounter)
+		trueCount := runningCount / DEFAULTDECKPERSHOE
+		fmt.Printf("Running count: %f, true count: %f\n", runningCount, trueCount)
+		if trueCount > 2 {
+			curAction = "double"
+		}
+
+	}
+	return actions, handIndices
+
+}
