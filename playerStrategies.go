@@ -135,3 +135,20 @@ func wizardOfOzz(p *Player) ([]string, []uint8) {
 	return actions, handIndices
 
 }
+
+// corresponding to Hi Lo counting strategy
+func hiLoCount(p *Player) ([]string, []uint8) {
+	actions := []string{}
+	handIndices := []uint8{}
+	for i, hand := range p.hands {
+		tableCounter := p.table.calculateTableCount()
+		runningCount := p.count(tableCounter)
+		trueCount := runningCount / DEFAULTDECKPERSHOE
+		fmt.Printf("Running count: %f, true count: %f\n", runningCount, trueCount)
+		fmt.Println(i, hand)
+
+		//The player should stand/double/split if the True Count equals or exceeds the Index Number, otherwise hit. The player should take insurance if the True Count is +3 or greater.
+		//The player should surrender if the True Count equals or exceeds the Index Number.
+	}
+	return actions, handIndices
+}
