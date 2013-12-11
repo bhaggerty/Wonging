@@ -199,6 +199,8 @@ func (t *Table) simulate() {
 							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
 						case "split":
 							currentPlayer.splitHand(req.handIndex[j])
+							currentPlayer.acceptCard(t.dealer.deal(), req.handIndex[j])
+							currentPlayer.acceptCard(t.dealer.deal(), uint8(len(currentPlayer.hands)-1))
 						case "splitAllHands":
 							currentPlayer.splitAll()
 						default:
