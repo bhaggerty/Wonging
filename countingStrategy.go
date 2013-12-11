@@ -106,11 +106,26 @@ var (
 		"K":  -2,
 		"A":  -1,
 	}
+	AceFiveCount = map[string]int8{
+		"2":  0,
+		"3":  0,
+		"4":  0,
+		"5":  1,
+		"6":  0,
+		"7":  0,
+		"8":  0,
+		"9":  0,
+		"10": 0,
+		"J":  0,
+		"Q":  0,
+		"K":  0,
+		"A":  -1,
+	}
 )
 
 type Counter struct {
-	HiLo, HiOpt1, HiOpt2, KO, Omega2, ZenCount int8
-	Red7                                       float32
+	HiLo, HiOpt1, HiOpt2, KO, Omega2, ZenCount, AceFiveCount int8
+	Red7                                                     float32
 }
 
 func (c *Counter) initialize() *Counter {
@@ -121,6 +136,7 @@ func (c *Counter) initialize() *Counter {
 	c.Omega2 = 0
 	c.Red7 = 0
 	c.ZenCount = 0
+	c.AceFiveCount = 0
 	return c
 }
 
@@ -132,6 +148,7 @@ func (c *Counter) count(cardValue string) *Counter {
 	c.Omega2 += Omega2[cardValue]
 	c.Red7 += Red7[cardValue]
 	c.ZenCount += ZenCount[cardValue]
+	c.AceFiveCount += AceFiveCount[cardValue]
 	return c
 }
 
@@ -164,12 +181,16 @@ func getZenCount(c *Counter) float32 {
 	return float32(c.ZenCount)
 }
 
+func getAceFiveCount(c *Counter) float32 {
+	return float32(c.AceFiveCount)
+}
+
 // strategies assignments
 type CountingStrategy func(*Counter) float32
 
 func randomCountingStrategy() (CountingStrategy, string) {
-	strategies := []CountingStrategy{getHiLo, getHiOpt1, getHiOpt2, getKO, getOmega2, getRed7, getZenCount}
-	description := []string{"Hi Lo", "Hi Opt 1", "Hi Opt 2", "KO", "Omega 2", "Red 7", "Zen Count"}
+	strategies := []CountingStrategy{getHiLo, getHiOpt1, getHiOpt2, getKO, getOmega2, getRed7, getZenCount, getAceFiveCount}
+	description := []string{"Hi Lo", "Hi Opt 1", "Hi Opt 2", "KO", "Omega 2", "Red 7", "Zen Count", "Ace/Five Count"}
 	randomInt := randInt(0, len(strategies))
 	return strategies[randomInt], description[randomInt]
 }
