@@ -48,12 +48,16 @@ func (d *Deck) popRandom() *Deck {
 }
 
 func (d *Deck) pop() *Card {
-	cardPopped := d.cards[len(d.cards)-1]
-	d.dealt = append(d.dealt, cardPopped)
-	d.cards = d.cards[:len(d.cards)-1]
-	fmt.Printf("===== Deck: %d cards ===== Popped from top: ", len(d.cards))
-	cardPopped.PrintCard()
-	return cardPopped
+	if len(d.cards) > 0 {
+		cardPopped := d.cards[len(d.cards)-1]
+		d.dealt = append(d.dealt, cardPopped)
+		d.cards = d.cards[:len(d.cards)-1]
+		fmt.Printf("===== Deck: %d cards ===== Popped from top: ", len(d.cards))
+		cardPopped.PrintCard()
+		return cardPopped
+	}
+	fmt.Println("Deck ran out of cards")
+	return nil
 }
 
 func (d *Deck) Shuffle() {

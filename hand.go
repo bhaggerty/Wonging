@@ -22,7 +22,11 @@ func (h *Hand) insure(money float64) {
 	h.currentInsurance += money
 }
 func (h *Hand) pop() {
-	h.cards = h.cards[:len(h.cards)-1]
+	if len(h.cards) > 0 {
+		h.cards = h.cards[:len(h.cards)-1]
+	} else {
+		fmt.Println("Hand ran out of cards")
+	}
 }
 
 //calculate the value of current hand
