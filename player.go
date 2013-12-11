@@ -26,14 +26,18 @@ type Player struct {
 	winCount  uint8
 	loseCount uint8
 
+	// play strategy
+	action              PlayerStrategy
+	strategyDescription string
+	// count strategy
+	count            CountingStrategy
+	countDescription string
+
 	// TODO: implement in phase 2, for group counting
 	groupId uint8
 
 	//TODO: implement in phase 2, for simulation of getting caught
 	strikes uint8
-
-	action              PlayerStrategy
-	strategyDescription string
 }
 
 func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
@@ -46,6 +50,7 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	p.isInsured = []bool{false, false, false, false, false}
 	p.isDoubled = []bool{false, false, false, false, false}
 	p.isSurrendered = []bool{false, false, false, false, false}
+	p.count, p.countDescription = randomCountingStrategy()
 	p.action, p.strategyDescription = randomPlayerStrategy()
 	p.winCount = 0
 	p.loseCount = 0
@@ -57,6 +62,7 @@ func (p *Player) reset() {
 	p.isInsured = []bool{false, false, false, false, false}
 	p.isDoubled = []bool{false, false, false, false, false}
 	p.isSurrendered = []bool{false, false, false, false, false}
+	p.count, p.countDescription = randomCountingStrategy()
 	p.action, p.strategyDescription = randomPlayerStrategy()
 	p.hands = nil
 }
@@ -230,6 +236,7 @@ func (p *Player) PrintPlayer() {
 	fmt.Printf("[===== Player %d =====]\n", p.id)
 	fmt.Printf("currently betting: %f\n", p.currentBet)
 	fmt.Println("strategy: ", CyanText(p.strategyDescription))
+	fmt.Println("counting: ", CyanText(p.countDescription))
 
 	if p.totalCash < DEFAULTPLAYERSTARTINGCASH {
 		fmt.Println("total cash: ", RedText(fmt.Sprintf("%f", p.totalCash)))
