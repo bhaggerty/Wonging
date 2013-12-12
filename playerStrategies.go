@@ -13,8 +13,8 @@ import (
 type PlayerStrategy func(*Player) ([]string, []uint8)
 
 func randomPlayerStrategy() (PlayerStrategy, string) {
-	strategies := []PlayerStrategy{basic, wizardOfOzz}
-	description := []string{"Basic", "Wizard of Oz"}
+	strategies := []PlayerStrategy{basic, wizardOfOdds}
+	description := []string{"Basic", "Wizard of Odds"}
 	randomInt := randInt(0, len(strategies))
 	return strategies[randomInt], description[randomInt]
 }
@@ -23,8 +23,11 @@ func randomPlayerStrategy() (PlayerStrategy, string) {
 func basic(p *Player) ([]string, []uint8) {
 	actions := []string{}
 	handIndices := []uint8{}
-
-	fmt.Print("[strategy: basic]: ")
+	tableCounter := p.table.calculateTableCount()
+	runningCount := p.count(tableCounter)
+	trueCount := runningCount / DEFAULTDECKPERSHOE
+	fmt.Printf("[counting strategy: %s, Running Count: %f, True Count: %f]\n", p.countDescription, runningCount, trueCount)
+	fmt.Print("[playing strategy: basic]: ")
 	if p.currentBet > 0 {
 		for i := 0; i < len(p.hands); i++ {
 			if value, _ := p.calculateHandValue(uint8(i)); value < 17 {
@@ -71,63 +74,20 @@ Stand on soft 18 except hit against a dealer 9, 10, or A.
 Always stand on soft 19 or more.
 
 */
-func wizardOfOzz(p *Player) ([]string, []uint8) {
+func wizardOfOdds(p *Player) ([]string, []uint8) {
 	actions := []string{}
 	handIndices := []uint8{}
-
-	fmt.Print("[strategy: WizardOfOzz]: ")
+	tableCounter := p.table.calculateTableCount()
+	runningCount := p.count(tableCounter)
+	trueCount := runningCount / DEFAULTDECKPERSHOE
+	fmt.Printf("[counting strategy: %s]: Running Count: %f, True Count: %f\n", p.countDescription, runningCount, trueCount)
+	fmt.Print("[playing strategy: WizardOfOdds]: ")
 
 	// prepare yourself for the longest fucking if else piece of shit ever
 	dealerCard := p.table.dealer.curHand.cards[0]
 	for i, hand := range p.hands {
 		playerHandValue, isSoft := p.calculateHandValue(uint8(i))
-		var curAction string
-		if (playerHandValue == 15 || playerHandValue == 17) && dealerCard.value == "A" {
-			curAction = "surrender"
-		} else if (playerHandValue == 15 && !isSoft) && dealerCard.value == "10" {
-			curAction = "surrender"
-		} else if (playerHandValue == 16 && !isSoft) && (dealerCard.value == "9" || dealerCard.value == "10" || dealerCard.value == "A") {
-			curAction = "surrender"
-		} else if (playerHandValue == 9 && !isSoft) && (dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
-			curAction = "double"
-		} else if (playerHandValue == 10 && !isSoft) && (dealerCard.value != "10" && dealerCard.value != "A") {
-			curAction = "double"
-		} else if (playerHandValue == 11 && !isSoft) && dealerCard.value != "A" {
-			curAction = "double"
-		} else if (playerHandValue == 13 || playerHandValue == 14 || isSoft) && (dealerCard.value == "5" || dealerCard.value == "6") {
-			curAction = "double"
-		} else if (playerHandValue == 15 || playerHandValue == 16 || isSoft) && (dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
-			curAction = "double"
-		} else if (playerHandValue == 17 || playerHandValue == 18 || isSoft) && (dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
-			curAction = "double"
-		} else if playerHandValue <= 11 && !isSoft {
-			curAction = "hit"
-		} else if playerHandValue == 12 && !isSoft && !(dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
-			curAction = "hit"
-		} else if (playerHandValue == 13 || playerHandValue == 14 || playerHandValue == 15 || playerHandValue == 16) && !isSoft && !(dealerCard.value == "2" || dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
-			curAction = "hit"
-		} else if playerHandValue < 17 && isSoft {
-			curAction = "hit"
-		} else {
-			curAction = "stand"
-		}
-
-		if len(hand.cards) == 2 {
-			if hand.cards[0].value == "8" && hand.cards[1].value == "8" && dealerCard.value == "A" {
-				curAction = "surrender"
-			} else if (hand.cards[0].value == "A" && hand.cards[1].value == "A") || (hand.cards[0].value == "8" && hand.cards[1].value == "8") {
-				curAction = "split"
-			} else if (hand.cards[0].value == "2" && hand.cards[1].value == "2") || (hand.cards[0].value == "3" && hand.cards[1].value == "3") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 4) {
-				curAction = "split"
-			} else if (hand.cards[0].value == "6" && hand.cards[1].value == "6") && (dealerCard.numberValue <= 6 && dealerCard.numberValue >= 3) {
-				curAction = "split"
-			} else if (hand.cards[0].value == "7" && hand.cards[1].value == "7") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 2) {
-				curAction = "split"
-			} else if (hand.cards[0].value == "9" && hand.cards[1].value == "9") && ((dealerCard.numberValue <= 6 && dealerCard.numberValue >= 2) || (dealerCard.numberValue <= 9 && dealerCard.numberValue >= 8)) {
-				curAction = "split"
-			}
-		}
-
+		curAction := wizardOfOddsActionLogic(p, dealerCard, playerHandValue, isSoft, hand)
 		actions = append(actions, curAction)
 		handIndices = append(handIndices, uint8(i))
 	}
@@ -136,19 +96,77 @@ func wizardOfOzz(p *Player) ([]string, []uint8) {
 
 }
 
+func wizardOfOddsActionLogic(p *Player, dealerCard *Card, playerHandValue uint8, isSoft bool, hand *Hand) string {
+	if len(hand.cards) == 2 {
+		if hand.cards[0].value == "8" && hand.cards[1].value == "8" && dealerCard.value == "A" {
+			return "surrender"
+		}
+		if (hand.cards[0].value == "A" && hand.cards[1].value == "A") || (hand.cards[0].value == "8" && hand.cards[1].value == "8") {
+			return "split"
+		}
+		if (hand.cards[0].value == "2" && hand.cards[1].value == "2") || (hand.cards[0].value == "3" && hand.cards[1].value == "3") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 4) {
+			return "split"
+		}
+		if (hand.cards[0].value == "6" && hand.cards[1].value == "6") && (dealerCard.numberValue <= 6 && dealerCard.numberValue >= 3) {
+			return "split"
+		}
+		if (hand.cards[0].value == "7" && hand.cards[1].value == "7") && (dealerCard.numberValue <= 7 && dealerCard.numberValue >= 2) {
+			return "split"
+		}
+		if (hand.cards[0].value == "9" && hand.cards[1].value == "9") && ((dealerCard.numberValue <= 6 && dealerCard.numberValue >= 2) || (dealerCard.numberValue <= 9 && dealerCard.numberValue >= 8)) {
+			return "split"
+		}
+	}
+	if (playerHandValue == 15 || playerHandValue == 17) && dealerCard.value == "A" {
+		return "surrender"
+	} else if (playerHandValue == 15 && !isSoft) && dealerCard.value == "10" {
+		return "surrender"
+	} else if (playerHandValue == 16 && !isSoft) && (dealerCard.value == "9" || dealerCard.value == "10" || dealerCard.value == "A") {
+		return "surrender"
+	} else if (playerHandValue == 9 && !isSoft) && (dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
+		return "double"
+	} else if (playerHandValue == 10 && !isSoft) && (dealerCard.value != "10" && dealerCard.value != "A") {
+		return "double"
+	} else if (playerHandValue == 11 && !isSoft) && dealerCard.value != "A" {
+		return "double"
+	} else if (playerHandValue == 13 || playerHandValue == 14 || isSoft) && (dealerCard.value == "5" || dealerCard.value == "6") {
+		return "double"
+	} else if (playerHandValue == 15 || playerHandValue == 16 || isSoft) && (dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
+		return "double"
+	} else if (playerHandValue == 17 || playerHandValue == 18 || isSoft) && (dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
+		return "double"
+	} else if playerHandValue <= 11 && !isSoft {
+		return "hit"
+	} else if playerHandValue == 12 && !isSoft && !(dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
+		return "hit"
+	} else if (playerHandValue == 13 || playerHandValue == 14 || playerHandValue == 15 || playerHandValue == 16) && !isSoft && !(dealerCard.value == "2" || dealerCard.value == "3" || dealerCard.value == "4" || dealerCard.value == "5" || dealerCard.value == "6") {
+		return "hit"
+	} else if playerHandValue < 17 && isSoft {
+		return "hit"
+	} else {
+		return "stand"
+	}
+}
+
 // corresponding to Hi Lo counting strategy
 func hiLoCount(p *Player) ([]string, []uint8) {
 	actions := []string{}
 	handIndices := []uint8{}
+	tableCounter := p.table.calculateTableCount()
+	runningCount := p.count(tableCounter)
+	trueCount := runningCount / DEFAULTDECKPERSHOE
+	fmt.Printf("[counting strategy: %s, Running Count: %f, True Count: %f]\n", p.countDescription, runningCount, trueCount)
+	fmt.Print("[playing strategy: HiLo Count]: ")
+	// dealerCard := p.table.dealer.curHand.cards[0]
+
 	for i, hand := range p.hands {
-		tableCounter := p.table.calculateTableCount()
-		runningCount := p.count(tableCounter)
-		trueCount := runningCount / DEFAULTDECKPERSHOE
 		fmt.Printf("Running count: %f, true count: %f\n", runningCount, trueCount)
 		fmt.Println(i, hand)
 
 		//The player should stand/double/split if the True Count equals or exceeds the Index Number, otherwise hit. The player should take insurance if the True Count is +3 or greater.
 		//The player should surrender if the True Count equals or exceeds the Index Number.
+		// actions = append(actions, curAction)
+		handIndices = append(handIndices, uint8(i))
 	}
 	return actions, handIndices
 }
@@ -157,15 +175,22 @@ func hiLoCount(p *Player) ([]string, []uint8) {
 func aceFiveCount(p *Player) ([]string, []uint8) {
 	actions := []string{}
 	handIndices := []uint8{}
+	tableCounter := p.table.calculateTableCount()
+	runningCount := p.count(tableCounter)
+	trueCount := runningCount / DEFAULTDECKPERSHOE
+	fmt.Printf("[counting strategy: %s, Running Count: %f, True Count: %f]\n", p.countDescription, runningCount, trueCount)
+	fmt.Print("[playing strategy: Ace/Five Count]: ")
+	dealerCard := p.table.dealer.curHand.cards[0]
 	for i, hand := range p.hands {
 		var curAction string
-		tableCounter := p.table.calculateTableCount()
-		runningCount := p.count(tableCounter)
-		trueCount := runningCount / DEFAULTDECKPERSHOE
-		fmt.Printf("Running count: %f, true count: %f\n", runningCount, trueCount)
+		playerHandValue, isSoft := p.calculateHandValue(uint8(i))
 		if trueCount > 2 {
 			curAction = "double"
+		} else {
+			curAction = wizardOfOddsActionLogic(p, dealerCard, playerHandValue, isSoft, hand)
 		}
+		actions = append(actions, curAction)
+		handIndices = append(handIndices, uint8(i))
 
 	}
 	return actions, handIndices
