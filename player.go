@@ -51,7 +51,12 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	p.isDoubled = []bool{false, false, false, false, false}
 	p.isSurrendered = []bool{false, false, false, false, false}
 	p.count, p.countDescription = randomCountingStrategy()
-	p.action, p.strategyDescription = randomPlayerStrategy()
+	if p.countDescription == "Ace/Five Count" {
+		p.action = aceFiveCount
+		p.strategyDescription = "Ace/Five Count"
+	} else {
+		p.action, p.strategyDescription = randomPlayerStrategy()
+	}
 	p.winCount = 0
 	p.loseCount = 0
 	return p
@@ -63,7 +68,12 @@ func (p *Player) reset() {
 	p.isDoubled = []bool{false, false, false, false, false}
 	p.isSurrendered = []bool{false, false, false, false, false}
 	p.count, p.countDescription = randomCountingStrategy()
-	p.action, p.strategyDescription = randomPlayerStrategy()
+	if p.countDescription == "Ace/Five Count" {
+		p.action = aceFiveCount
+		p.strategyDescription = "Ace/Five Count"
+	} else {
+		p.action, p.strategyDescription = randomPlayerStrategy()
+	}
 	p.hands = nil
 }
 
