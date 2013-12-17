@@ -83,7 +83,6 @@ func wizardOfOdds(p *Player) ([]string, []uint8) {
 	fmt.Printf("[counting strategy: %s]: Running Count: %f, True Count: %f\n", p.countDescription, runningCount, trueCount)
 	fmt.Print("[playing strategy: WizardOfOdds]: ")
 
-	// prepare yourself for the longest fucking if else piece of shit ever
 	dealerCard := p.table.dealer.curHand.cards[0]
 	for i, hand := range p.hands {
 		playerHandValue, isSoft := p.calculateHandValue(uint8(i))
@@ -96,6 +95,7 @@ func wizardOfOdds(p *Player) ([]string, []uint8) {
 
 }
 
+// prepare yourself for the longest fucking if else piece of shit ever
 func wizardOfOddsActionLogic(p *Player, dealerCard *Card, playerHandValue uint8, isSoft bool, hand *Hand) string {
 	if len(hand.cards) == 2 {
 		if hand.cards[0].value == "8" && hand.cards[1].value == "8" && dealerCard.value == "A" {
