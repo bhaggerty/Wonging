@@ -12,11 +12,14 @@ import (
 // }
 type PlayerStrategy func(*Player) ([]string, []uint8)
 
+var (
+	randStrategies = []PlayerStrategy{basic, wizardOfOdds}
+	description    = []string{"Basic", "Wizard of Odds"}
+)
+
 func randomPlayerStrategy() (PlayerStrategy, string) {
-	strategies := []PlayerStrategy{basic, wizardOfOdds}
-	description := []string{"Basic", "Wizard of Odds"}
-	randomInt := randInt(0, len(strategies))
-	return strategies[randomInt], description[randomInt]
+	randomInt := randInt(0, len(randStrategies))
+	return randStrategies[randomInt], description[randomInt]
 }
 
 //a very basic/stupid strategy, hit if below 17, stand otherwise
