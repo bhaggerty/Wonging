@@ -13,13 +13,19 @@ import (
 type PlayerStrategy func(*Player) ([]string, []uint8)
 
 var (
-	randStrategies = []PlayerStrategy{basic, wizardOfOdds}
-	description    = []string{"Basic", "Wizard of Odds"}
+	countStrategies  = []PlayerStrategy{aceFiveCount, hiLoCount}
+	countDescription = []string{"Ace/Five Count", "HiLo Count"}
+	randStrategies   = []PlayerStrategy{basic, wizardOfOdds}
+	description      = []string{"Basic", "Wizard of Odds"}
 )
 
-func randomPlayerStrategy() (PlayerStrategy, string) {
+func randomNonCountPlayerStrategy() (PlayerStrategy, string) {
 	randomInt := randInt(0, len(randStrategies))
 	return randStrategies[randomInt], description[randomInt]
+}
+func randomCountPlayerStrategies() (PlayerStrategy, string) {
+	randomInt := randInt(0, len(countStrategies))
+	return countStrategies[randomInt], countDescription[randomInt]
 }
 
 //a very basic/stupid strategy, hit if below 17, stand otherwise

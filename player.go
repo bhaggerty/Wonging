@@ -55,7 +55,7 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 		p.action = aceFiveCount
 		p.strategyDescription = "Ace/Five Count"
 	} else {
-		p.action, p.strategyDescription = randomPlayerStrategy()
+		p.action, p.strategyDescription = randomNonCountPlayerStrategy()
 	}
 	p.winCount = 0
 	p.loseCount = 0
@@ -72,7 +72,7 @@ func (p *Player) reset() {
 		p.action = aceFiveCount
 		p.strategyDescription = "Ace/Five Count"
 	} else {
-		p.action, p.strategyDescription = randomPlayerStrategy()
+		p.action, p.strategyDescription = randomNonCountPlayerStrategy()
 	}
 	p.hands = nil
 }
