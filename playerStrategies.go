@@ -166,15 +166,18 @@ func hiLoCount(p *Player) ([]string, []uint8) {
 	trueCount := runningCount / DEFAULTDECKPERSHOE
 	fmt.Printf("[counting strategy: %s, Running Count: %f, True Count: %f]\n", p.countDescription, runningCount, trueCount)
 	fmt.Print("[playing strategy: HiLo Count]: ")
-	// dealerCard := p.table.dealer.curHand.cards[0]
+	dealerCard := p.table.dealer.curHand.cards[0]
 
 	for i, hand := range p.hands {
-		fmt.Printf("Running count: %f, true count: %f\n", runningCount, trueCount)
-		fmt.Println(i, hand)
+		var curAction string
+		playerHandValue, isSoft := p.calculateHandValue(uint8(i))
 
-		//The player should stand/double/split if the True Count equals or exceeds the Index Number, otherwise hit. The player should take insurance if the True Count is +3 or greater.
-		//The player should surrender if the True Count equals or exceeds the Index Number.
-		// actions = append(actions, curAction)
+		if trueCount > 0 {
+				curAction = "double"
+		} else {
+			curAction = wizardOfOddsActionLogic(p, dealerCard, playerHandValue, isSoft, hand)
+		}
+		actions = append(actions, curAction)
 		handIndices = append(handIndices, uint8(i))
 	}
 	return actions, handIndices
