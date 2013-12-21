@@ -172,7 +172,7 @@ func hiLoCount(p *Player) ([]string, []uint8) {
 		var curAction string
 		playerHandValue, isSoft := p.calculateHandValue(uint8(i))
 
-		if trueCount > 0 {
+		if trueCount > 0  && playerHandValue < 10{
 				curAction = "double"
 		} else {
 			curAction = wizardOfOddsActionLogic(p, dealerCard, playerHandValue, isSoft, hand)
