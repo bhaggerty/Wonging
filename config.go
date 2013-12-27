@@ -21,7 +21,7 @@ const DEFAULTPLAYERLIMITPERTABLE uint8 = 5
 
 //================== Dealer ==================\\
 //How many decks in a shoe
-const DEFAULTDECKPERSHOE = 1
+const DEFAULTDECKPERSHOE = 2
 
 //================== Player ==================\\
 //how much money player starts with
