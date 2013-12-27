@@ -121,7 +121,7 @@ func WhiteText(s string) string {
 
 // Logging overriding
 
-func logTo(fileName string) {
+func logTo(fileName, level, logStr string) {
 	fileName = fileName + ".log"
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
@@ -130,5 +130,5 @@ func logTo(fileName string) {
 	defer f.Close()
 
 	log.SetOutput(f)
-	log.Println("This is a test log entry")
+	log.Printf("[%s] %s", level, logStr)
 }
