@@ -1,7 +1,10 @@
 package wonging
 
 import (
+	"fmt"
+	"log"
 	"math/rand"
+	"os"
 )
 
 // -1 means cannot find
@@ -114,4 +117,18 @@ func CyanText(s string) string {
 
 func WhiteText(s string) string {
 	return "\x1b[37;1m" + s + "\x1b[0m"
+}
+
+// Logging overriding
+
+func logTo(fileName string) {
+	fileName = fileName + ".log"
+	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
+	if err != nil {
+		fmt.Printf("Error opening file: %v\n", err)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+	log.Println("This is a test log entry")
 }
