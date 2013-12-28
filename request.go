@@ -12,5 +12,5 @@ type Request struct {
 }
 
 func (r *Request) printRequest() {
-	fmt.Printf("%s %d requests %s [%d]\n", r.entityType, r.id, r.action, r.handIndex)
+	fmt.Printf("%s %d requests %s %d\n", r.entityType, r.id, r.action, r.handIndex)
 }
