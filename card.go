@@ -29,5 +29,9 @@ func (c *Card) Initialize(v string, n uint8, s string) *Card {
 }
 
 func (c *Card) PrintCard() {
-	fmt.Println(c.value, c.symbol)
+	fmt.Println(c.Description())
+}
+
+func (c *Card) Description() string {
+	return fmt.Sprintln(c.value, c.symbol)
 }
