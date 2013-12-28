@@ -27,10 +27,29 @@ func predefineBJ() *Hand {
 func Test_CalculateValue(t *testing.T) {
 	hand := predefineHand()
 	totalValue, isSoft := hand.CalculateValue()
-	if totalValue != 29 && !isSoft {
+	if totalValue != 29 || isSoft {
 		t.Error("CalculateValue() did not work as expected.")
 	} else {
 		t.Log("CalculateValue() test passed")
+	}
+}
+
+func Test_Description(t *testing.T) {
+	hand := predefineHand()
+	description := hand.Description()
+	if description != "==> hand: (hard 29)\n" {
+		t.Error("Description() did not work as expected.")
+	} else {
+		t.Log("Description() test passed")
+	}
+}
+
+func Test_IsBusted(t *testing.T) {
+	hand := predefineHand()
+	if !hand.isBusted() {
+		t.Error("isBusted() did not work as expected.")
+	} else {
+		t.Log("isBusted() test passed")
 	}
 }
 
@@ -51,7 +70,7 @@ func Test_CalculateValue(t *testing.T) {
 // 	if outcome != "Dealer busted" {
 // 		t.Error("DetermineOutcome() - Expected 'Dealer busted', Actual: " + outcome)
 // 	} else {
-// 		t.Log("DetermineOutcome() ifBusted case works")
+// 		t.Log("DetermineOutcome() isBusted case works")
 // 	}
 // 	outcome = handBJ.DetermineOutcome(10)
 // 	if outcome != "Player wins" {

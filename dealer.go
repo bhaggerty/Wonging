@@ -59,7 +59,7 @@ func (d *Dealer) calculateVisibleHandValue() (uint8, bool) {
 func (d *Dealer) isBusted() bool {
 	tmpHand := new(Hand)
 	tmpHand.cards = append(d.curHand.cards, d.faceDown)
-	return tmpHand.ifBusted()
+	return tmpHand.isBusted()
 }
 
 //Dealer actions

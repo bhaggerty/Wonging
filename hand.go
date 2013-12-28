@@ -85,7 +85,7 @@ func (h *Hand) calculateCount() *Counter {
 
 //optional parameter
 //A total can be passed in, otherwise it will be calculated
-func (h *Hand) ifBusted(total ...uint8) bool {
+func (h *Hand) isBusted(total ...uint8) bool {
 	var myTotal uint8
 	if len(total) == 0 {
 		myTotal, _ = h.CalculateValue()
@@ -137,9 +137,9 @@ func (h *Hand) Description() string {
 // 		return "Pass in at least one, but not more than two totals for comparison"
 // 	}
 // 	dealerTotal := totals[0]
-// 	if h.ifBusted(myTotal) {
+// 	if h.isBusted(myTotal) {
 // 		return "Player busted"
-// 	} else if h.ifBusted(dealerTotal) {
+// 	} else if h.isBusted(dealerTotal) {
 // 		return "Dealer busted"
 // 	} else if myTotal == dealerTotal {
 // 		return "Push"

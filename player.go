@@ -54,10 +54,10 @@ func (p *Player) Initialize(id uint8, c *Casino, t *Table) *Player {
 	if p.countDescription == "Ace/Five Count" {
 		p.action = aceFiveCount
 		p.strategyDescription = "Ace/Five Count"
-	} else if p.countDescription == "Hi Lo"{
+	} else if p.countDescription == "Hi Lo" {
 		p.action = hiLoCount
 		p.strategyDescription = "Hi Lo Count"
-	}else {
+	} else {
 		p.action, p.strategyDescription = randomNonCountPlayerStrategy()
 	}
 	p.winCount = 0
@@ -74,10 +74,10 @@ func (p *Player) reset() {
 	if p.countDescription == "Ace/Five Count" {
 		p.action = aceFiveCount
 		p.strategyDescription = "Ace/Five Count"
-	} else if p.countDescription == "Hi Lo"{
+	} else if p.countDescription == "Hi Lo" {
 		p.action = hiLoCount
 		p.strategyDescription = "Hi Lo Count"
-	}else {
+	} else {
 		p.action, p.strategyDescription = randomNonCountPlayerStrategy()
 	}
 	p.hands = nil
@@ -227,11 +227,11 @@ func (p *Player) isNatural() bool {
 }
 
 func (p *Player) isBusted(handIndex uint8) bool {
-	return p.hands[handIndex].ifBusted()
+	return p.hands[handIndex].isBusted()
 }
 func (p *Player) isAllBusted() bool {
 	for _, hand := range p.hands {
-		if !(hand.ifBusted()) {
+		if !(hand.isBusted()) {
 			return false
 		}
 	}
