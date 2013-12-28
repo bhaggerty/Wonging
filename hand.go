@@ -68,7 +68,8 @@ func (h *Hand) CalculateValue() (uint8, bool) {
 }
 func (h *Hand) isBlackJack() bool {
 	if len(h.cards) == 2 {
-		return uint8(h.cards[0].numberValue)+uint8(h.cards[1].numberValue) == BLACKJACK
+		value, _ := h.CalculateValue()
+		return value == BLACKJACK
 	} else {
 		return false
 	}

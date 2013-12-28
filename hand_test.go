@@ -9,18 +9,15 @@ func predefineHand() *Hand {
 	card1 := new(Card).Initialize("9", uint8(9), "Clubs")
 	card2 := new(Card).Initialize("J", uint8(10), "Hearts")
 	card3 := new(Card).Initialize("K", uint8(10), "Diamonds")
-	hand := new(Hand)
-	hand.AddCard(card1).AddCard(card2).AddCard(card3)
+	hand := new(Hand).AddCard(card1).AddCard(card2).AddCard(card3)
 	return hand
 }
 
 //generate a blackjack hand
 func predefineBJ() *Hand {
-	card1 := new(Card).Initialize("5", uint8(5), "Clubs")
-	card2 := new(Card).Initialize("6", uint8(6), "Clubs")
-	card3 := new(Card).Initialize("10", uint8(10), "Clubs")
-	hand := new(Hand)
-	hand.AddCard(card1).AddCard(card2).AddCard(card3)
+	card1 := new(Card).Initialize("A", uint8(5), "Clubs")
+	card2 := new(Card).Initialize("10", uint8(10), "Clubs")
+	hand := new(Hand).AddCard(card1).AddCard(card2)
 	return hand
 }
 
@@ -50,6 +47,15 @@ func Test_IsBusted(t *testing.T) {
 		t.Error("isBusted() did not work as expected.")
 	} else {
 		t.Log("isBusted() test passed")
+	}
+}
+
+func Test_IsBlackJack(t *testing.T) {
+	hand := predefineBJ()
+	if !hand.isBlackJack() {
+		t.Error("isBlackJack() did not work as expected.")
+	} else {
+		t.Log("isBlackJack() test passed")
 	}
 }
 
