@@ -10,16 +10,19 @@ type Hand struct {
 	currentInsurance float64
 }
 
-func (h *Hand) AddCard(c *Card) {
+func (h *Hand) AddCard(c *Card) *Hand {
 	h.cards = append(h.cards, c)
+	return h
 }
 
-func (h *Hand) bet(money float64) {
+func (h *Hand) bet(money float64) *Hand {
 	h.currentBet += money
+	return h
 }
 
-func (h *Hand) insure(money float64) {
+func (h *Hand) insure(money float64) *Hand {
 	h.currentInsurance += money
+	return h
 }
 func (h *Hand) pop() {
 	if len(h.cards) > 0 {
@@ -96,7 +99,16 @@ func (h *Hand) ifBusted(total ...uint8) bool {
 	}
 }
 
+//Print out a hand
 func (h *Hand) PrintHand() {
+	fmt.Printf(h.Description())
+	for _, card := range h.cards {
+		card.PrintCard()
+	}
+}
+
+// Much like toString in Java or Description in Obj-C
+func (h *Hand) Description() string {
 	if h.cards != nil && len(h.cards) > 0 {
 		value, soft := h.CalculateValue()
 		var softString string
@@ -105,11 +117,9 @@ func (h *Hand) PrintHand() {
 		} else {
 			softString = "hard"
 		}
-		fmt.Printf("==> hand: (%s %d)\n", softString, value)
-		for _, card := range h.cards {
-			card.PrintCard()
-		}
+		return fmt.Sprintf("==> hand: (%s %d)\n", softString, value)
 	}
+	return "Hand doesn't exist or is empty"
 }
 
 //optional parameter
@@ -117,25 +127,25 @@ func (h *Hand) PrintHand() {
 //two totals passed in: we will do the comparison right away
 //One total passed in: assuming it is the total of the hand of opponent
 //                     proceed to calculating own total then compare
-func (h *Hand) DetermineOutcome(totals ...uint8) string {
-	var myTotal uint8
-	if len(totals) == 2 {
-		myTotal = totals[1]
-	} else if len(totals) == 1 {
-		myTotal, _ = h.CalculateValue()
-	} else {
-		return "Pass in at least one, but not more than two totals for comparison"
-	}
-	dealerTotal := totals[0]
-	if h.ifBusted(myTotal) {
-		return "Player busted"
-	} else if h.ifBusted(dealerTotal) {
-		return "Dealer busted"
-	} else if myTotal == dealerTotal {
-		return "Push"
-	} else if myTotal > dealerTotal {
-		return "Player wins"
-	} else {
-		return "Dealer wins"
-	}
-}
+// func (h *Hand) DetermineOutcome(totals ...uint8) string {
+// 	var myTotal uint8
+// 	if len(totals) == 2 {
+// 		myTotal = totals[1]
+// 	} else if len(totals) == 1 {
+// 		myTotal, _ = h.CalculateValue()
+// 	} else {
+// 		return "Pass in at least one, but not more than two totals for comparison"
+// 	}
+// 	dealerTotal := totals[0]
+// 	if h.ifBusted(myTotal) {
+// 		return "Player busted"
+// 	} else if h.ifBusted(dealerTotal) {
+// 		return "Dealer busted"
+// 	} else if myTotal == dealerTotal {
+// 		return "Push"
+// 	} else if myTotal > dealerTotal {
+// 		return "Player wins"
+// 	} else {
+// 		return "Dealer wins"
+// 	}
+// }
