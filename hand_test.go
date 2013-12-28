@@ -21,6 +21,26 @@ func predefineBJ() *Hand {
 	return hand
 }
 
+func Test_bet(t *testing.T) {
+	hand := predefineHand()
+	hand.bet(10)
+	if !(hand.currentBet == 10) {
+		t.Error("bet() did not work as expected.")
+	} else {
+		t.Log("bet() test passed")
+	}
+}
+
+func Test_insure(t *testing.T) {
+	hand := predefineHand()
+	hand.insure(10)
+	if !(hand.currentInsurance == 10) {
+		t.Error("insure() did not work as expected.")
+	} else {
+		t.Log("insure() test passed")
+	}
+}
+
 func Test_CalculateValue(t *testing.T) {
 	hand := predefineHand()
 	totalValue, isSoft := hand.CalculateValue()
