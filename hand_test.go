@@ -1,17 +1,15 @@
 package wonging
 
 import (
-	"github.com/josephyzhou/wonging"
-	// "strconv"
 	"testing"
 )
 
 //generate a "busted" hand
-func predefineHand() *wonging.Hand {
-	card1 := new(wonging.Card).Initialize("9", uint8(9), "Clubs")
-	card2 := new(wonging.Card).Initialize("J", uint8(10), "Hearts")
-	card3 := new(wonging.Card).Initialize("K", uint8(10), "Diamonds")
-	hand := new(wonging.Hand)
+func predefineHand() *Hand {
+	card1 := new(Card).Initialize("9", uint8(9), "Clubs")
+	card2 := new(Card).Initialize("J", uint8(10), "Hearts")
+	card3 := new(Card).Initialize("K", uint8(10), "Diamonds")
+	hand := new(Hand)
 	hand.AddCard(card1)
 	hand.AddCard(card2)
 	hand.AddCard(card3)
@@ -19,11 +17,11 @@ func predefineHand() *wonging.Hand {
 }
 
 //generate a blackjack hand
-func predefineBJ() *wonging.Hand {
-	card1 := new(wonging.Card).Initialize("5", uint8(5), "Clubs")
-	card2 := new(wonging.Card).Initialize("6", uint8(6), "Clubs")
-	card3 := new(wonging.Card).Initialize("10", uint8(10), "Clubs")
-	hand := new(wonging.Hand)
+func predefineBJ() *Hand {
+	card1 := new(Card).Initialize("5", uint8(5), "Clubs")
+	card2 := new(Card).Initialize("6", uint8(6), "Clubs")
+	card3 := new(Card).Initialize("10", uint8(10), "Clubs")
+	hand := new(Hand)
 	hand.AddCard(card1)
 	hand.AddCard(card2)
 	hand.AddCard(card3)
@@ -32,8 +30,8 @@ func predefineBJ() *wonging.Hand {
 
 func Test_CalculateValue(t *testing.T) {
 	hand := predefineHand()
-	totalValue := hand.CalculateValue()
-	if totalValue != 29 {
+	totalValue, isSoft := hand.CalculateValue()
+	if totalValue != 29 && !isSoft {
 		t.Error("CalculateValue() did not work as expected.")
 	} else {
 		t.Log("CalculateValue() test passed")
