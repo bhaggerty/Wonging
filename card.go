@@ -33,5 +33,5 @@ func (c *Card) PrintCard() {
 }
 
 func (c *Card) Description() string {
-	return fmt.Sprintln(c.value, c.symbol)
+	return fmt.Sprint(c.value, c.symbol)
 }
