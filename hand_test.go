@@ -10,9 +10,7 @@ func predefineHand() *Hand {
 	card2 := new(Card).Initialize("J", uint8(10), "Hearts")
 	card3 := new(Card).Initialize("K", uint8(10), "Diamonds")
 	hand := new(Hand)
-	hand.AddCard(card1)
-	hand.AddCard(card2)
-	hand.AddCard(card3)
+	hand.AddCard(card1).AddCard(card2).AddCard(card3)
 	return hand
 }
 
@@ -22,9 +20,7 @@ func predefineBJ() *Hand {
 	card2 := new(Card).Initialize("6", uint8(6), "Clubs")
 	card3 := new(Card).Initialize("10", uint8(10), "Clubs")
 	hand := new(Hand)
-	hand.AddCard(card1)
-	hand.AddCard(card2)
-	hand.AddCard(card3)
+	hand.AddCard(card1).AddCard(card2).AddCard(card3)
 	return hand
 }
 
