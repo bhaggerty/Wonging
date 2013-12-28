@@ -15,13 +15,14 @@ func (c *Card) Initialize(v string, n uint8, s string) *Card {
 	c.value = v
 	c.numberValue = n
 	c.suit = s
-	if s == "Diamonds" {
+	switch s {
+	case "Diamonds":
 		c.symbol = RedText("♦")
-	} else if s == "Hearts" {
+	case "Hearts":
 		c.symbol = RedText("♥")
-	} else if s == "Spades" {
+	case "Spades":
 		c.symbol = BlackText("♠")
-	} else if s == "Clubs" {
+	case "Clubs":
 		c.symbol = BlackText("♣")
 	}
 	return c
