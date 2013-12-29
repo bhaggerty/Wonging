@@ -23,3 +23,6 @@ http://golang.org/doc/install
 `cd /client`
 
 `go run simulator.go`
+
+###License
+MIT - see LICENSE file
