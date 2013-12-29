@@ -28,6 +28,16 @@ func checkPlayerContain(p *Player, players []*Player) int {
 	return index
 }
 
+func checkShoeContain(c *Card, shoe *Deck) int {
+	index := -1
+	for i := 0; i < len(shoe.cards); i++ {
+		if c.value == shoe.cards[i].value && c.suit == shoe.cards[i].suit {
+			index = i
+		}
+	}
+	return index
+}
+
 func combineCounters(counters []*Counter) *Counter {
 	combinedCounter := new(Counter).initialize()
 	for _, counter := range counters {
