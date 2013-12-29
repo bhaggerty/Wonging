@@ -31,13 +31,6 @@ func (d *Deck) Initialize(numOfDeck int) *Deck {
 	return d
 }
 
-func (d *Deck) PrintDeck() {
-	fmt.Printf("===== Deck: %d cards =====\n", len(d.cards))
-	for _, card := range d.cards {
-		card.PrintCard()
-	}
-}
-
 func (d *Deck) popRandom() *Deck {
 	randomIndex := 0 + rand.Intn(len(d.cards))
 	d.dealt = append(d.dealt, d.cards[randomIndex])
@@ -68,4 +61,15 @@ func (d *Deck) Shuffle() {
 		d.cards[i] = d.cards[r]
 		d.cards[r] = temp
 	}
+}
+
+func (d *Deck) PrintDeck() {
+	fmt.Println(d.Description())
+	for _, card := range d.cards {
+		card.PrintCard()
+	}
+}
+
+func (d *Deck) Description() string {
+	return fmt.Sprintf("===== Deck: %d cards =====", len(d.cards))
 }
