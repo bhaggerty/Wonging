@@ -74,12 +74,13 @@ func Test_CheckPlayerContain(t *testing.T) {
 
 func Test_CheckDealerContain(t *testing.T) {
 	casino := new(Casino).Initialize(1)
+	shoe := new(Deck).Initialize(1)
 	table := new(Table).Initialize(1, casino)
-	d1 := new(Dealer).Initialize(1, casino, table)
-	d2 := new(Dealer).Initialize(2, casino, table)
-	d3 := new(Dealer).Initialize(3, casino, table)
+	d1 := new(Dealer).Initialize(1, table, shoe)
+	d2 := new(Dealer).Initialize(2, table, shoe)
+	d3 := new(Dealer).Initialize(3, table, shoe)
 	dealers := append([]*Dealer{}, d1, d2, d3)
-	if CheckDealerContain(d1, dealers) == -1 {
+	if checkDealerContain(d1, dealers) == -1 {
 		t.Error("CheckDealerContain() did not work as expected.")
 	} else {
 		t.Log("CheckDealerContain() test passed")
