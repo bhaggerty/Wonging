@@ -57,3 +57,21 @@ func Test_CheckShoeContain(t *testing.T) {
 		t.Error("CheckShoeContain() did not work as expected.")
 	}
 }
+
+func Test_CheckPlayerContain(t *testing.T) {
+	casino := new(Casino).Initialize(1)
+	table := new(Table).Initialize(1, casino)
+	p1 := new(Player).Initialize(1, casino, table)
+	p2 := new(Player).Initialize(2, casino, table)
+	p3 := new(Player).Initialize(3, casino, table)
+	players := append([]*Player{}, p1, p2, p3)
+	if checkPlayerContain(p1, players) == -1 {
+		t.Error("checkPlayerContain() did not work as expected.")
+	} else {
+		t.Log("checkPlayerContain() test passed")
+	}
+}
+
+func Test_CheckDealerContain(t *testing.T) {
+
+}
