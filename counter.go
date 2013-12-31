@@ -1,5 +1,9 @@
 package wonging
 
+import (
+	"fmt"
+)
+
 var (
 	HiLo = map[string]int8{
 		"2":  1,
@@ -150,4 +154,12 @@ func (c *Counter) count(cardValue string) *Counter {
 	c.ZenCount += ZenCount[cardValue]
 	c.AceFiveCount += AceFiveCount[cardValue]
 	return c
+}
+
+func (c *Counter) Description() string {
+	return fmt.Sprintf("== Counter == HiLo:%d, HiOpt1:%d, HiOpt2:%d, KO:%d, Omega2:%d, Red7:%.2f, ZenCount:%d, AceFive:%d", c.HiLo, c.HiOpt1, c.HiOpt2, c.KO, c.Omega2, c.Red7, c.ZenCount, c.AceFiveCount)
+}
+
+func (c *Counter) PrintCounter() {
+	fmt.Println(c.Description())
 }
