@@ -29,3 +29,21 @@ func Test_MinMaxFloatS(t *testing.T) {
 	}
 
 }
+
+func Test_CombineCounters(t *testing.T) {
+	counter1 := new(Counter).initialize()
+	counter2 := new(Counter).initialize()
+	// count some stuff
+	counter1.count("A")
+	counter2.count("K")
+
+	counters := append([]*Counter{}, counter1, counter2)
+	combinedCounter := combineCounters(counters)
+	correctToString := "== Counter == HiLo:-2, HiOpt1:-1, HiOpt2:-2, KO:-2, Omega2:-2, Red7:-2.00, ZenCount:-3, AceFive:0"
+	if combinedCounter.Description() != correctToString {
+		t.Error("CombineCounters() did not work as expected.")
+		t.Error(combinedCounter.Description())
+	} else {
+		t.Log("CombineCounters() test passed")
+	}
+}
