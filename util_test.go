@@ -47,3 +47,13 @@ func Test_CombineCounters(t *testing.T) {
 		t.Log("CombineCounters() test passed")
 	}
 }
+
+func Test_CheckShoeContain(t *testing.T) {
+	shoe := new(Deck).Initialize(1)
+	aceOfDiamonds := new(Card).Initialize("A", 1, "Diamonds")
+	if checkShoeContain(aceOfDiamonds, shoe) != -1 {
+		t.Log("CheckShoeContain() test passed")
+	} else {
+		t.Error("CheckShoeContain() did not work as expected.")
+	}
+}
