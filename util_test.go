@@ -1,6 +1,9 @@
 package wonging
 
 import (
+	"bufio"
+	"os"
+	"strings"
 	"testing"
 )
 
@@ -84,5 +87,37 @@ func Test_CheckDealerContain(t *testing.T) {
 		t.Error("CheckDealerContain() did not work as expected.")
 	} else {
 		t.Log("CheckDealerContain() test passed")
+	}
+}
+
+func Test_LogTo(t *testing.T) {
+	filename := "test123"
+	path := "log/" + filename + ".log"
+	logStr := "This is a test string"
+	logTo(filename, logStr)
+	//check if exist
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			t.Error("LogTo() [file not exist] did not work as expected.")
+		} else {
+			t.Error("LogTo() did not work as expected.")
+		}
+	} else {
+		//check if log file contains logStr
+		f, _ := os.Open(path)
+		defer f.Close()
+		var stringContains bool = false
+		scanner := bufio.NewScanner(f)
+		for scanner.Scan() {
+			if strings.Contains(scanner.Text(), logStr) {
+				stringContains = true
+			}
+		}
+		if stringContains {
+			t.Log("LogTo() test passed")
+		} else {
+			t.Error("LogTo() [test string not in log file] did not work as expected.")
+		}
 	}
 }
