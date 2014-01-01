@@ -132,7 +132,7 @@ func WhiteText(s string) string {
 // Logging overriding
 
 func logToWithLevel(fileName, level, logStr string) {
-	fileName = fileName + ".log"
+	fileName = "log/" + fileName + ".log"
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		fmt.Printf("Error opening file: %v\n", err)
@@ -144,7 +144,7 @@ func logToWithLevel(fileName, level, logStr string) {
 }
 
 func logTo(fileName, logStr string) {
-	fileName = fileName + ".log"
+	fileName = "log/" + fileName + ".log"
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		fmt.Printf("Error opening file: %v\n", err)
