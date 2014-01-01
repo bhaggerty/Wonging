@@ -121,3 +121,37 @@ func Test_LogTo(t *testing.T) {
 		}
 	}
 }
+
+func Test_LogToWithLevel(t *testing.T) {
+	filename := "test123"
+	level := "debug"
+	path := "log/" + filename + ".log"
+	logStr := "This is a test string"
+	levelStr := "[debug] This is a test string"
+	logToWithLevel(filename, level, logStr)
+	//check if exist
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			t.Error("LogToWithLevel() [file not exist] did not work as expected.")
+		} else {
+			t.Error("LogToWithLevel() did not work as expected.")
+		}
+	} else {
+		//check if log file contains logStr
+		f, _ := os.Open(path)
+		defer f.Close()
+		var stringContains bool = false
+		scanner := bufio.NewScanner(f)
+		for scanner.Scan() {
+			if strings.Contains(scanner.Text(), levelStr) {
+				stringContains = true
+			}
+		}
+		if stringContains {
+			t.Log("LogToWithLevel() test passed")
+		} else {
+			t.Error("LogToWithLevel() [test string not in log file] did not work as expected.")
+		}
+	}
+}
