@@ -34,6 +34,16 @@ func (d *Dealer) reset() {
 	d.action, d.strategyDescription = randomDealerStrategy()
 }
 
+// returns dealer's entire hand, combining facedown card with rest of hand
+func (d *Dealer) fullHand() *Hand {
+	if len(d.curHand.cards) != 0 && d.faceDown != nil {
+		tmpHand := new(Hand)
+		tmpHand.cards = append(d.curHand.cards, d.faceDown)
+		return tmpHand
+	}
+	return nil
+}
+
 func (d *Dealer) changeTable(table *Table) {
 	d.table = table
 }
@@ -43,10 +53,7 @@ func (d *Dealer) calculateHandValue() (uint8, bool) {
 		//No card present, returning 0
 		return 0, false
 	}
-	//combining cards into one hand
-	tmpHand := new(Hand)
-	tmpHand.cards = append(d.curHand.cards, d.faceDown)
-	return tmpHand.CalculateValue()
+	return d.fullHand().CalculateValue()
 }
 
 func (d *Dealer) calculateVisibleHandValue() (uint8, bool) {
@@ -102,27 +109,34 @@ func (d *Dealer) simulate() *Request {
 	return &req
 }
 func (d *Dealer) PrintDealer() {
-	fmt.Printf("[===== Dealer %d =====]\n", d.id)
-	fmt.Println("strategy: ", CyanText(d.strategyDescription))
+	// fmt.Printf("[===== Dealer %d =====]\n", d.id)
+	// fmt.Println("strategy: ", CyanText(d.strategyDescription))
 
-	if d.faceDown != nil {
-		value, soft := d.calculateHandValue()
-		var softString string
-		if soft {
-			softString = "soft"
-		} else {
-			softString = "hard"
-		}
-		fmt.Printf("==> hand: (%s %d)\n", softString, value)
-		fmt.Print("Facedown card: ")
-		d.faceDown.PrintCard()
-		if d.curHand != nil && d.curHand.cards != nil && len(d.curHand.cards) > 0 {
-			for _, card := range d.curHand.cards {
-				card.PrintCard()
-			}
-		}
-	} else {
-		fmt.Println("Dealer has no cards at the moment.")
+	// if d.faceDown != nil {
+	// 	value, soft := d.calculateHandValue()
+	// 	var softString string
+	// 	if soft {
+	// 		softString = "soft"
+	// 	} else {
+	// 		softString = "hard"
+	// 	}
+	// 	fmt.Printf("==> hand: (%s %d)\n", softString, value)
+	// 	fmt.Print("Facedown card: ")
+	// 	d.faceDown.PrintCard()
+	// 	if d.curHand != nil && d.curHand.cards != nil && len(d.curHand.cards) > 0 {
+	// 		for _, card := range d.curHand.cards {
+	// 			card.PrintCard()
+	// 		}
+	// 	}
+	// } else {
+	// 	fmt.Println("Dealer has no cards at the moment.")
+	// }
+	fmt.Print(d.Description())
+	if d.fullHand() != nil {
+		d.fullHand().PrintHand()
 	}
+}
 
+func (d *Dealer) Description() string {
+	return fmt.Sprintf("[===== Dealer %d =====]\nstrategy: %s\n", d.id, CyanText(d.strategyDescription))
 }
