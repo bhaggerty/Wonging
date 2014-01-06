@@ -26,5 +26,20 @@ func Test_Initialize(t *testing.T) {
 }
 
 func Test_fullHand(t *testing.T) {
+	dealer := preDefindDealer()
+	//no card yet
+	if dealer.fullHand() == nil {
+		t.Log("fullHand() [no card case] test passed")
+	} else {
+		t.Error("fullHand() [no card case] did not work as expected.")
+	}
 
+	dealer.dealSelf()
+	dealer.dealSelf()
+	//should now have two cards
+	if len(dealer.fullHand().cards) != 2 {
+		t.Error("fullHand() [2 cards case] did not work as expected.")
+	} else {
+		t.Log("fullHand() [2 cards case] test passed")
+	}
 }
