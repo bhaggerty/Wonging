@@ -65,3 +65,38 @@ func Test_calculateHandValue(t *testing.T) {
 		t.Log("calculateVisibleHandValue() test passed")
 	}
 }
+
+func Test_dealerActions(t *testing.T) {
+	dealer := preDefindDealer()
+
+	//test for deal
+	card := dealer.deal()
+	if card == nil {
+		t.Error("deal() did not work as expected.")
+	} else {
+		t.Log("deal() test passed")
+	}
+
+	//test for deal self
+	dealer.dealSelf()
+	if dealer.faceDown == nil || len(dealer.curHand.cards) > 0 {
+		t.Error("dealSelf() [1 card case] did not work as expected.")
+	} else {
+		t.Log("dealSelf() [1 card case] test passed")
+	}
+
+	dealer.dealSelf()
+	if dealer.faceDown == nil || len(dealer.curHand.cards) != 1 {
+		t.Error("dealSelf() [2 card case] did not work as expected.")
+	} else {
+		t.Log("dealSelf() [2 card case] test passed")
+	}
+
+	// test for deck reset
+	dealer.resetDeck()
+	if len(dealer.shoe.cards) != 52*DEFAULTDECKPERSHOE {
+		t.Error("resetDeck() did not work as expected.")
+	} else {
+		t.Log("resetDeck() test passed")
+	}
+}
