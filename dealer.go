@@ -48,6 +48,7 @@ func (d *Dealer) changeTable(table *Table) {
 	d.table = table
 }
 
+// returns total value of hand, combining facedown card and rest of hand
 func (d *Dealer) calculateHandValue() (uint8, bool) {
 	if len(d.curHand.cards) == 0 && d.faceDown == nil {
 		//No card present, returning 0
@@ -56,6 +57,7 @@ func (d *Dealer) calculateHandValue() (uint8, bool) {
 	return d.fullHand().CalculateValue()
 }
 
+// returns value of hand, without facedown card
 func (d *Dealer) calculateVisibleHandValue() (uint8, bool) {
 	if len(d.curHand.cards) == 0 {
 		return 0, false
@@ -78,18 +80,6 @@ func (d *Dealer) dealSelf() {
 	}
 }
 
-// func (d *Dealer) deal(isDeal []bool) {
-// 	for i := 0; i < len(d.table.players); i++ {
-// 		if isDeal[i] {
-// 			if d.table.players[i].currentBet != 0 {
-// 				for _, hand := range d.table.players[i].hands {
-// 					hand.AddCard(d.shoe.pop())
-// 				}
-// 			}
-// 		}
-// 	}
-// }
-
 func (d *Dealer) deal() *Card {
 	return d.shoe.pop()
 }
@@ -109,28 +99,6 @@ func (d *Dealer) simulate() *Request {
 	return &req
 }
 func (d *Dealer) PrintDealer() {
-	// fmt.Printf("[===== Dealer %d =====]\n", d.id)
-	// fmt.Println("strategy: ", CyanText(d.strategyDescription))
-
-	// if d.faceDown != nil {
-	// 	value, soft := d.calculateHandValue()
-	// 	var softString string
-	// 	if soft {
-	// 		softString = "soft"
-	// 	} else {
-	// 		softString = "hard"
-	// 	}
-	// 	fmt.Printf("==> hand: (%s %d)\n", softString, value)
-	// 	fmt.Print("Facedown card: ")
-	// 	d.faceDown.PrintCard()
-	// 	if d.curHand != nil && d.curHand.cards != nil && len(d.curHand.cards) > 0 {
-	// 		for _, card := range d.curHand.cards {
-	// 			card.PrintCard()
-	// 		}
-	// 	}
-	// } else {
-	// 	fmt.Println("Dealer has no cards at the moment.")
-	// }
 	fmt.Print(d.Description())
 	if d.fullHand() != nil {
 		d.fullHand().PrintHand()
