@@ -66,6 +66,17 @@ func Test_calculateHandValue(t *testing.T) {
 	}
 }
 
+func Test_isBusted(t *testing.T) {
+	dealer := preDefindDealer()
+	dealer.curHand = predefineHand()
+	dealer.faceDown = new(Card).Initialize("A", 1, "Diamonds")
+	if !(dealer.isBusted()) {
+		t.Error("isBusted() did not work as expected.")
+	} else {
+		t.Log("isBusted() test passed")
+	}
+}
+
 func Test_dealerActions(t *testing.T) {
 	dealer := preDefindDealer()
 
