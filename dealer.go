@@ -89,7 +89,7 @@ func (d *Dealer) resetDeck() {
 	d.shoe.Shuffle()
 }
 
-// player simulation
+// dealer simulation
 func (d *Dealer) simulate() *Request {
 	var req Request
 	req.entityType = "dealer"
