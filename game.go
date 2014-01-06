@@ -13,14 +13,10 @@ type Game struct {
 	casinoEarning float64
 	//an array of money in/out for players
 	playerResult []float64
-
-	//current round or final when everythings done
-	round uint8
 }
 
 func (g *Game) Initialize(t *Table) *Game {
 	g.table = t
-	g.round = 0
 	g.casinoEarning = 0
 	//player betting amount
 	for i := 0; i < len(t.players); i++ {
@@ -47,5 +43,9 @@ func (g *Game) biggestLoser() int {
 }
 
 func (g *Game) PrintGame() {
-	fmt.Printf(">> Game Result:\n    round: %d\n    players: %@\n    casino: %f\n", g.round, g.playerResult, g.casinoEarning)
+	fmt.Print(g.Description())
+}
+
+func (g *Game) Description() string {
+	return fmt.Sprintf(">>  Game Result:\n    players: %@\n    casino: %f\n", g.playerResult, g.casinoEarning)
 }
