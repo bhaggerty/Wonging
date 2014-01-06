@@ -43,3 +43,25 @@ func Test_fullHand(t *testing.T) {
 		t.Log("fullHand() [2 cards case] test passed")
 	}
 }
+
+func Test_calculateHandValue(t *testing.T) {
+	dealer := preDefindDealer()
+	dealer.curHand = predefineHand()
+	dealer.faceDown = new(Card).Initialize("A", 1, "Diamonds")
+
+	//test for calculate entire hand
+	handValue, isSoft := dealer.calculateHandValue()
+	if handValue != 30 || isSoft {
+		t.Error("calculateHandValue() did not work as expected.")
+	} else {
+		t.Log("calculateHandValue() test passed")
+	}
+
+	//test for calculate visible hands only
+	visHandValue, isSoft := dealer.calculateVisibleHandValue()
+	if visHandValue != 29 || isSoft {
+		t.Error("calculateVisibleHandValue() did not work as expected.")
+	} else {
+		t.Log("calculateVisibleHandValue() test passed")
+	}
+}
