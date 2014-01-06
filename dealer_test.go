@@ -10,7 +10,7 @@ func preDefindDealer() *Dealer {
 	return new(Dealer).Initialize(1, table, shoe)
 }
 
-func Test_Initialize(t *testing.T) {
+func Test_InitializeDealer(t *testing.T) {
 	dealer := preDefindDealer()
 	if dealer.id != 1 {
 		t.Error("Initialize() [id attribute] did not work as expected.")

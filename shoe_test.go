@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func Test_Init(t *testing.T) {
+func Test_InitializeShoe(t *testing.T) {
 	shoe := new(Deck).Initialize(2)
 	if len(shoe.cards) != 104 {
 		t.Error("Initialize() did not work as expected.")
