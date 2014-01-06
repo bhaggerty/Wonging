@@ -249,27 +249,31 @@ func (p *Player) simulate() *Request {
 
 func (p *Player) PrintPlayer() {
 
-	fmt.Printf("[===== Player %d =====]\n", p.id)
-	fmt.Printf("currently betting: %f\n", p.currentBet)
-	fmt.Println("strategy: ", CyanText(p.strategyDescription))
-	fmt.Println("counting: ", CyanText(p.countDescription))
-
-	if p.totalCash < DEFAULTPLAYERSTARTINGCASH {
-		fmt.Println("total cash: ", RedText(fmt.Sprintf("%f", p.totalCash)))
-	} else {
-		fmt.Println("total cash: ", GreenText(fmt.Sprintf("%f", p.totalCash)))
-	}
-
-	if p.winCount < uint8(DEFAULTTOTALNUMBEROFGAMES/2) {
-		fmt.Println("winning: ", RedText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
-	} else {
-		fmt.Println("winning: ", GreenText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
-	}
+	fmt.Print(p.Description())
 	if p.hands != nil && len(p.hands) > 0 {
 		for _, hand := range p.hands {
 			hand.PrintHand()
 		}
-	} else {
-		fmt.Println("Player has no cards at the moment.")
 	}
+}
+
+func (p *Player) Description() string {
+	description := ""
+	description += fmt.Sprintf("[===== Player %d =====]\n", p.id)
+	description += fmt.Sprintf("currently betting: %f\n", p.currentBet)
+	description += fmt.Sprintln("strategy: ", CyanText(p.strategyDescription))
+	description += fmt.Sprintln("counting: ", CyanText(p.countDescription))
+
+	if p.totalCash < DEFAULTPLAYERSTARTINGCASH {
+		description += fmt.Sprintln("total cash: ", RedText(fmt.Sprintf("%f", p.totalCash)))
+	} else {
+		description += fmt.Sprintln("total cash: ", GreenText(fmt.Sprintf("%f", p.totalCash)))
+	}
+
+	if p.winCount < uint8(DEFAULTTOTALNUMBEROFGAMES/2) {
+		description += fmt.Sprintln("winning: ", RedText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
+	} else {
+		description += fmt.Sprintln("winning: ", GreenText(fmt.Sprintf("%d/%d", p.winCount, DEFAULTTOTALNUMBEROFGAMES)))
+	}
+	return description
 }
