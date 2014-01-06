@@ -24,5 +24,9 @@ http://golang.org/doc/install
 
 `go run simulator.go`
 
+###Testing
+
+`go test -v`
+
 ###License
 MIT - see LICENSE file
