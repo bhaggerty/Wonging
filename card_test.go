@@ -4,8 +4,11 @@ import (
 	"testing"
 )
 
+func predefineCard() *Card {
+	return new(Card).Initialize("10", 10, "Diamonds")
+}
 func Test_Symbol(t *testing.T) {
-	card := new(Card).Initialize("10", 10, "Diamonds")
+	card := predefineCard()
 	if !(card.symbol == RedText("♦")) {
 		t.Error("Symbol case switch did not work as expected.")
 	} else {
