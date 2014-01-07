@@ -4,14 +4,14 @@ import (
 	"testing"
 )
 
-func preDefindDealer() *Dealer {
+func predefineDealer() *Dealer {
 	table := new(Table).Initialize(1, new(Casino).Initialize(0))
 	shoe := new(Deck).Initialize(2)
 	return new(Dealer).Initialize(1, table, shoe)
 }
 
 func Test_InitializeDealer(t *testing.T) {
-	dealer := preDefindDealer()
+	dealer := predefineDealer()
 	if dealer.id != 1 {
 		t.Error("Initialize() [id attribute] did not work as expected.")
 	} else if dealer.table == nil {
@@ -26,7 +26,7 @@ func Test_InitializeDealer(t *testing.T) {
 }
 
 func Test_fullHand(t *testing.T) {
-	dealer := preDefindDealer()
+	dealer := predefineDealer()
 	//no card yet
 	if dealer.fullHand() == nil {
 		t.Log("fullHand() [no card case] test passed")
@@ -45,7 +45,7 @@ func Test_fullHand(t *testing.T) {
 }
 
 func Test_calculateHandValue(t *testing.T) {
-	dealer := preDefindDealer()
+	dealer := predefineDealer()
 	dealer.curHand = predefineHand()
 	dealer.faceDown = new(Card).Initialize("A", 1, "Diamonds")
 
@@ -67,7 +67,7 @@ func Test_calculateHandValue(t *testing.T) {
 }
 
 func Test_isBusted(t *testing.T) {
-	dealer := preDefindDealer()
+	dealer := predefineDealer()
 	dealer.curHand = predefineHand()
 	dealer.faceDown = new(Card).Initialize("A", 1, "Diamonds")
 	if !(dealer.isBusted()) {
@@ -78,7 +78,7 @@ func Test_isBusted(t *testing.T) {
 }
 
 func Test_dealerActions(t *testing.T) {
-	dealer := preDefindDealer()
+	dealer := predefineDealer()
 
 	//test for deal
 	card := dealer.deal()
