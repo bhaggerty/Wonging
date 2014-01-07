@@ -12,7 +12,9 @@ func predefineGame() *Game {
 func predefineGameWithPlayerResults() *Game {
 	table := predefineTableWithPlayers()
 	if table != nil {
-		return new(Game).Initialize(table)
+		game := new(Game).Initialize(table)
+		game.updatePlayerResult(table)
+		return game
 	}
 	return nil
 }
@@ -32,8 +34,12 @@ func Test_biggestWinnerLoser(t *testing.T) {
 	game := predefineGameWithPlayerResults()
 	if game.biggestWinner() == 0 {
 		t.Log("biggestWinner() test passed")
+	} else {
+		t.Error("biggestWinner() did not work as expected.")
 	}
 	if game.biggestLoser() == 1 {
 		t.Log("biggestLoser() test passed")
+	} else {
+		t.Error("biggestLoser() did not work as expected. ", game.biggestLoser())
 	}
 }
