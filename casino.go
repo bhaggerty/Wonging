@@ -132,14 +132,7 @@ func (c *Casino) totalInactivePlayers() uint8 {
 
 func (c *Casino) PrintCasino() {
 	fmt.Printf("\n[[======================================== PRINTING Casino %d ========================================]]\n", c.id)
-
-	fmt.Printf("[[===== Casino %d =====]]\n", c.id)
-	fmt.Printf("Total dealers: %d\n", c.totalDealers())
-	fmt.Printf("Total players: %d\n", c.totalPlayers())
-	fmt.Printf("Total idling dealers: %d\n", c.totalInactiveDealers())
-	fmt.Printf("Total idling players: %d\n", c.totalInactivePlayers())
-	fmt.Printf("Current cash: %f\n", c.bank)
-	fmt.Printf("Current profit: %f\n", c.totalProfit())
+	fmt.Print(c.Description())
 	fmt.Println("[[===== Casino actives: =====]]")
 
 	for _, table := range c.tables {
@@ -154,6 +147,20 @@ func (c *Casino) PrintCasino() {
 	}
 
 }
+
+func (c *Casino) Description() string {
+	description := ""
+	description += fmt.Sprintf("[[===== Casino %d =====]]\n", c.id)
+	description += fmt.Sprintf("Total dealers: %d\n", c.totalDealers())
+	description += fmt.Sprintf("Total players: %d\n", c.totalPlayers())
+	description += fmt.Sprintf("Total idling dealers: %d\n", c.totalInactiveDealers())
+	description += fmt.Sprintf("Total idling players: %d\n", c.totalInactivePlayers())
+	description += fmt.Sprintf("Current cash: %f\n", c.bank)
+	description += fmt.Sprintf("Current profit: %f\n", c.totalProfit())
+	return description
+}
+
+//casino simulations
 func (c *Casino) Start() {
 	fmt.Println("Casino operating.")
 	//do 200 games and see what happens
