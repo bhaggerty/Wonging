@@ -93,7 +93,7 @@ func (p *Player) bet(money float64, handIndex uint8) {
 		p.totalCash -= money
 	}
 }
-func (p *Player) win(money float64) {
+func (p *Player) win(money float64) *Player {
 	if money < 0 {
 		fmt.Println("invalid amount, can't be negative!")
 	} else {
@@ -104,11 +104,13 @@ func (p *Player) win(money float64) {
 		p.casino.lose(money)
 		p.winCount++
 	}
+	return p
 }
-func (p *Player) lose() {
+func (p *Player) lose() *Player {
 	p.casino.win(p.currentBet)
 	p.currentBet = 0
 	p.loseCount++
+	return p
 }
 
 func (p *Player) profit() float64 {
