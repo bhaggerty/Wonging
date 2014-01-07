@@ -30,6 +30,15 @@ func Test_InitializeGame(t *testing.T) {
 	}
 }
 
+func Test_UpdatePlayerResult(t *testing.T) {
+	game := predefineGameWithPlayerResults()
+	if game.playerResult[0] == 20 && game.playerResult[1] == 1 {
+		t.Log("UpdatePlayerResult() test passed")
+	} else {
+		t.Error("UpdatePlayerResult() did not work as expected.")
+	}
+}
+
 func Test_biggestWinnerLoser(t *testing.T) {
 	game := predefineGameWithPlayerResults()
 	if game.biggestWinner() == 0 {
