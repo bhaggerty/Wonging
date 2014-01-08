@@ -24,3 +24,28 @@ func Test_InitializeCasino(t *testing.T) {
 		t.Log("Initialize() test passed")
 	}
 }
+
+func Test_winLoseProfit(t *testing.T) {
+	casino := predefineCasino()
+	casino.win(15)
+
+	if casino.bank != DEFAULTCASINOSTARTINGCASH+15 {
+		t.Error("win() did not work as expected.")
+	} else {
+		t.Log("win() test passed")
+	}
+
+	casino.lose(2)
+
+	if casino.bank != DEFAULTCASINOSTARTINGCASH+13 {
+		t.Error("lose() did not work as expected.")
+	} else {
+		t.Log("lose() test passed")
+	}
+
+	if casino.totalProfit() != 13 {
+		t.Error("totalProfit() did not work as expected.")
+	} else {
+		t.Log("totalProfit() test passed")
+	}
+}
