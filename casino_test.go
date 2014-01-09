@@ -49,3 +49,30 @@ func Test_winLoseProfit(t *testing.T) {
 		t.Log("totalProfit() test passed")
 	}
 }
+
+func Test_distributeDealersPlayers(t *testing.T) {
+	casino := predefineCasino()
+	casino.DistributeDealers()
+	if DEFAULTNUMBEROFDEALERSPERCASINO != len(casino.tables) {
+		if casino.totalActiveDealers() != uint8(len(casino.tables)) && casino.totalInactiveDealers() != uint8(DEFAULTNUMBEROFDEALERSPERCASINO-len(casino.tables)) {
+			t.Error("DistributedDealers() [diff number of tables/dealers] did not work as expected.")
+		} else {
+			t.Log("DistributedDealers() [diff number of tables/dealers] test passed")
+		}
+	} else {
+		if casino.totalActiveDealers() != uint8(DEFAULTNUMBEROFDEALERSPERCASINO) && casino.totalInactiveDealers() != 0 {
+			t.Error("DistributedDealers() [equal number of tables/dealers] did not work as expected.")
+		} else {
+			t.Log("DistributedDealers() [equal number of tables/dealers] test passed")
+		}
+	}
+
+	// casino.DistributePlayers()
+	// if DEFAULTNUMBEROFPLAYERSPERCASINO != len(casino.tables) {
+	// 	if casino.totalActivePlayers() != len(casino.tables) && casino.totalInactivePlayers() != DEFAULTNUMBEROFPLAYERSPERCASINO-len(casino.tables) {
+	// 		t.Error("DistributedDealers() [diff number of tables/dealers] did not work as expected.")
+	// 	} else {
+	// 		t.Log("DistributedDealers() [diff number of tables/dealers] test passed")
+	// 	}
+	// }
+}
