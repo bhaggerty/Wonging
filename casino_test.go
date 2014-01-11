@@ -50,6 +50,24 @@ func Test_winLoseProfit(t *testing.T) {
 	}
 }
 
+func Test_dealerBecomesIdleActive(t *testing.T) {
+	casino := predefineCasino()
+	dealerPopped := casino.idleDealers[0]
+	casino.dealerBecomesActive(dealerPopped)
+	if len(casino.idleDealers) != DEFAULTNUMBEROFDEALERSPERCASINO-1 {
+		t.Error("dealerBecomesActive() did not work as expected.")
+	} else {
+		t.Log("dealerBecomesActive() test passed")
+	}
+
+	casino.dealerBecomesIdle(dealerPopped)
+	if len(casino.idleDealers) != DEFAULTNUMBEROFDEALERSPERCASINO {
+		t.Error("dealerBecomesIdle() did not work as expected.")
+	} else {
+		t.Log("dealerBecomesIdle() test passed")
+	}
+}
+
 func Test_distributeDealersPlayers(t *testing.T) {
 	casino := predefineCasino()
 	casino.DistributeDealers()
