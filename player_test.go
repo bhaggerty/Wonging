@@ -39,3 +39,27 @@ func Test_InitializePlayer(t *testing.T) {
 		t.Log("Initialize() test passed")
 	}
 }
+
+func Test_winLose(t *testing.T) {
+	player := predefinePlayer()
+	player.win(30)
+	if player.currentBet != 0 {
+		t.Error("win() [currentBet attribute] did not work as expected.")
+	} else if player.winCount != 2 {
+		t.Error("win() [winCount attribute] did not work as expected.")
+	} else {
+		t.Log("Initialize() test passed")
+	}
+
+	card := predefineCard()
+	player.acceptCard(card, 0)
+	player.bet(30, 0)
+	player.lose()
+	if player.currentBet != 0 {
+		t.Error("lose() [currentBet attribute] did not work as expected.")
+	} else if player.loseCount != 1 {
+		t.Error("lose() [loseCount attribute] did not work as expected.")
+	} else {
+		t.Log("Initialize() test passed")
+	}
+}
