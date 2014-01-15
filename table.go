@@ -5,7 +5,7 @@ import (
 
 	// "math/rand"
 	// "strconv"
-// "time"
+	// "time"
 )
 
 type Table struct {
@@ -308,4 +308,13 @@ func (t *Table) PrintTable() {
 	if t.games != nil && len(t.games) > 0 {
 		t.games[len(t.games)-1].PrintGame()
 	}
+}
+
+func (t *Table) Description() string {
+	description := ""
+	description += fmt.Sprintf("[===== Table %d =====]\n", t.id)
+	description += fmt.Sprintf("[Number of dealers: %d]\n", t.getNumberOfDealers())
+	description += fmt.Sprintf("[Number of players: %d]\n", t.getNumberOfPlayers())
+	description += fmt.Sprintf("[Number of observers: %d]\n", t.getNumberOfObservers())
+	return description
 }
