@@ -132,6 +132,21 @@ func WhiteText(s string) string {
 
 // Logging overriding
 
+func logAbsolutePath() string {
+	dir := "log/"
+	_, err := os.Stat(dir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			//directory doesn't exist, create it
+			fmt.Printf("Directory %s doesn't exist, creating it\n", dir)
+			os.Mkdir(dir, 0777)
+		}
+	}
+
+	absPath, _ := filepath.Abs(dir)
+	return absPath + "/"
+}
+
 func logToWithLevel(fileName, level, logStr string) {
 	fileName = logAbsolutePath() + fileName + ".log"
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
@@ -157,7 +172,11 @@ func logTo(fileName, logStr string) {
 	log.Println(logStr)
 }
 
-func logAbsolutePath() string {
-	absPath, _ := filepath.Abs("log/")
+// HTML generation
+func htmlAbsolutePath() string {
+	absPath, _ := filepath.Abs("html/")
 	return absPath + "/"
+}
+func generateHTMLMap(fileName, htmlString string) {
+
 }
