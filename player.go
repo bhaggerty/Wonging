@@ -279,3 +279,26 @@ func (p *Player) Description() string {
 	}
 	return description
 }
+
+func (p *Player) GenerateHTMLMap() {
+	html := "<html>"
+	html += fmt.Sprintf("<h3>[[===== Player %d =====]]</h3>", p.id)
+	html += fmt.Sprintf("<div>currently betting: %f </div>", p.currentBet)
+	html += fmt.Sprintf("<div>strategy: %s </div>", p.strategyDescription)
+	html += fmt.Sprintf("<div>counting: %s </div>", p.countDescription)
+
+	if p.totalCash < DEFAULTPLAYERSTARTINGCASH {
+		html += fmt.Sprintln("total cash: ", fmt.Sprintf("<div><font color=\"red\">%f</font></div>", p.totalCash))
+	} else {
+		html += fmt.Sprintln("total cash: ", fmt.Sprintf("<div><font color=\"green\">%f</font></div>", p.totalCash))
+	}
+
+	if p.winCount < uint8(DEFAULTTOTALNUMBEROFGAMES/2) {
+		html += fmt.Sprintln("winning: ", fmt.Sprintf("<div><font color=\"red\">%d/%d</font></div>", p.winCount, DEFAULTTOTALNUMBEROFGAMES))
+	} else {
+		html += fmt.Sprintln("winning: ", fmt.Sprintf("<div><font color=\"green\">%d/%d</font></div>", p.winCount, DEFAULTTOTALNUMBEROFGAMES))
+	}
+
+	html += "</html>"
+	generateHTMLMap(fmt.Sprintf("player%d", p.id), html)
+}

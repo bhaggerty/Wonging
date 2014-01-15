@@ -191,6 +191,7 @@ func (c *Casino) GenerateHTMLMap() {
 	html += "<h5>[[==== Casino idles: ====]]</h5>"
 	for _, idlePlayer := range c.idlePlayers {
 		html += fmt.Sprintf("<div><a href=\"player%d.html\">[Player %d]</a></div>", idlePlayer.id, idlePlayer.id)
+		idlePlayer.GenerateHTMLMap()
 	}
 	for _, idleDealer := range c.idleDealers {
 		html += fmt.Sprintf("<div><a href=\"dealer%d.html\">[Dealer %d]</a></div>", idleDealer.id, idleDealer.id)

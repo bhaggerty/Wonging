@@ -331,6 +331,7 @@ func (t *Table) GenerateHTMLMap() {
 	if t.getNumberOfPlayers() > 0 {
 		for _, player := range t.players {
 			html += fmt.Sprintf("<div><a href=\"player%d.html\">[Player %d]</a></div>", player.id, player.id)
+			player.GenerateHTMLMap()
 		}
 	}
 	if t.games != nil && len(t.games) > 0 {
