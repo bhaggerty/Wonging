@@ -174,9 +174,27 @@ func logTo(fileName, logStr string) {
 
 // HTML generation
 func htmlAbsolutePath() string {
-	absPath, _ := filepath.Abs("html/")
+	dir := "html/"
+	_, err := os.Stat(dir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			//directory doesn't exist, create it
+			fmt.Printf("Directory %s doesn't exist, creating it\n", dir)
+			os.Mkdir(dir, 0777)
+		}
+	}
+
+	absPath, _ := filepath.Abs(dir)
 	return absPath + "/"
 }
 func generateHTMLMap(fileName, htmlString string) {
+	fileName = htmlAbsolutePath() + fileName + ".html"
+	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
+	if err != nil {
+		fmt.Printf("Error opening file: %v\n", err)
+	}
+	defer f.Close()
 
+	log.SetOutput(f)
+	log.Println(htmlString)
 }

@@ -19,4 +19,5 @@ func main() {
 	casino.Start()
 	casino.PrintCasino()
 	casino.Log()
+	casino.GenerateHTMLMap()
 }
