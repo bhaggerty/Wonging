@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"path/filepath"
 )
 
 // -1 means cannot find
@@ -132,7 +133,7 @@ func WhiteText(s string) string {
 // Logging overriding
 
 func logToWithLevel(fileName, level, logStr string) {
-	fileName = "log/" + fileName + ".log"
+	fileName = logAbsolutePath() + fileName + ".log"
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		fmt.Printf("Error opening file: %v\n", err)
@@ -144,7 +145,8 @@ func logToWithLevel(fileName, level, logStr string) {
 }
 
 func logTo(fileName, logStr string) {
-	fileName = "log/" + fileName + ".log"
+
+	fileName = logAbsolutePath() + fileName + ".log"
 	f, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		fmt.Printf("Error opening file: %v\n", err)
@@ -153,4 +155,9 @@ func logTo(fileName, logStr string) {
 
 	log.SetOutput(f)
 	log.Println(logStr)
+}
+
+func logAbsolutePath() string {
+	absPath, _ := filepath.Abs("log/")
+	return absPath + "/"
 }
