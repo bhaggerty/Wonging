@@ -40,7 +40,7 @@ func Test_InitializePlayer(t *testing.T) {
 	}
 }
 
-func Test_winLose(t *testing.T) {
+func Test_winLoseProfitPlayer(t *testing.T) {
 	player := predefinePlayer()
 	player.win(30)
 	if player.currentBet != 0 {
@@ -61,5 +61,11 @@ func Test_winLose(t *testing.T) {
 		t.Error("lose() [loseCount attribute] did not work as expected.")
 	} else {
 		t.Log("Initialize() test passed")
+	}
+
+	if player.profit() != 20 {
+		t.Error("profit() did not work as expected.")
+	} else {
+		t.Log("profit() test passed")
 	}
 }
