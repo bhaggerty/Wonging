@@ -2,6 +2,7 @@ package wonging
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"math/rand"
 	"os"
@@ -194,7 +195,5 @@ func generateHTMLMap(fileName, htmlString string) {
 		fmt.Printf("Error opening file: %v\n", err)
 	}
 	defer f.Close()
-
-	log.SetOutput(f)
-	log.Println(htmlString)
+	io.WriteString(f, htmlString)
 }
