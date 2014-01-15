@@ -160,6 +160,21 @@ func (c *Casino) Description() string {
 	return description
 }
 
+func (c *Casino) Log() {
+	logStr := "\n" + c.Description()
+	for _, table := range c.tables {
+		logStr += table.Description()
+	}
+	logStr += "[[==== Casino idles: ====]]\n"
+	for _, idlePlayer := range c.idlePlayers {
+		logStr += idlePlayer.Description()
+	}
+	for _, idleDealer := range c.idleDealers {
+		logStr += idleDealer.Description()
+	}
+	logTo(fmt.Sprintf("Casino%d", c.id), logStr)
+}
+
 //casino simulations
 func (c *Casino) Start() {
 	fmt.Println("Casino operating.")
