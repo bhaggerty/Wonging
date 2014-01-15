@@ -175,7 +175,7 @@ func (c *Casino) Log() {
 	logTo(fmt.Sprintf("Casino%d", c.id), logStr)
 }
 
-func (c *Casino) generateCasinoHTMLMap() string {
+func (c *Casino) GenerateHTMLMap() {
 	html := "<html>"
 	html += fmt.Sprintf("<h3>[[===== Casino %d =====]]</h3>", c.id)
 	html += fmt.Sprintf("<h6>Total dealers: %d</h6>", c.totalDealers())
@@ -195,7 +195,7 @@ func (c *Casino) generateCasinoHTMLMap() string {
 		html += fmt.Sprintf("<div><a href=\"dealer%d.html\">[Dealer %d]</a></div>", idleDealer.id, idleDealer.id)
 	}
 	html += "</html>"
-	return html
+	generateHTMLMap(fmt.Sprintf("Casino%d", c.id), html)
 }
 
 //casino simulations
