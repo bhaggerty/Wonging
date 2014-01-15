@@ -175,6 +175,23 @@ func (c *Casino) Log() {
 	logTo(fmt.Sprintf("Casino%d", c.id), logStr)
 }
 
+func (c *Casino) generateCasinoHTMLMap() string {
+	html := "<html>"
+	html += c.Description()
+	for _, table := range c.tables {
+		html += fmt.Sprintf("<div><a href=\"table%d.html\">[Table %d]</a></div>", table.id, table.id)
+	}
+	html += "<h5>[[==== Casino idles: ====]]</h5>"
+	for _, idlePlayer := range c.idlePlayers {
+		html += idlePlayer.Description()
+	}
+	for _, idleDealer := range c.idleDealers {
+		html += idleDealer.Description()
+	}
+	html += "</html>"
+	return html
+}
+
 //casino simulations
 func (c *Casino) Start() {
 	fmt.Println("Casino operating.")
