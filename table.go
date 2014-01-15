@@ -318,3 +318,27 @@ func (t *Table) Description() string {
 	description += fmt.Sprintf("[Number of observers: %d]\n", t.getNumberOfObservers())
 	return description
 }
+
+func (t *Table) GenerateHTMLMap() {
+	html := "<html>"
+	html += fmt.Sprintf("<h3>[[===== Table %d =====]]</h3>", t.id)
+	html += fmt.Sprintf("<div>[Number of dealers: %d]</div>", t.getNumberOfDealers())
+	html += fmt.Sprintf("<div>[Number of players: %d]</div>", t.getNumberOfPlayers())
+	html += fmt.Sprintf("<div>[Number of observers: %d]</div>", t.getNumberOfObservers())
+	if t.getNumberOfDealers() > 0 {
+		html += fmt.Sprintf("<div><a href=\"dealer%d.html\">[Dealer %d]</a></div>", t.dealer.id, t.dealer.id)
+	}
+	if t.getNumberOfPlayers() > 0 {
+		for _, player := range t.players {
+			html += fmt.Sprintf("<div><a href=\"player%d.html\">[Player %d]</a></div>", player.id, player.id)
+		}
+	}
+	if t.games != nil && len(t.games) > 0 {
+		for _, game := range t.games {
+			html += "<div>" + game.Description() + "</div>"
+		}
+	}
+
+	html += "</html>"
+	generateHTMLMap(fmt.Sprintf("table%d", t.id), html)
+}

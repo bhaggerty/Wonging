@@ -178,14 +178,15 @@ func (c *Casino) Log() {
 func (c *Casino) GenerateHTMLMap() {
 	html := "<html>"
 	html += fmt.Sprintf("<h3>[[===== Casino %d =====]]</h3>", c.id)
-	html += fmt.Sprintf("<h6>Total dealers: %d</h6>", c.totalDealers())
-	html += fmt.Sprintf("<h6>Total players: %d</h6>", c.totalPlayers())
-	html += fmt.Sprintf("<h6>Total idling dealers: %d</h6>", c.totalInactiveDealers())
-	html += fmt.Sprintf("<h6>Total idling players: %d</h6>", c.totalInactivePlayers())
-	html += fmt.Sprintf("<h6>Current cash: %f</h6>", c.bank)
-	html += fmt.Sprintf("<h6>Current profit: %f</h6>", c.totalProfit())
+	html += fmt.Sprintf("<div>Total dealers: %d</div>", c.totalDealers())
+	html += fmt.Sprintf("<div>Total players: %d</div>", c.totalPlayers())
+	html += fmt.Sprintf("<div>Total idling dealers: %d</div>", c.totalInactiveDealers())
+	html += fmt.Sprintf("<div>Total idling players: %d</div>", c.totalInactivePlayers())
+	html += fmt.Sprintf("<div>Current cash: %f</div>", c.bank)
+	html += fmt.Sprintf("<div>Current profit: %f</div>", c.totalProfit())
 	for _, table := range c.tables {
 		html += fmt.Sprintf("<div><a href=\"table%d.html\">[Table %d]</a></div>", table.id, table.id)
+		table.GenerateHTMLMap()
 	}
 	html += "<h5>[[==== Casino idles: ====]]</h5>"
 	for _, idlePlayer := range c.idlePlayers {
@@ -195,7 +196,7 @@ func (c *Casino) GenerateHTMLMap() {
 		html += fmt.Sprintf("<div><a href=\"dealer%d.html\">[Dealer %d]</a></div>", idleDealer.id, idleDealer.id)
 	}
 	html += "</html>"
-	generateHTMLMap(fmt.Sprintf("Casino%d", c.id), html)
+	generateHTMLMap(fmt.Sprintf("casino%d", c.id), html)
 }
 
 //casino simulations
