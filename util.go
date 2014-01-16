@@ -135,6 +135,8 @@ func WhiteText(s string) string {
 
 func logAbsolutePath() string {
 	dir := "log/"
+	os.Remove(dir)
+
 	_, err := os.Stat(dir)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -176,6 +178,8 @@ func logTo(fileName, logStr string) {
 // HTML generation
 func htmlAbsolutePath() string {
 	dir := "html/"
+	os.Remove(dir)
+
 	_, err := os.Stat(dir)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -184,7 +188,6 @@ func htmlAbsolutePath() string {
 			os.Mkdir(dir, 0777)
 		}
 	}
-
 	absPath, _ := filepath.Abs(dir)
 	return absPath + "/"
 }
