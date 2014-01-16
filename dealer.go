@@ -108,3 +108,11 @@ func (d *Dealer) PrintDealer() {
 func (d *Dealer) Description() string {
 	return fmt.Sprintf("[===== Dealer %d =====]\nstrategy: %s\n", d.id, CyanText(d.strategyDescription))
 }
+
+func (d *Dealer) GenerateHTMLMap() {
+	html := "<html>"
+	html += fmt.Sprintf("<h3>[===== Dealer %d =====]</h3>", d.id)
+	html += fmt.Sprintf("<div>strategy: %s </div>", d.strategyDescription)
+	html += "</html>"
+	generateHTMLMap(fmt.Sprintf("dealer%d", d.id), html)
+}
