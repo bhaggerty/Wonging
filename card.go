@@ -35,3 +35,7 @@ func (c *Card) PrintCard() {
 func (c *Card) Description() string {
 	return fmt.Sprint(c.value, c.symbol)
 }
+
+func (c *Card) HTMLString() string {
+	return fmt.Sprintf("<div>%s %s</div>", c.value, c.suit)
+}
