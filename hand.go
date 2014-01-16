@@ -123,6 +123,25 @@ func (h *Hand) Description() string {
 	return "Hand doesn't exist or is empty"
 }
 
+func (h *Hand) HTMLString() string {
+	html := ""
+	if h.cards != nil && len(h.cards) > 0 {
+		value, soft := h.CalculateValue()
+		var softString string
+		if soft {
+			softString = "soft"
+		} else {
+			softString = "hard"
+		}
+		html += fmt.Sprintf("<div>hand: (%s %d)</div>", softString, value)
+		for _, card := range h.cards {
+			html += card.HTMLString()
+		}
+		return html
+	}
+	return "Hand doesn't exist or is empty"
+}
+
 //optional parameter
 //One or two total(s) can be passed in
 //two totals passed in: we will do the comparison right away
