@@ -298,7 +298,11 @@ func (p *Player) GenerateHTMLMap() {
 	} else {
 		html += fmt.Sprintln("winning: ", fmt.Sprintf("<div><font color=\"green\">%d/%d</font></div>", p.winCount, DEFAULTTOTALNUMBEROFGAMES))
 	}
-
+	if p.hands != nil && len(p.hands) > 0 {
+		for _, hand := range p.hands {
+			html += hand.HTMLString()
+		}
+	}
 	html += "</html>"
 	generateHTMLMap(fmt.Sprintf("player%d", p.id), html)
 }

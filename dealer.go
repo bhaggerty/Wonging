@@ -113,6 +113,9 @@ func (d *Dealer) GenerateHTMLMap() {
 	html := "<html>"
 	html += fmt.Sprintf("<h3>[===== Dealer %d =====]</h3>", d.id)
 	html += fmt.Sprintf("<div>strategy: %s </div>", d.strategyDescription)
+	if d.fullHand() != nil {
+		html += d.fullHand().HTMLString()
+	}
 	html += "</html>"
 	generateHTMLMap(fmt.Sprintf("dealer%d", d.id), html)
 }
