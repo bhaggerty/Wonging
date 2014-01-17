@@ -47,5 +47,14 @@ func (g *Game) PrintGame() {
 }
 
 func (g *Game) Description() string {
-	return fmt.Sprintf(">>  Game Result:\n    players: %@\n    casino: %f\n", g.playerResult, g.casinoEarning)
+	return fmt.Sprintf(">>  Game Result:\n    players: %@\n    casino: %.2f\n", g.playerResult, g.casinoEarning)
+}
+
+func (g *Game) HTMLString() string {
+	html := "<div class=\"game\">Game results:  Players: ["
+	for _, playerResult := range g.playerResult {
+		html += fmt.Sprintf("%.2f, ", playerResult)
+	}
+	html += fmt.Sprintf("]   Casino:%.2f</div>", g.casinoEarning)
+	return html
 }
