@@ -160,7 +160,7 @@ func (p *Player) stand(handIndex uint8) {
 
 // func (p *Player) double(handIndex uint8) {
 // 	if p.currentBet != 0 && !p.isDoubled {
-// 		fmt.Println("Player %d is doubling his/her money, to %f, for hand: %d", p.id, p.currentBet, handIndex)
+// 		fmt.Println("Player %d is doubling his/her money, to %.2f, for hand: %d", p.id, p.currentBet, handIndex)
 // 		p.bet(p.currentBet)
 // 		p.hit(handIndex)
 // 		p.isDoubled = true
@@ -262,14 +262,14 @@ func (p *Player) PrintPlayer() {
 func (p *Player) Description() string {
 	description := ""
 	description += fmt.Sprintf("[===== Player %d =====]\n", p.id)
-	description += fmt.Sprintf("currently betting: %f\n", p.currentBet)
+	description += fmt.Sprintf("currently betting: %.2f\n", p.currentBet)
 	description += fmt.Sprintln("strategy: ", CyanText(p.strategyDescription))
 	description += fmt.Sprintln("counting: ", CyanText(p.countDescription))
 
 	if p.totalCash < DEFAULTPLAYERSTARTINGCASH {
-		description += fmt.Sprintln("total cash: ", RedText(fmt.Sprintf("%f", p.totalCash)))
+		description += fmt.Sprintln("total cash: ", RedText(fmt.Sprintf("%.2f", p.totalCash)))
 	} else {
-		description += fmt.Sprintln("total cash: ", GreenText(fmt.Sprintf("%f", p.totalCash)))
+		description += fmt.Sprintln("total cash: ", GreenText(fmt.Sprintf("%.2f", p.totalCash)))
 	}
 
 	if p.winCount < uint8(DEFAULTTOTALNUMBEROFGAMES/2) {
@@ -283,14 +283,14 @@ func (p *Player) Description() string {
 func (p *Player) GenerateHTMLMap() {
 	html := "<html>"
 	html += fmt.Sprintf("<h3>[[===== Player %d =====]]</h3>", p.id)
-	html += fmt.Sprintf("<div>currently betting: %f </div>", p.currentBet)
+	html += fmt.Sprintf("<div>currently betting: %.2f </div>", p.currentBet)
 	html += fmt.Sprintf("<div>strategy: %s </div>", p.strategyDescription)
 	html += fmt.Sprintf("<div>counting: %s </div>", p.countDescription)
 
 	if p.totalCash < DEFAULTPLAYERSTARTINGCASH {
-		html += fmt.Sprintln("total cash: ", fmt.Sprintf("<div><font color=\"red\">%f</font></div>", p.totalCash))
+		html += fmt.Sprintln("total cash: ", fmt.Sprintf("<div><font color=\"red\">%.2f</font></div>", p.totalCash))
 	} else {
-		html += fmt.Sprintln("total cash: ", fmt.Sprintf("<div><font color=\"green\">%f</font></div>", p.totalCash))
+		html += fmt.Sprintln("total cash: ", fmt.Sprintf("<div><font color=\"green\">%.2f</font></div>", p.totalCash))
 	}
 
 	if p.winCount < uint8(DEFAULTTOTALNUMBEROFGAMES/2) {

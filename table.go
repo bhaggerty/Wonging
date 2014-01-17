@@ -337,7 +337,7 @@ func (t *Table) GenerateHTMLMap() {
 	}
 	if t.games != nil && len(t.games) > 0 {
 		for _, game := range t.games {
-			html += "<div>" + game.Description() + "</div>"
+			html += game.HTMLString()
 		}
 	}
 

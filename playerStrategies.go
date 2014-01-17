@@ -35,7 +35,7 @@ func basic(p *Player) ([]string, []uint8) {
 	tableCounter := p.table.calculateTableCount()
 	runningCount := p.count(tableCounter)
 	trueCount := runningCount / DEFAULTDECKPERSHOE
-	fmt.Printf("[counting strategy: %s, Running Count: %f, True Count: %f]\n", p.countDescription, runningCount, trueCount)
+	fmt.Printf("[counting strategy: %s, Running Count: %.2f, True Count: %.2f]\n", p.countDescription, runningCount, trueCount)
 	fmt.Print("[playing strategy: basic]: ")
 	if p.currentBet > 0 {
 		for i := 0; i < len(p.hands); i++ {
@@ -89,7 +89,7 @@ func wizardOfOdds(p *Player) ([]string, []uint8) {
 	tableCounter := p.table.calculateTableCount()
 	runningCount := p.count(tableCounter)
 	trueCount := runningCount / DEFAULTDECKPERSHOE
-	fmt.Printf("[counting strategy: %s]: Running Count: %f, True Count: %f\n", p.countDescription, runningCount, trueCount)
+	fmt.Printf("[counting strategy: %s]: Running Count: %.2f, True Count: %.2f\n", p.countDescription, runningCount, trueCount)
 	fmt.Print("[playing strategy: WizardOfOdds]: ")
 
 	dealerCard := p.table.dealer.curHand.cards[0]
@@ -164,7 +164,7 @@ func hiLoCount(p *Player) ([]string, []uint8) {
 	tableCounter := p.table.calculateTableCount()
 	runningCount := p.count(tableCounter)
 	trueCount := runningCount / DEFAULTDECKPERSHOE
-	fmt.Printf("[counting strategy: %s, Running Count: %f, True Count: %f]\n", p.countDescription, runningCount, trueCount)
+	fmt.Printf("[counting strategy: %s, Running Count: %.2f, True Count: %.2f]\n", p.countDescription, runningCount, trueCount)
 	fmt.Print("[playing strategy: HiLo Count]: ")
 	dealerCard := p.table.dealer.curHand.cards[0]
 
@@ -172,8 +172,8 @@ func hiLoCount(p *Player) ([]string, []uint8) {
 		var curAction string
 		playerHandValue, isSoft := p.calculateHandValue(uint8(i))
 
-		if trueCount > 0  && playerHandValue < 10{
-				curAction = "double"
+		if trueCount > 0 && playerHandValue < 10 {
+			curAction = "double"
 		} else {
 			curAction = wizardOfOddsActionLogic(p, dealerCard, playerHandValue, isSoft, hand)
 		}
@@ -190,7 +190,7 @@ func aceFiveCount(p *Player) ([]string, []uint8) {
 	tableCounter := p.table.calculateTableCount()
 	runningCount := p.count(tableCounter)
 	trueCount := runningCount / DEFAULTDECKPERSHOE
-	fmt.Printf("[counting strategy: %s, Running Count: %f, True Count: %f]\n", p.countDescription, runningCount, trueCount)
+	fmt.Printf("[counting strategy: %s, Running Count: %.2f, True Count: %.2f]\n", p.countDescription, runningCount, trueCount)
 	fmt.Print("[playing strategy: Ace/Five Count]: ")
 	dealerCard := p.table.dealer.curHand.cards[0]
 	for i, hand := range p.hands {
