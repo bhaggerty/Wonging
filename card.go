@@ -37,5 +37,5 @@ func (c *Card) Description() string {
 }
 
 func (c *Card) HTMLString() string {
-	return fmt.Sprintf("<div>%s %s</div>", c.value, c.suit)
+	return fmt.Sprintf("<span><img height='78.25' width='56.25' src=\"../img/cards/%s%c.png\"></span>", c.value, c.suit[0])
 }
