@@ -1,0 +1,23 @@
+/*shit stolen from html5 boilerplate css*/
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.green {
+    color: #00b200;
+}
+
+.red {
+    color: #ce0000;
+}
