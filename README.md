@@ -5,9 +5,9 @@ Wonging
 ## Table of Contents ##
 - [What](#what-is-it)
 - [Plan](#plan)
-- [Explaination](#explaination)
 - [Install](#install)
 - [Testing](#testing)
+- [Explaination](#explaination)
 - [License](#license)
 
 
