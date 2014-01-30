@@ -1,6 +1,10 @@
 language: go
 go:
   - 1.2
-script:
-    - go get github.com/josephyzhou/Wonging
-    - go test -v
+script: go get github.com/josephyzhou/Wonging && go test -v
+notifications:
+  email:
+    recipients:
+      - josephyzhou@gmail.com
+    on_success: change
+    on_failure: always
