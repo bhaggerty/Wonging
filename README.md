@@ -1,6 +1,6 @@
 Wonging
 =======
-
+[![GoDoc](https://godoc.org/github.com/josephyzhou/Wonging?status.png)](https://godoc.org/github.com/josephyzhou/Wonging)
 ####(WORK IN PROGRESS!)
 ## Table of Contents ##
 - [What](#what-is-it)
