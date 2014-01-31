@@ -1,7 +1,7 @@
 Wonging
 =======
 [![GoDoc](https://godoc.org/github.com/josephyzhou/Wonging?status.png)](https://godoc.org/github.com/josephyzhou/Wonging)
-[![Build Status](https://travis-ci.org/josephyzhou/Wonging.png?branch=master)](https://https://travis-ci.org/josephyzhou/Wonging)
+[![Build Status](https://travis-ci.org/josephyzhou/Wonging.png?branch=master)](https://travis-ci.org/josephyzhou/Wonging)
 ####(WORK IN PROGRESS!)
 ## Table of Contents ##
 - [What](#what-is-it)
