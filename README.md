@@ -35,7 +35,7 @@ http://golang.org/doc/install
 
 `go test -v`
 
-### Explaination ###
+### Explanation ###
 `cd /simulator`
 
 `go run simulator.go`
